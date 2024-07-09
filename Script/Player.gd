@@ -2,8 +2,9 @@ extends CharacterBody2D
 
 const SPEED = 200.0
 const JUMP_VELOCITY = -420.0
-var health = 1
-var direction = 0 
+var health = 30
+var direction = 0
+var attack = 3 
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -26,15 +27,15 @@ func _physics_process(delta):
 		$StateChart.send_event("walk")
 	
 	if direction < 0:
-		pass
 		$Sprite2D.flip_h = true
-	else:
-		pass
+	elif direction > 0:
 		$Sprite2D.flip_h = false
-	
-	if Input.is_action_pressed("look_up") and Input.is_action_just_pressed("attack"):
-		print("top_attack")
-		$StateChart.send_event("top_attack")
+		
+	if Input.is_action_just_pressed("attack"):
+		if Input.is_action_pressed("look_up"):
+			$StateChart.send_event("top_attack")
+		else:
+			$StateChart.send_event("neutral_attack")
 
 	move_and_slide()	
 
@@ -51,15 +52,6 @@ func jump():
 		$StateChart.send_event("jump")
 
 func _input(event):
-	if event.is_action_pressed("attack"):
-		if event.is_action_pressed("look_up"):
-			$StateChart.send_event("top_attack")
-		else:
-			$StateChart.send_event("neutral_attack")
-	
-	if event.is_action_pressed("look_up"):
-		print(event.as_text())
-	
 	if event.is_action_pressed("crouch"):
 		$StateChart.send_event("crouch")
 
@@ -72,19 +64,19 @@ func _on_walk_state_physics_processing(_delta):
 	jump()
 
 func _on_animation_player_animation_finished(animation_name):
-	if animation_name == "death":
-		get_tree().call_deferred("reload_current_scene")
-	
-	if animation_name == "atk_neutral_01":
-		$StateChart.send_event("end_attack")
-	
-	if animation_name == "roll":
-		$StateChart.send_event("end_roll")
+	match animation_name:
+		"death":
+			get_tree().call_deferred("reload_current_scene")
+		"atk_neutral_01","top_attack":
+			$StateChart.send_event("end_attack")
+		"roll":
+			$StateChart.send_event("end_roll")
 
 
 func _on_area_2d_area_entered(area):
 	if area.is_in_group("spike"):
 		$StateChart.set_expression_property("spike_touched",true)
+		health = 1
 		$StateChart.send_event("hit")
 
 
