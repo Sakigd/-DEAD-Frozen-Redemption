@@ -2,10 +2,11 @@ extends CharacterBody2D
 
 const SPEED = 200.0
 const JUMP_VELOCITY = -420.0
-var health = 30
+
+var stat : Dictionary
+var health
+var attack
 var direction = 0
-var attack = 3
-var key_pressed = false
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -13,6 +14,10 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 func _ready():
 	$StateChart.set_expression_property("spike_touched",false)
 	$StateChart.set_expression_property("animation_finished",false)
+	stat = $DbManager.getItemFromPlayerTable("player")
+	health = stat.get("health")
+	attack = stat.get("attack")
+	
 
 func _physics_process(delta):
 	
@@ -39,7 +44,6 @@ func _physics_process(delta):
 			$StateChart.send_event("top_attack")
 		else:
 			$StateChart.send_event("neutral_attack")
-		
 
 	move_and_slide()	
 

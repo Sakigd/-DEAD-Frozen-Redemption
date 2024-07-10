@@ -1,8 +1,10 @@
 extends CharacterBody2D
 
 var speed = 30.0
-var health = 9
-var attack = 5
+
+var stat : Dictionary
+var health
+var attack
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -12,8 +14,12 @@ var last_slide_collision = null
 
 func _ready():
 	$AnimationPlayer.play("walk")
+	stat = $DbManager.getItemFromMobTable("desesperated slave")
+	health = stat.get("health")
+	attack = stat.get("attack")
 
 func _physics_process(delta):
+	last_slide_collision = get_last_slide_collision()
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y += gravity * delta

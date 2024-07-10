@@ -114,7 +114,8 @@ limit_top = 0
 limit_right = 854
 limit_bottom = 480
 
-[node name="Hud" parent="." instance=ExtResource("2_svgmr")]
+[node name="Hud" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_svgmr")]
+player = NodePath("../Player")
 
 [node name="StateChartDebugger" parent="Hud" instance=ExtResource("4_v73mk")]
 anchors_preset = 0
