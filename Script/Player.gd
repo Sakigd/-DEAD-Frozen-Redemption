@@ -4,24 +4,27 @@ const SPEED = 200.0
 const JUMP_VELOCITY = -420.0
 var health = 30
 var direction = 0
-var attack = 3 
+var attack = 3
+var key_pressed = false
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 func _ready():
 	$StateChart.set_expression_property("spike_touched",false)
+	$StateChart.set_expression_property("animation_finished",false)
 
 func _physics_process(delta):
+	
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y += gravity * delta
 	
+	$StateChart.set_expression_property("key_pressed",Input.is_anything_pressed())
+	$StateChart.set_expression_property("is_on_floor",is_on_floor())
+	
 	if velocity.y > 0 :
 		$StateChart.send_event("fall")
-	
-	if is_on_floor() && velocity.x == 0:
-		$StateChart.send_event("idle")
 	
 	if velocity.x != 0 && is_on_floor():
 		$StateChart.send_event("walk")
@@ -36,6 +39,7 @@ func _physics_process(delta):
 			$StateChart.send_event("top_attack")
 		else:
 			$StateChart.send_event("neutral_attack")
+		
 
 	move_and_slide()	
 
@@ -72,7 +76,7 @@ func _on_animation_player_animation_finished(animation_name):
 		"roll":
 			$StateChart.send_event("end_roll")
 		"hit":
-			$StateChart.send_event("idle")
+			$StateChart.send_event("end_hit")
 
 
 func _on_hitbox_area_entered(area):
@@ -83,10 +87,13 @@ func _on_hitbox_area_entered(area):
 	
 func _on_hitbox_body_entered(body):
 	if body.is_in_group("mob"):
+		print("hit")
 		$StateChart.send_event("hit")
 
 func _on_hit_state_entered():
+	velocity.x = 0
 	health -= 1
+	print(health)
 	if(health == 0):
 		$StateChart.send_event("death")
 

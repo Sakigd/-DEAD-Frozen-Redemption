@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://bcwyfattjly6"]
+[gd_scene load_steps=40 format=3 uid="uid://bcwyfattjly6"]
 
 [ext_resource type="Texture2D" uid="uid://2ntob2mht45f" path="res://asset/Animation player/air_attack.png" id="1_0c374"]
 [ext_resource type="Texture2D" uid="uid://di0ivrtvym3au" path="res://asset/Animation player/idle.png" id="1_5yofi"]
@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://bk7e67f4qesj5" path="res://asset/Animation player/top_attack.png" id="12_niqqr"]
 [ext_resource type="Texture2D" uid="uid://b0f35fcwbtnmn" path="res://asset/Animation player/Jump_max.png" id="12_y8ked"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="13_ejqix"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_is_active_guard.gd" id="17_4hcgv"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/expression_guard.gd" id="17_u2f5k"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/animation_player_state.gd" id="18_8shf8"]
 
@@ -417,7 +418,7 @@ tracks/11/type = "value"
 tracks/11/imported = false
 tracks/11/enabled = true
 tracks/11/path = NodePath("hitbox_ruban:collision_layer")
-tracks/11/interp = 1
+tracks/11/interp = 0
 tracks/11/loop_wrap = true
 tracks/11/keys = {
 "times": PackedFloat32Array(0, 0.1, 1.1),
@@ -1031,12 +1032,24 @@ size = Vector2(27, 46)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4u3n8"]
 size = Vector2(30, 48)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sgg55"]
+size = Vector2(0, 0)
+
+[sub_resource type="Resource" id="Resource_axisn"]
+script = ExtResource("17_4hcgv")
+state = NodePath("../../air_attack")
+
+[sub_resource type="Resource" id="Resource_n0skx"]
+script = ExtResource("17_u2f5k")
+expression = "!key_pressed && is_on_floor"
+
 [sub_resource type="Resource" id="Resource_vayh1"]
 script = ExtResource("17_u2f5k")
 expression = "spike_touched"
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_sgg55"]
-size = Vector2(0, 0)
+[sub_resource type="Resource" id="Resource_2v35i"]
+script = ExtResource("17_u2f5k")
+expression = "!key_pressed"
 
 [node name="Player" type="CharacterBody2D"]
 collision_mask = 3
@@ -1065,6 +1078,13 @@ metadata/_edit_group_ = true
 position = Vector2(0.500001, 0)
 shape = SubResource("RectangleShape2D_4u3n8")
 
+[node name="hitbox_ruban" type="Area2D" parent="." groups=["hitbox_ruban"]]
+collision_layer = 0
+metadata/_edit_group_ = true
+
+[node name="hitbox_ruban" type="CollisionShape2D" parent="hitbox_ruban"]
+shape = SubResource("RectangleShape2D_sgg55")
+
 [node name="StateChart" type="Node" parent="."]
 script = ExtResource("10_hhda8")
 
@@ -1087,6 +1107,7 @@ delay_in_seconds = "0.0"
 script = ExtResource("13_ejqix")
 to = NodePath("../../fall")
 event = &"fall"
+guard = SubResource("Resource_axisn")
 delay_in_seconds = "0.0"
 
 [node name="to hit" type="Node" parent="StateChart/root/idle"]
@@ -1145,7 +1166,7 @@ delay_in_seconds = "0.0"
 [node name="to idle" type="Node" parent="StateChart/root/fall"]
 script = ExtResource("13_ejqix")
 to = NodePath("../../idle")
-event = &"idle"
+guard = SubResource("Resource_n0skx")
 delay_in_seconds = "0.0"
 
 [node name="to walk" type="Node" parent="StateChart/root/fall"]
@@ -1225,7 +1246,7 @@ delay_in_seconds = "0.0"
 [node name="to idle" type="Node" parent="StateChart/root/hit"]
 script = ExtResource("13_ejqix")
 to = NodePath("../../idle")
-event = &"idle"
+event = &"end_hit"
 delay_in_seconds = "0.0"
 
 [node name="jump" type="Node" parent="StateChart/root"]
@@ -1265,7 +1286,7 @@ delay_in_seconds = "0.0"
 [node name="to idle" type="Node" parent="StateChart/root/walk"]
 script = ExtResource("13_ejqix")
 to = NodePath("../../idle")
-event = &"idle"
+guard = SubResource("Resource_2v35i")
 delay_in_seconds = "0.0"
 
 [node name="to hit" type="Node" parent="StateChart/root/walk"]
@@ -1308,13 +1329,6 @@ script = ExtResource("13_ejqix")
 to = NodePath("../../fall")
 event = &"fall"
 delay_in_seconds = "0.0"
-
-[node name="hitbox_ruban" type="Area2D" parent="." groups=["hitbox_ruban"]]
-collision_layer = 0
-metadata/_edit_group_ = true
-
-[node name="hitbox_ruban" type="CollisionShape2D" parent="hitbox_ruban"]
-shape = SubResource("RectangleShape2D_sgg55")
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]

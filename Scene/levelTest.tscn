@@ -1,7 +1,8 @@
-[gd_scene load_steps=14 format=3 uid="uid://cvgx1wnovhegl"]
+[gd_scene load_steps=15 format=3 uid="uid://cvgx1wnovhegl"]
 
 [ext_resource type="Texture2D" uid="uid://dx257msdkel1m" path="res://asset/map level test.png" id="1_nrdkk"]
 [ext_resource type="PackedScene" uid="uid://bcwyfattjly6" path="res://Scene/Player.tscn" id="2_54uo1"]
+[ext_resource type="PackedScene" uid="uid://bdf02g78toy3i" path="res://Scene/HUD.tscn" id="2_svgmr"]
 [ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="4_v73mk"]
 [ext_resource type="PackedScene" uid="uid://b41oickcktc0y" path="res://Scene/mob.tscn" id="5_u8fit"]
 
@@ -104,18 +105,6 @@ metadata/_edit_group_ = true
 position = Vector2(-1.5, 5)
 shape = SubResource("RectangleShape2D_i7h33")
 
-[node name="StateChartDebugger" parent="." instance=ExtResource("4_v73mk")]
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 15.0
-offset_top = 195.0
-offset_right = 414.0
-offset_bottom = 431.0
-grow_horizontal = 1
-grow_vertical = 1
-scale = Vector2(0.5, 0.5)
-
 [node name="Player" parent="." instance=ExtResource("2_54uo1")]
 position = Vector2(163, 364)
 
@@ -124,6 +113,29 @@ limit_left = 0
 limit_top = 0
 limit_right = 854
 limit_bottom = 480
+
+[node name="Hud" parent="." instance=ExtResource("2_svgmr")]
+
+[node name="StateChartDebugger" parent="Hud" instance=ExtResource("4_v73mk")]
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 12.0
+offset_top = 11.0
+offset_right = 411.0
+offset_bottom = 393.0
+grow_horizontal = 1
+grow_vertical = 1
+scale = Vector2(0.5, 0.5)
+initial_node_to_watch = NodePath("../../Player")
+
+[node name="StateChartDebugger2" parent="Hud" instance=ExtResource("4_v73mk")]
+offset_left = 423.0
+offset_top = 13.0
+offset_right = 182.0
+offset_bottom = -111.0
+scale = Vector2(0.5, 0.5)
+initial_node_to_watch = NodePath("../../Mob")
 
 [node name="Mob" parent="." instance=ExtResource("5_u8fit")]
 position = Vector2(518, 394)
