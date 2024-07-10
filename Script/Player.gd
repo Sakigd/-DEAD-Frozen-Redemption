@@ -71,14 +71,19 @@ func _on_animation_player_animation_finished(animation_name):
 			$StateChart.send_event("end_attack")
 		"roll":
 			$StateChart.send_event("end_roll")
+		"hit":
+			$StateChart.send_event("idle")
 
 
-func _on_area_2d_area_entered(area):
+func _on_hitbox_area_entered(area):
 	if area.is_in_group("spike"):
 		$StateChart.set_expression_property("spike_touched",true)
 		health = 1
 		$StateChart.send_event("hit")
-
+	
+func _on_hitbox_body_entered(body):
+	if body.is_in_group("mob"):
+		$StateChart.send_event("hit")
 
 func _on_hit_state_entered():
 	health -= 1

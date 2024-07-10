@@ -22,6 +22,9 @@ func _physics_process(delta):
 		if !$RayCast2D.is_colliding() && is_on_floor():
 			flip()
 
+	if is_on_wall():
+		flip()
+	
 	move_and_slide()
 	
 func flip():
@@ -37,7 +40,6 @@ func flip():
 func _on_hitbox_area_entered(area):
 	if area.is_in_group("hitbox_ruban"):
 		$StateChart.send_event("hit")
-
 
 func _on_hit_state_entered():
 	health -= 3
