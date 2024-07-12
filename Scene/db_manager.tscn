@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://dymtm3cesajpw"]
-
-[ext_resource type="Script" path="res://Script/db_manager.gd" id="1_0gnff"]
-
-[node name="DbManager" type="Node"]
-script = ExtResource("1_0gnff")

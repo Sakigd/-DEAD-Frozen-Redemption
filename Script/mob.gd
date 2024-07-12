@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 var speed = 30.0
-
+var db = db_manager.new()
 var stat : Dictionary
 var health
 var attack
@@ -14,7 +14,7 @@ var last_slide_collision = null
 
 func _ready():
 	$AnimationPlayer.play("walk")
-	stat = $DbManager.getItemFromMobTable("desesperated slave")
+	stat = db.get_item_from_mob_table("desesperatedSlave")
 	health = stat.get("health")
 	attack = stat.get("attack")
 
@@ -48,7 +48,9 @@ func _on_hitbox_area_entered(area):
 		$StateChart.send_event("hit")
 
 func _on_hit_state_entered():
-	health -= 3
+	health -= db.get_item_from_player_table("barn").get("attack")
+	#print("mob health ",health)
+	#print("barn attack ",db.get_item_from_player_table("barn").get("attack"))
 	if (health <= 0):
 		$StateChart.send_event("death")
 

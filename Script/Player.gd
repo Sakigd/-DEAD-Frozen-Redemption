@@ -3,9 +3,11 @@ extends CharacterBody2D
 const SPEED = 200.0
 const JUMP_VELOCITY = -420.0
 
+var db = db_manager.new()
 var stat : Dictionary
 var health
 var attack
+var mob_attack = 1
 var direction = 0
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -14,11 +16,10 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 func _ready():
 	$StateChart.set_expression_property("spike_touched",false)
 	$StateChart.set_expression_property("animation_finished",false)
-	stat = $DbManager.getItemFromPlayerTable("player")
+	stat = db.get_item_from_player_table("barn")
 	health = stat.get("health")
 	attack = stat.get("attack")
 	
-
 func _physics_process(delta):
 	
 	# Add the gravity.
@@ -91,14 +92,16 @@ func _on_hitbox_area_entered(area):
 	
 func _on_hitbox_body_entered(body):
 	if body.is_in_group("mob"):
+		mob_attack = db.get_item_from_mob_table(body.name).get("attack")
 		print("hit")
 		$StateChart.send_event("hit")
 
 func _on_hit_state_entered():
 	velocity.x = 0
-	health -= 1
-	print(health)
-	if(health == 0):
+	#print("mob_attack ",mob_attack)
+	health -= mob_attack
+	#print("health ",health)
+	if(health <= 0):
 		$StateChart.send_event("death")
 
 
