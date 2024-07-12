@@ -1,5 +1,6 @@
 extends CharacterBody2D
 
+signal hit()
 const SPEED = 200.0
 const JUMP_VELOCITY = -420.0
 
@@ -100,6 +101,7 @@ func _on_hit_state_entered():
 	velocity.x = 0
 	#print("mob_attack ",mob_attack)
 	health -= mob_attack
+	hit.emit()
 	#print("health ",health)
 	if(health <= 0):
 		$StateChart.send_event("death")

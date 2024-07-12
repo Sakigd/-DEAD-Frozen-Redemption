@@ -139,3 +139,5 @@ initial_node_to_watch = NodePath("../../desesperatedSlave")
 
 [node name="desesperatedSlave" parent="." instance=ExtResource("5_u8fit")]
 position = Vector2(518, 394)
+
+[connection signal="hit" from="Player" to="Hud" method="_on_player_hit"]
