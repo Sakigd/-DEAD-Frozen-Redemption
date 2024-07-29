@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ci5xm3svxmx42"
-path="res://.godot/imported/blueFire.png-ea43ca42bffe68c3660ba997ee1f97db.ctex"
+uid="uid://d06tmj0g8ptxf"
+path="res://.godot/imported/maptest.png-5f4af2b2d3d3c7a8cd6643da8620c2d4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/Campfire/blueFire.png"
-dest_files=["res://.godot/imported/blueFire.png-ea43ca42bffe68c3660ba997ee1f97db.ctex"]
+source_file="res://resources/maptest.png"
+dest_files=["res://.godot/imported/maptest.png-5f4af2b2d3d3c7a8cd6643da8620c2d4.ctex"]
 
 [params]
 

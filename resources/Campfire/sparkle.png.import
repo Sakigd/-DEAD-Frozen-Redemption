@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://0bkoyba4658m"
-path="res://.godot/imported/sparkle.png-cead57bab4c572c1ce6d54cbca6d173d.ctex"
+path="res://.godot/imported/sparkle.png-2f6cae5b691c7c171ffef29079b51329.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Campfire/sparkle.png"
-dest_files=["res://.godot/imported/sparkle.png-cead57bab4c572c1ce6d54cbca6d173d.ctex"]
+source_file="res://resources/Campfire/sparkle.png"
+dest_files=["res://.godot/imported/sparkle.png-2f6cae5b691c7c171ffef29079b51329.ctex"]
 
 [params]
 

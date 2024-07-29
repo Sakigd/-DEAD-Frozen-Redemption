@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ci5xm3svxmx42"
-path="res://.godot/imported/blueFire.png-ea43ca42bffe68c3660ba997ee1f97db.ctex"
+uid="uid://eumt7dmcwj4p"
+path="res://.godot/imported/roll.png-7d4e9f27085a832413f972070580fe0d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/Campfire/blueFire.png"
-dest_files=["res://.godot/imported/blueFire.png-ea43ca42bffe68c3660ba997ee1f97db.ctex"]
+source_file="res://resources/Animation/Barn/roll.png"
+dest_files=["res://.godot/imported/roll.png-7d4e9f27085a832413f972070580fe0d.ctex"]
 
 [params]
 

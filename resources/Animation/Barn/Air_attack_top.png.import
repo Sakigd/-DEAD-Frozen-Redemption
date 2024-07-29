@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ci5xm3svxmx42"
-path="res://.godot/imported/blueFire.png-ea43ca42bffe68c3660ba997ee1f97db.ctex"
+uid="uid://bxtjm2p56yvya"
+path="res://.godot/imported/Air_attack_top.png-d726390faa01875166572949ce6da97f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/Campfire/blueFire.png"
-dest_files=["res://.godot/imported/blueFire.png-ea43ca42bffe68c3660ba997ee1f97db.ctex"]
+source_file="res://resources/Animation/Barn/Air_attack_top.png"
+dest_files=["res://.godot/imported/Air_attack_top.png-d726390faa01875166572949ce6da97f.ctex"]
 
 [params]
 

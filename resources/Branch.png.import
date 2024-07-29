@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ci5xm3svxmx42"
-path="res://.godot/imported/blueFire.png-ea43ca42bffe68c3660ba997ee1f97db.ctex"
+uid="uid://0w6isfc30pny"
+path="res://.godot/imported/Branch.png-b5281a79844af4a47fb5d376bdd0d5a8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/Campfire/blueFire.png"
-dest_files=["res://.godot/imported/blueFire.png-ea43ca42bffe68c3660ba997ee1f97db.ctex"]
+source_file="res://resources/Branch.png"
+dest_files=["res://.godot/imported/Branch.png-b5281a79844af4a47fb5d376bdd0d5a8.ctex"]
 
 [params]
 
