@@ -45,10 +45,21 @@ func _physics_process(delta):
 		if Input.is_action_pressed("look_up"):
 			$StateChart.send_event("top_attack")
 		else:
+			flip_check()
 			$StateChart.send_event("neutral_attack")
 
-	move_and_slide()	
+	move_and_slide()
 
+func flip_check():
+	var atk_animation = $AnimationPlayer.get_animation("atk_neutral_01")
+	var offset_track_idx = atk_animation.find_track("Sprite2D:offset",atk_animation.TYPE_VALUE)
+	var key = atk_animation.track_find_key(offset_track_idx,0)
+	
+	if($Sprite2D.flip_h):	
+		atk_animation.track_set_key_value(offset_track_idx,key,Vector2(-16,-7))
+	else:
+		atk_animation.track_set_key_value(offset_track_idx,key,Vector2(16,-7))
+	
 func move():
 	direction = Input.get_axis("move_left", "move_right")
 	if direction:
