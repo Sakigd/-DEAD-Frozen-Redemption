@@ -146,10 +146,8 @@ func _on_fall_state_physics_processing(_delta):
 		$StateChart.send_event("air_attack")
 
 func _on_roll_state_physics_processing(_delta):
-	if Input.is_action_pressed("move_left"):
+	if $Sprite2D.flip_h:
 		velocity.x = -SPEED
-	elif Input.is_action_pressed("move_right"):
-		velocity.x = SPEED
 	else:
 		velocity.x = SPEED
 	
