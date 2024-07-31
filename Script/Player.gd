@@ -53,12 +53,29 @@ func _physics_process(delta):
 func flip_check():
 	var atk_animation = $AnimationPlayer.get_animation("atk_neutral_01")
 	var offset_track_idx = atk_animation.find_track("Sprite2D:offset",atk_animation.TYPE_VALUE)
-	var key = atk_animation.track_find_key(offset_track_idx,0)
+	var key_idx = atk_animation.track_find_key(offset_track_idx,0)
 	
 	if($Sprite2D.flip_h):	
-		atk_animation.track_set_key_value(offset_track_idx,key,Vector2(-16,-7))
+		atk_animation.track_set_key_value(offset_track_idx,key_idx,Vector2(-16,-7))
 	else:
-		atk_animation.track_set_key_value(offset_track_idx,key,Vector2(16,-7))
+		atk_animation.track_set_key_value(offset_track_idx,key_idx,Vector2(16,-7))
+	
+	var collision_shape_track_idx = atk_animation.find_track("CollisionShape2D:position",atk_animation.TYPE_VALUE)
+	negate_key_value(collision_shape_track_idx,atk_animation)
+	var hitbox_track_idx = atk_animation.find_track("Hitbox:position",atk_animation.TYPE_VALUE)
+	negate_key_value(hitbox_track_idx,atk_animation)
+	var hitbox_ruban_track_idx = atk_animation.find_track("hitbox_ruban:position",atk_animation.TYPE_VALUE)
+	negate_key_value(hitbox_ruban_track_idx,atk_animation)
+	
+func negate_key_value(track_idx,animation):
+	var nb_key_track = animation.track_get_key_count(track_idx)
+	for idx in nb_key_track:
+		var key_value = animation.track_get_key_value(track_idx,idx)
+		if $Sprite2D.flip_h && key_value.x > 0:
+			key_value.x = - key_value.x
+		elif (!$Sprite2D.flip_h) && key_value.x < 0:
+			key_value.x = - key_value.x
+		animation.track_set_key_value(track_idx,idx,key_value)
 	
 func move():
 	direction = Input.get_axis("move_left", "move_right")
