@@ -1325,7 +1325,7 @@ animation_name = &"air_attack"
 [node name="to jump" type="Node" parent="StateChart/root/attack/air_attack"]
 script = ExtResource("13_ejqix")
 to = NodePath("../../../jump")
-event = &"end_air_attack"
+event = &"jump"
 delay_in_seconds = "0.0"
 
 [node name="to fall" type="Node" parent="StateChart/root/attack/air_attack"]
@@ -1342,7 +1342,7 @@ animation_name = &"air_attack_top"
 [node name="to jump" type="Node" parent="StateChart/root/attack/air_attack_top"]
 script = ExtResource("13_ejqix")
 to = NodePath("../../../jump")
-event = &"end_air_attack"
+event = &"jump"
 delay_in_seconds = "0.0"
 
 [node name="to fall" type="Node" parent="StateChart/root/attack/air_attack_top"]
@@ -1359,7 +1359,7 @@ animation_name = &"air_attack_down"
 [node name="to jump" type="Node" parent="StateChart/root/attack/air_attack_down"]
 script = ExtResource("13_ejqix")
 to = NodePath("../../../jump")
-event = &"end_air_attack"
+event = &"jump"
 delay_in_seconds = "0.0"
 
 [node name="to fall" type="Node" parent="StateChart/root/attack/air_attack_down"]

@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 signal hit()
 const SPEED = 200.0
-const JUMP_VELOCITY = -420.0
+const JUMP_VELOCITY = -400.0
 
 var db = db_manager.new()
 var stat : Dictionary
@@ -10,6 +10,8 @@ var health
 var attack
 var mob_attack = 1
 var direction = 0
+var is_attacking = false
+var momentum
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -24,7 +26,7 @@ func _ready():
 func _physics_process(delta):
 	
 	# Add the gravity.
-	if not is_on_floor():
+	if not is_on_floor() && !is_attacking:
 		velocity.y += gravity * delta
 	
 	$StateChart.set_expression_property("key_pressed",is_bind_key_pressed())
@@ -42,11 +44,10 @@ func _physics_process(delta):
 		$Sprite2D.flip_h = false
 		
 	if Input.is_action_just_pressed("attack"):
+		flip_animation()
 		if Input.is_action_pressed("look_up"):
-			flip_animation()
 			$StateChart.send_event("top_attack")
 		else:
-			flip_animation()
 			$StateChart.send_event("neutral_attack")
 
 	move_and_slide()
@@ -114,12 +115,14 @@ func _on_animation_player_animation_finished(animation_name):
 		"death":
 			get_tree().call_deferred("reload_current_scene")
 		"atk_neutral_01","top_attack":
+			is_attacking = false
 			$StateChart.send_event("end_attack")
 		"roll":
 			$StateChart.send_event("end_roll")
 		"hit":
 			$StateChart.send_event("end_hit")
 		"air_attack","air_attack_top","air_attack_down":
+			is_attacking = false
 			$StateChart.send_event("end_air_attack")
 
 
@@ -144,10 +147,9 @@ func _on_hit_state_entered():
 	if(health <= 0):
 		$StateChart.send_event("death")
 
-
-func _on_jump_state_physics_processing(_delta):
-	move()
+func detect_air_attack_input():
 	if Input.is_action_just_pressed("attack"):
+		is_attacking = true
 		if Input.is_action_pressed("look_up"):
 			$StateChart.send_event("air_attack_top")
 		elif Input.is_action_pressed("crouch"):
@@ -155,10 +157,13 @@ func _on_jump_state_physics_processing(_delta):
 		else:
 			$StateChart.send_event("air_attack")
 
+func _on_jump_state_physics_processing(_delta):
+	move()
+	detect_air_attack_input()
+
 func _on_fall_state_physics_processing(_delta):
 	move()
-	if Input.is_action_just_pressed("attack"):
-		$StateChart.send_event("air_attack")
+	detect_air_attack_input()
 
 func _on_roll_state_entered():
 	if $Sprite2D.flip_h:
@@ -168,3 +173,10 @@ func _on_roll_state_entered():
 
 func _on_atk_neutral_01_state_physics_processing(delta):
 	move()
+
+func _on_attack_state_entered():
+	momentum = velocity
+	velocity = Vector2(0,0)
+
+func _on_attack_state_exited():
+	velocity = momentum
