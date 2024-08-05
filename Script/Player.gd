@@ -27,10 +27,10 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y += gravity * delta
 	
-	$StateChart.set_expression_property("key_pressed",Input.is_anything_pressed())
+	$StateChart.set_expression_property("key_pressed",is_bind_key_pressed())
 	$StateChart.set_expression_property("is_on_floor",is_on_floor())
 	
-	if velocity.y > 0 :
+	if velocity.y > 0:
 		$StateChart.send_event("fall")
 	
 	if velocity.x != 0 && is_on_floor():
@@ -43,14 +43,22 @@ func _physics_process(delta):
 		
 	if Input.is_action_just_pressed("attack"):
 		if Input.is_action_pressed("look_up"):
+			flip_animation()
 			$StateChart.send_event("top_attack")
 		else:
-			flip_check()
+			flip_animation()
 			$StateChart.send_event("neutral_attack")
 
 	move_and_slide()
 
-func flip_check():
+func set_velocity_x(vel_x):
+	velocity.x = vel_x
+	
+func is_bind_key_pressed():
+	if Input.is_action_pressed("attack") || Input.is_action_pressed("crouch") || Input.is_action_pressed("Jump") || Input.is_action_pressed("look_up") || Input.is_action_pressed("move_left") || Input.is_action_pressed("move_right"):
+		return true
+		
+func flip_animation():
 	var atk_animation = $AnimationPlayer.get_animation("atk_neutral_01")
 	var offset_track_idx = atk_animation.find_track("Sprite2D:offset",atk_animation.TYPE_VALUE)
 	var key_idx = atk_animation.track_find_key(offset_track_idx,0)
@@ -111,6 +119,8 @@ func _on_animation_player_animation_finished(animation_name):
 			$StateChart.send_event("end_roll")
 		"hit":
 			$StateChart.send_event("end_hit")
+		"air_attack","air_attack_top","air_attack_down":
+			$StateChart.send_event("end_air_attack")
 
 
 func _on_hitbox_area_entered(area):
@@ -138,16 +148,23 @@ func _on_hit_state_entered():
 func _on_jump_state_physics_processing(_delta):
 	move()
 	if Input.is_action_just_pressed("attack"):
-		$StateChart.send_event("air_attack")
+		if Input.is_action_pressed("look_up"):
+			$StateChart.send_event("air_attack_top")
+		elif Input.is_action_pressed("crouch"):
+			$StateChart.send_event("air_attack_down")
+		else:
+			$StateChart.send_event("air_attack")
 
 func _on_fall_state_physics_processing(_delta):
 	move()
 	if Input.is_action_just_pressed("attack"):
 		$StateChart.send_event("air_attack")
 
-func _on_roll_state_physics_processing(_delta):
+func _on_roll_state_entered():
 	if $Sprite2D.flip_h:
 		velocity.x = -SPEED
 	else:
 		velocity.x = SPEED
-	
+
+func _on_atk_neutral_01_state_physics_processing(delta):
+	move()
