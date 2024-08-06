@@ -1,6 +1,6 @@
 [gd_scene load_steps=15 format=3 uid="uid://cvgx1wnovhegl"]
 
-[ext_resource type="Texture2D" uid="uid://dx257msdkel1m" path="res://asset/map level test.png" id="1_nrdkk"]
+[ext_resource type="Texture2D" uid="uid://cdhuv7x4jad27" path="res://asset/maptest.png" id="1_im812"]
 [ext_resource type="PackedScene" uid="uid://bcwyfattjly6" path="res://Scene/Player.tscn" id="2_54uo1"]
 [ext_resource type="PackedScene" uid="uid://bdf02g78toy3i" path="res://Scene/HUD.tscn" id="2_svgmr"]
 [ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="4_v73mk"]
@@ -37,7 +37,7 @@ size = Vector2(97, 24)
 
 [node name="MapLevelTest" type="Sprite2D" parent="."]
 texture_filter = 1
-texture = ExtResource("1_nrdkk")
+texture = ExtResource("1_im812")
 centered = false
 metadata/_edit_lock_ = true
 

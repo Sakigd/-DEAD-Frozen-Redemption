@@ -44,10 +44,12 @@ func _physics_process(delta):
 		$Sprite2D.flip_h = false
 		
 	if Input.is_action_just_pressed("attack"):
-		flip_animation()
+		
 		if Input.is_action_pressed("look_up"):
+			flip_animation("top_attack")
 			$StateChart.send_event("top_attack")
 		else:
+			flip_animation("atk_neutral_01")
 			$StateChart.send_event("neutral_attack")
 
 	move_and_slide()
@@ -59,22 +61,20 @@ func is_bind_key_pressed():
 	if Input.is_action_pressed("attack") || Input.is_action_pressed("crouch") || Input.is_action_pressed("Jump") || Input.is_action_pressed("look_up") || Input.is_action_pressed("move_left") || Input.is_action_pressed("move_right"):
 		return true
 		
-func flip_animation():
-	var atk_animation = $AnimationPlayer.get_animation("atk_neutral_01")
+func flip_animation(animation_name):
+	var atk_animation = $AnimationPlayer.get_animation(animation_name)
 	var offset_track_idx = atk_animation.find_track("Sprite2D:offset",atk_animation.TYPE_VALUE)
-	var key_idx = atk_animation.track_find_key(offset_track_idx,0)
-	
-	if($Sprite2D.flip_h):	
-		atk_animation.track_set_key_value(offset_track_idx,key_idx,Vector2(-16,-7))
-	else:
-		atk_animation.track_set_key_value(offset_track_idx,key_idx,Vector2(16,-7))
+	negate_key_value(offset_track_idx,atk_animation)
 	
 	var collision_shape_track_idx = atk_animation.find_track("CollisionShape2D:position",atk_animation.TYPE_VALUE)
-	negate_key_value(collision_shape_track_idx,atk_animation)
+	if collision_shape_track_idx != -1:
+		negate_key_value(collision_shape_track_idx,atk_animation)
 	var hitbox_track_idx = atk_animation.find_track("Hitbox:position",atk_animation.TYPE_VALUE)
-	negate_key_value(hitbox_track_idx,atk_animation)
+	if hitbox_track_idx != -1:
+		negate_key_value(hitbox_track_idx,atk_animation)
 	var hitbox_ruban_track_idx = atk_animation.find_track("hitbox_ruban:position",atk_animation.TYPE_VALUE)
-	negate_key_value(hitbox_ruban_track_idx,atk_animation)
+	if hitbox_ruban_track_idx != -1:
+		negate_key_value(hitbox_ruban_track_idx,atk_animation)
 	
 func negate_key_value(track_idx,animation):
 	var nb_key_track = animation.track_get_key_count(track_idx)
@@ -151,10 +151,13 @@ func detect_air_attack_input():
 	if Input.is_action_just_pressed("attack"):
 		is_attacking = true
 		if Input.is_action_pressed("look_up"):
+			flip_animation("air_attack_top")
 			$StateChart.send_event("air_attack_top")
 		elif Input.is_action_pressed("crouch"):
+			flip_animation("air_attack_down")
 			$StateChart.send_event("air_attack_down")
 		else:
+			flip_animation("air_attack")
 			$StateChart.send_event("air_attack")
 
 func _on_jump_state_physics_processing(_delta):
