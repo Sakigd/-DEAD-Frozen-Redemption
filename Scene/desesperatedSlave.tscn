@@ -62,7 +62,6 @@ tracks/3/keys = {
 }
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_hbaoc"]
-load_path = "res://.godot/imported/hit.png-6a2690495ba7a9ff867dc97832f8a4bf.ctex"
 
 [sub_resource type="Animation" id="Animation_jmnrl"]
 resource_name = "hit"

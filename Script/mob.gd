@@ -16,7 +16,7 @@ func _ready():
 	$AnimationPlayer.play("walk")
 	stat = db.get_item_from_mob_table("desesperatedSlave")
 	health = stat.get("health")
-	attack = stat.get("attack")
+	#attack = stat.get("attack")
 
 func _physics_process(delta):
 	last_slide_collision = get_last_slide_collision()
@@ -49,6 +49,7 @@ func _on_hitbox_area_entered(area):
 
 func _on_hit_state_entered():
 	health -= db.get_item_from_player_table("barn").get("attack")
+	health = 9
 	#print("mob health ",health)
 	#print("barn attack ",db.get_item_from_player_table("barn").get("attack"))
 	if (health <= 0):

@@ -12,6 +12,7 @@ var mob_attack = 1
 var direction = 0
 var is_attacking = false
 var momentum
+var is_on_campfire = false
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -21,7 +22,7 @@ func _ready():
 	$StateChart.set_expression_property("animation_finished",false)
 	stat = db.get_item_from_player_table("barn")
 	health = stat.get("health")
-	attack = stat.get("attack")
+	#attack = stat.get("attack")
 	
 func _physics_process(delta):
 	
@@ -44,7 +45,6 @@ func _physics_process(delta):
 		$Sprite2D.flip_h = false
 		
 	if Input.is_action_just_pressed("attack"):
-		
 		if Input.is_action_pressed("look_up"):
 			flip_animation("top_attack")
 			$StateChart.send_event("top_attack")
@@ -100,7 +100,13 @@ func jump():
 
 func _input(event):
 	if event.is_action_pressed("crouch"):
-		$StateChart.send_event("crouch")
+		if is_on_campfire:
+			$StateChart.send_event("rest")
+		else:
+			$StateChart.send_event("crouch")
+	if event.is_action_pressed("look_up"):
+		if is_on_campfire:
+			$StateChart.send_event("idle")
 
 func _on_idle_state_physics_processing(_delta):
 	move()
@@ -132,6 +138,18 @@ func _on_hitbox_area_entered(area):
 		health = 1
 		$StateChart.send_event("hit")
 	
+	if area.is_in_group("campfire"):
+		print("campfire")
+		is_on_campfire = true
+	
+	if area.is_in_group("projectile"):
+		mob_attack = 3
+		$StateChart.send_event("hit")
+		
+func _on_hitbox_area_exited(area):
+	if area.is_in_group("campfire"):
+		is_on_campfire = false
+			
 func _on_hitbox_body_entered(body):
 	if body.is_in_group("mob"):
 		mob_attack = db.get_item_from_mob_table(body.name).get("attack")
