@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://cvgx1wnovhegl"]
+[gd_scene load_steps=20 format=3 uid="uid://cvgx1wnovhegl"]
 
 [ext_resource type="Texture2D" uid="uid://cdhuv7x4jad27" path="res://asset/maptest.png" id="1_im812"]
 [ext_resource type="PackedScene" uid="uid://bcwyfattjly6" path="res://Scene/Player.tscn" id="2_54uo1"]
@@ -8,6 +8,8 @@
 [ext_resource type="PackedScene" uid="uid://brrt1khpgb4ur" path="res://Scene/campfire.tscn" id="6_a35uh"]
 [ext_resource type="PackedScene" uid="uid://c6m0m4apmdsgw" path="res://Scene/ennemiVolant.tscn" id="7_sdkrw"]
 [ext_resource type="PackedScene" uid="uid://bvasv3lk3dws6" path="res://Scene/projectile.tscn" id="8_4aj42"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_el4ni"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_1h7ml"]
 vertices = PackedVector2Array(522, 363, 844, 410, 311, 410, 438, 363, 362, 230, 362, 186, 438, 218, 245, 230, 266, 378, 844, 10, 522, 218, 10, 8, 245, 186, 10, 378, 266, 468, 311, 468)
@@ -49,6 +51,11 @@ texture_filter = 1
 texture = ExtResource("1_im812")
 centered = false
 metadata/_edit_lock_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(166, 277)
+scale = Vector2(68.5, 1.25001)
+texture = SubResource("CanvasTexture_el4ni")
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 navigation_polygon = SubResource("NavigationPolygon_1h7ml")

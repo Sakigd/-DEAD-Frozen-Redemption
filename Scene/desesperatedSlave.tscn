@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://Script/mob.gd" id="1_f0hol"]
 [ext_resource type="Texture2D" uid="uid://dx3aldyggteay" path="res://asset/walk_mob01.png" id="1_jvdya"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="3_ejdfd"]
+[ext_resource type="Texture2D" uid="uid://vn5ab2yjrg06" path="res://asset/Animation/Barn/hit.png" id="3_xhnet"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="4_227yq"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/animation_player_state.gd" id="5_bywng"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="6_osicm"]
@@ -61,8 +62,6 @@ tracks/3/keys = {
 "values": [ExtResource("1_jvdya")]
 }
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_hbaoc"]
-
 [sub_resource type="Animation" id="Animation_jmnrl"]
 resource_name = "hit"
 length = 0.6
@@ -88,7 +87,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [SubResource("CompressedTexture2D_hbaoc")]
+"values": [ExtResource("3_xhnet")]
 }
 tracks/2/type = "value"
 tracks/2/imported = false

@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 signal hit()
 const SPEED = 200.0
-const JUMP_VELOCITY = -400.0
+const JUMP_VELOCITY = -368.0
 
 var db = db_manager.new()
 var stat : Dictionary
@@ -25,7 +25,6 @@ func _ready():
 	#attack = stat.get("attack")
 	
 func _physics_process(delta):
-	
 	# Add the gravity.
 	if not is_on_floor() && !is_attacking:
 		velocity.y += gravity * delta
@@ -143,7 +142,7 @@ func _on_hitbox_area_entered(area):
 		is_on_campfire = true
 	
 	if area.is_in_group("projectile"):
-		mob_attack = 3
+		mob_attack = db.get_item_from_mob_table("flyingMob").get("attack")
 		$StateChart.send_event("hit")
 		
 func _on_hitbox_area_exited(area):
@@ -152,7 +151,7 @@ func _on_hitbox_area_exited(area):
 			
 func _on_hitbox_body_entered(body):
 	if body.is_in_group("mob"):
-		mob_attack = db.get_item_from_mob_table(body.name).get("attack")
+		mob_attack = db.get_item_from_mob_table("desesperatedSlave").get("attack")
 		print("hit")
 		$StateChart.send_event("hit")
 

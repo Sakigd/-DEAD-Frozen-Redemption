@@ -1182,7 +1182,7 @@ size = Vector2(0, 0)
 
 [sub_resource type="Resource" id="Resource_axisn"]
 script = ExtResource("17_4hcgv")
-state = NodePath("../../air_attack")
+state = NodePath("../../attack/air_attack")
 
 [sub_resource type="Resource" id="Resource_n0skx"]
 script = ExtResource("17_u2f5k")

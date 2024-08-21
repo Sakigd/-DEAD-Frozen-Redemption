@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://c6m0m4apmdsgw"]
+[gd_scene load_steps=19 format=3 uid="uid://c6m0m4apmdsgw"]
 
 [ext_resource type="Script" path="res://Script/ennemiVolant.gd" id="1_8bqrs"]
 [ext_resource type="Texture2D" uid="uid://bp3m5eews0va0" path="res://asset/Animation/FlyingMob/hand_attack.png" id="1_t7ovv"]
@@ -193,15 +193,18 @@ _data = {
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wm4i0"]
 size = Vector2(30, 29)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_apsva"]
+size = Vector2(30, 19)
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_jx1x8"]
 radius = 80.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_y83ta"]
 radius = 160.0
 
-[node name="EnnemiVolant" type="CharacterBody2D"]
+[node name="EnnemiVolant" type="CharacterBody2D" groups=["mob"]]
 collision_layer = 4
-collision_mask = 3
+collision_mask = 2
 script = ExtResource("1_8bqrs")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -219,12 +222,20 @@ libraries = {
 position = Vector2(3, -3.5)
 shape = SubResource("RectangleShape2D_wm4i0")
 
+[node name="Hitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(3, 1.5)
+shape = SubResource("RectangleShape2D_apsva")
+
 [node name="ViewingArea" type="Area2D" parent="."]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ViewingArea"]
 shape = SubResource("CircleShape2D_jx1x8")
 
 [node name="AttackArea" type="Area2D" parent="."]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
 shape = SubResource("CircleShape2D_y83ta")
@@ -255,6 +266,12 @@ to = NodePath("../../recul")
 event = &"recul"
 delay_in_seconds = "0.0"
 
+[node name="to hit" type="Node" parent="StateChart/ParallelState/mouvement/idle"]
+script = ExtResource("6_peb5c")
+to = NodePath("../../hit")
+event = &"hit"
+delay_in_seconds = "0.0"
+
 [node name="recul" type="Node" parent="StateChart/ParallelState/mouvement"]
 script = ExtResource("8_k1cml")
 
@@ -264,10 +281,34 @@ to = NodePath("../../idle")
 event = &"idle"
 delay_in_seconds = "0.0"
 
+[node name="to hit" type="Node" parent="StateChart/ParallelState/mouvement/recul"]
+script = ExtResource("6_peb5c")
+to = NodePath("../../hit")
+event = &"hit"
+delay_in_seconds = "0.0"
+
 [node name="hit" type="Node" parent="StateChart/ParallelState/mouvement"]
 script = ExtResource("6_lsb65")
 animation_player = NodePath("../../../../AnimationPlayer")
 animation_name = &"hit"
+
+[node name="to idle" type="Node" parent="StateChart/ParallelState/mouvement/hit"]
+script = ExtResource("6_peb5c")
+to = NodePath("../../idle")
+event = &"idle"
+delay_in_seconds = "0.0"
+
+[node name="to recul" type="Node" parent="StateChart/ParallelState/mouvement/hit"]
+script = ExtResource("6_peb5c")
+to = NodePath("../../recul")
+event = &"recul"
+delay_in_seconds = "0.0"
+
+[node name="to death" type="Node" parent="StateChart/ParallelState/mouvement/hit"]
+script = ExtResource("6_peb5c")
+to = NodePath("../../death")
+event = &"death"
+delay_in_seconds = "0.0"
 
 [node name="death" type="Node" parent="StateChart/ParallelState/mouvement"]
 script = ExtResource("6_lsb65")
@@ -279,6 +320,7 @@ script = ExtResource("8_k1cml")
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="animation_started" from="AnimationPlayer" to="." method="_on_animation_player_animation_started"]
+[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
 [connection signal="body_entered" from="ViewingArea" to="." method="_on_viewing_area_body_entered"]
 [connection signal="body_exited" from="ViewingArea" to="." method="_on_viewing_area_body_exited"]
 [connection signal="body_entered" from="AttackArea" to="." method="_on_attack_area_body_entered"]
@@ -288,4 +330,7 @@ script = ExtResource("8_k1cml")
 [connection signal="state_physics_processing" from="StateChart/ParallelState/mouvement/idle" to="." method="_on_idle_state_physics_processing"]
 [connection signal="state_entered" from="StateChart/ParallelState/mouvement/recul" to="." method="_on_recul_state_entered"]
 [connection signal="state_physics_processing" from="StateChart/ParallelState/mouvement/recul" to="." method="_on_recul_state_physics_processing"]
+[connection signal="state_entered" from="StateChart/ParallelState/mouvement/hit" to="." method="_on_hit_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/ParallelState/mouvement/hit" to="." method="_on_hit_state_physics_processing"]
+[connection signal="state_entered" from="StateChart/ParallelState/mouvement/death" to="." method="_on_death_state_entered"]
 [connection signal="state_physics_processing" from="StateChart/ParallelState/attack" to="." method="_on_attack_state_physics_processing"]

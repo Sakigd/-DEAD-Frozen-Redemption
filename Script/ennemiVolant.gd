@@ -4,6 +4,12 @@ const SPEED = 100.0
 @onready var navigation_agent = $NavigationAgent2D
 @export var target_to_chase : CharacterBody2D
 @export var projectile_scene : PackedScene
+var db = db_manager.new()
+var stat : Dictionary
+var health
+var barn_attack
+var knockback = Vector2.ZERO
+
 var cooldown_timeout = false
 var in_attack_area = false
 var attack_animation_running = false
@@ -12,6 +18,9 @@ func _ready():
 	set_physics_process(false)
 	call_deferred("wait_for_physics")
 	$AttackTimer.start(2.0)
+	stat = db.get_item_from_mob_table("flyingMob")
+	health = stat.get("health")
+	barn_attack = db.get_item_from_player_table("barn").get("attack")
 
 func wait_for_physics():
 	await get_tree().physics_frame
@@ -83,4 +92,20 @@ func _on_animation_player_animation_started(anim_name):
 	match anim_name:
 		"flyingMob/attack":
 			attack_animation_running = true
-			
+
+func _on_hitbox_area_entered(area):
+	if area.is_in_group("hitbox_ruban"):
+		$StateChart.send_event("hit")
+
+func _on_hit_state_entered():
+	health -= barn_attack
+	if(health <= 0):
+		$StateChart.send_event("death")
+
+func _on_death_state_entered():
+	queue_free()
+
+func _on_hit_state_physics_processing(delta):
+	knockback = knockback.move_toward(Vector2.ZERO,1)
+	velocity += knockback*delta
+	global_position += velocity

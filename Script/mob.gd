@@ -49,7 +49,6 @@ func _on_hitbox_area_entered(area):
 
 func _on_hit_state_entered():
 	health -= db.get_item_from_player_table("barn").get("attack")
-	health = 9
 	#print("mob health ",health)
 	#print("barn attack ",db.get_item_from_player_table("barn").get("attack"))
 	if (health <= 0):
