@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-var speed = 30.0
+var speed = -30.0
 var db = db_manager.new()
 var stat : Dictionary
 var health
@@ -9,7 +9,7 @@ var attack
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
-var facing_right = true
+var facing_right = false
 var last_slide_collision = null
 
 func _ready():
@@ -58,14 +58,12 @@ func _on_hit_state_physics_processing(_delta):
 	velocity.x = 0
 
 
-func _on_death_state_entered():
-	queue_free()
-
-
 func _on_animation_player_animation_finished(anim_name):
 	match anim_name:
 		"hit":
 			$StateChart.send_event("idle")
+		"death":
+			queue_free()
 
 
 func _on_idle_state_physics_processing(_delta):
