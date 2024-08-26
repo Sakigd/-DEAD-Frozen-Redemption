@@ -195,8 +195,8 @@ func _on_atk_neutral_01_state_physics_processing(delta):
 	move()
 
 func _on_attack_state_entered():
-	momentum = velocity
+	#momentum = velocity
 	velocity = Vector2(0,0)
 
-func _on_attack_state_exited():
-	velocity = momentum
+#func _on_attack_state_exited():
+	#velocity = momentum

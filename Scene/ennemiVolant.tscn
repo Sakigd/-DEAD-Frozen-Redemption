@@ -1,11 +1,11 @@
-[gd_scene load_steps=19 format=3 uid="uid://c6m0m4apmdsgw"]
+[gd_scene load_steps=20 format=3 uid="uid://c6m0m4apmdsgw"]
 
 [ext_resource type="Script" path="res://Script/ennemiVolant.gd" id="1_8bqrs"]
 [ext_resource type="Texture2D" uid="uid://bp3m5eews0va0" path="res://asset/Animation/FlyingMob/hand_attack.png" id="1_t7ovv"]
 [ext_resource type="Texture2D" uid="uid://c3ybgbpchdc4f" path="res://asset/Animation/FlyingMob/hand_idle.png" id="3_jdsm5"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="3_nshm3"]
+[ext_resource type="Texture2D" uid="uid://bxb7jfvy7g4kx" path="res://asset/Animation/FlyingMob/hand_death.png" id="4_60tc5"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="4_p1opt"]
-[ext_resource type="Script" path="res://addons/godot_state_charts/parallel_state.gd" id="5_rkim7"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/animation_player_state.gd" id="6_lsb65"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="6_peb5c"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="8_k1cml"]
@@ -131,6 +131,58 @@ tracks/4/keys = {
 }]
 }
 
+[sub_resource type="Animation" id="Animation_lakbq"]
+resource_name = "death"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [6]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:vframes")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [2]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D:texture")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("4_60tc5")]
+}
+
 [sub_resource type="Animation" id="Animation_evj6r"]
 resource_name = "idle"
 length = 0.9
@@ -187,6 +239,7 @@ tracks/3/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_pb72w"]
 _data = {
 "attack": SubResource("Animation_vgavx"),
+"death": SubResource("Animation_lakbq"),
 "idle": SubResource("Animation_evj6r")
 }
 
@@ -229,13 +282,11 @@ position = Vector2(3, 1.5)
 shape = SubResource("RectangleShape2D_apsva")
 
 [node name="ViewingArea" type="Area2D" parent="."]
-visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ViewingArea"]
 shape = SubResource("CircleShape2D_jx1x8")
 
 [node name="AttackArea" type="Area2D" parent="."]
-visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
 shape = SubResource("CircleShape2D_y83ta")
@@ -250,73 +301,92 @@ position = Vector2(-21, -2)
 [node name="StateChart" type="Node" parent="."]
 script = ExtResource("3_nshm3")
 
-[node name="ParallelState" type="Node" parent="StateChart"]
-script = ExtResource("5_rkim7")
-
-[node name="mouvement" type="Node" parent="StateChart/ParallelState"]
+[node name="mouvement" type="Node" parent="StateChart"]
 script = ExtResource("4_p1opt")
-initial_state = NodePath("idle")
+initial_state = NodePath("walk")
 
-[node name="idle" type="Node" parent="StateChart/ParallelState/mouvement"]
+[node name="walk" type="Node" parent="StateChart/mouvement"]
 script = ExtResource("8_k1cml")
 
-[node name="to recul" type="Node" parent="StateChart/ParallelState/mouvement/idle"]
+[node name="to recul" type="Node" parent="StateChart/mouvement/walk"]
 script = ExtResource("6_peb5c")
 to = NodePath("../../recul")
 event = &"recul"
 delay_in_seconds = "0.0"
 
-[node name="to hit" type="Node" parent="StateChart/ParallelState/mouvement/idle"]
+[node name="to hit" type="Node" parent="StateChart/mouvement/walk"]
 script = ExtResource("6_peb5c")
 to = NodePath("../../hit")
 event = &"hit"
 delay_in_seconds = "0.0"
 
-[node name="recul" type="Node" parent="StateChart/ParallelState/mouvement"]
+[node name="to idle" type="Node" parent="StateChart/mouvement/walk"]
+script = ExtResource("6_peb5c")
+to = NodePath("../../idle")
+event = &"idle"
+delay_in_seconds = "0.0"
+
+[node name="recul" type="Node" parent="StateChart/mouvement"]
 script = ExtResource("8_k1cml")
 
-[node name="to idle" type="Node" parent="StateChart/ParallelState/mouvement/recul"]
+[node name="to walk" type="Node" parent="StateChart/mouvement/recul"]
 script = ExtResource("6_peb5c")
-to = NodePath("../../idle")
-event = &"idle"
+to = NodePath("../../walk")
+event = &"walk"
 delay_in_seconds = "0.0"
 
-[node name="to hit" type="Node" parent="StateChart/ParallelState/mouvement/recul"]
+[node name="to hit" type="Node" parent="StateChart/mouvement/recul"]
 script = ExtResource("6_peb5c")
 to = NodePath("../../hit")
 event = &"hit"
 delay_in_seconds = "0.0"
 
-[node name="hit" type="Node" parent="StateChart/ParallelState/mouvement"]
-script = ExtResource("6_lsb65")
-animation_player = NodePath("../../../../AnimationPlayer")
-animation_name = &"hit"
-
-[node name="to idle" type="Node" parent="StateChart/ParallelState/mouvement/hit"]
+[node name="to idle" type="Node" parent="StateChart/mouvement/recul"]
 script = ExtResource("6_peb5c")
 to = NodePath("../../idle")
 event = &"idle"
 delay_in_seconds = "0.0"
 
-[node name="to recul" type="Node" parent="StateChart/ParallelState/mouvement/hit"]
+[node name="idle" type="Node" parent="StateChart/mouvement"]
+script = ExtResource("8_k1cml")
+
+[node name="to recul" type="Node" parent="StateChart/mouvement/idle"]
 script = ExtResource("6_peb5c")
 to = NodePath("../../recul")
 event = &"recul"
 delay_in_seconds = "0.0"
 
-[node name="to death" type="Node" parent="StateChart/ParallelState/mouvement/hit"]
+[node name="to walk" type="Node" parent="StateChart/mouvement/idle"]
+script = ExtResource("6_peb5c")
+to = NodePath("../../walk")
+event = &"walk"
+delay_in_seconds = "0.0"
+
+[node name="hit" type="Node" parent="StateChart/mouvement"]
+script = ExtResource("8_k1cml")
+
+[node name="to idle" type="Node" parent="StateChart/mouvement/hit"]
+script = ExtResource("6_peb5c")
+to = NodePath("../../walk")
+event = &"idle"
+delay_in_seconds = "0.0"
+
+[node name="to recul" type="Node" parent="StateChart/mouvement/hit"]
+script = ExtResource("6_peb5c")
+to = NodePath("../../recul")
+event = &"recul"
+delay_in_seconds = "0.0"
+
+[node name="to death" type="Node" parent="StateChart/mouvement/hit"]
 script = ExtResource("6_peb5c")
 to = NodePath("../../death")
 event = &"death"
 delay_in_seconds = "0.0"
 
-[node name="death" type="Node" parent="StateChart/ParallelState/mouvement"]
+[node name="death" type="Node" parent="StateChart/mouvement"]
 script = ExtResource("6_lsb65")
-animation_player = NodePath("../../../../AnimationPlayer")
-animation_name = &"death"
-
-[node name="attack" type="Node" parent="StateChart/ParallelState"]
-script = ExtResource("8_k1cml")
+animation_player = NodePath("../../../AnimationPlayer")
+animation_name = &"flyingMob/death"
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="animation_started" from="AnimationPlayer" to="." method="_on_animation_player_animation_started"]
@@ -326,11 +396,11 @@ script = ExtResource("8_k1cml")
 [connection signal="body_entered" from="AttackArea" to="." method="_on_attack_area_body_entered"]
 [connection signal="body_exited" from="AttackArea" to="." method="_on_attack_area_body_exited"]
 [connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]
-[connection signal="state_entered" from="StateChart/ParallelState/mouvement/idle" to="." method="_on_idle_state_entered"]
-[connection signal="state_physics_processing" from="StateChart/ParallelState/mouvement/idle" to="." method="_on_idle_state_physics_processing"]
-[connection signal="state_entered" from="StateChart/ParallelState/mouvement/recul" to="." method="_on_recul_state_entered"]
-[connection signal="state_physics_processing" from="StateChart/ParallelState/mouvement/recul" to="." method="_on_recul_state_physics_processing"]
-[connection signal="state_entered" from="StateChart/ParallelState/mouvement/hit" to="." method="_on_hit_state_entered"]
-[connection signal="state_physics_processing" from="StateChart/ParallelState/mouvement/hit" to="." method="_on_hit_state_physics_processing"]
-[connection signal="state_entered" from="StateChart/ParallelState/mouvement/death" to="." method="_on_death_state_entered"]
-[connection signal="state_physics_processing" from="StateChart/ParallelState/attack" to="." method="_on_attack_state_physics_processing"]
+[connection signal="state_entered" from="StateChart/mouvement/walk" to="." method="_on_walk_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/mouvement/walk" to="." method="_on_walk_state_physics_processing"]
+[connection signal="state_entered" from="StateChart/mouvement/recul" to="." method="_on_recul_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/mouvement/recul" to="." method="_on_recul_state_physics_processing"]
+[connection signal="state_physics_processing" from="StateChart/mouvement/idle" to="." method="_on_idle_state_physics_processing"]
+[connection signal="state_entered" from="StateChart/mouvement/hit" to="." method="_on_hit_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/mouvement/hit" to="." method="_on_hit_state_physics_processing"]
+[connection signal="state_entered" from="StateChart/mouvement/death" to="." method="_on_death_state_entered"]

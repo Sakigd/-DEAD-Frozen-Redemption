@@ -12,7 +12,9 @@ var knockback = Vector2.ZERO
 
 var cooldown_timeout = false
 var in_attack_area = false
+var in_viewing_area = false
 var attack_animation_running = false
+var player_body
 
 func _ready():
 	set_physics_process(false)
@@ -39,10 +41,10 @@ func move():
 	#print("idle",velocity)
 	move_and_slide()
 
-func _on_idle_state_physics_processing(_delta):
+func _on_walk_state_physics_processing(_delta):
 	move()
 	
-func _on_idle_state_entered():
+func _on_walk_state_entered():
 	if !attack_animation_running:
 		$AnimationPlayer.play("flyingMob/idle")
 
@@ -51,8 +53,12 @@ func _on_recul_state_physics_processing(delta):
 	move_and_slide()
 	
 func _on_recul_state_entered():
-	velocity = global_position.direction_to(navigation_agent.get_next_path_position()).rotated(deg_to_rad(180)) * SPEED
+	velocity = global_position.direction_to(navigation_agent.get_next_path_position()).rotated(deg_to_rad(180)) * (SPEED/2)
 
+func _on_idle_state_physics_processing(delta):
+	if(player_body.velocity != Vector2.ZERO && in_viewing_area):
+		$StateChart.send_event("recul")
+	
 func _on_attack_state_physics_processing(_delta):
 	#if $AttackTimer.time_left == 0 :
 		#$AttackTimer.start(3.0)
@@ -75,11 +81,24 @@ func _on_attack_area_body_exited(body):
 
 func _on_viewing_area_body_entered(body):
 	if body.is_in_group("player"):
-		$StateChart.send_event("recul")
+		in_viewing_area = true
+		player_body = body
+		print("enter viewing area")
+		if(body.velocity != Vector2.ZERO):
+			print("body.velocity != Vector2.ZERO")
+			$StateChart.send_event("recul")
+			print("state recul")
+		else:
+			print("body.velocity == Vector2.ZERO")
+			$StateChart.send_event("idle")
+			print("state idle")
 
 func _on_viewing_area_body_exited(body):
 	if body.is_in_group("player"):
-		$StateChart.send_event("idle")
+		in_viewing_area = false
+		print("exit viewing area")
+		$StateChart.send_event("walk")
+		
 
 func _on_animation_player_animation_finished(anim_name):
 	match anim_name:
@@ -87,6 +106,8 @@ func _on_animation_player_animation_finished(anim_name):
 			$AttackTimer.start(3.0)
 			cooldown_timeout = false
 			attack_animation_running = false
+		"flyingMob/death":
+			queue_free()
 
 func _on_animation_player_animation_started(anim_name):
 	match anim_name:
@@ -101,9 +122,6 @@ func _on_hit_state_entered():
 	health -= barn_attack
 	if(health <= 0):
 		$StateChart.send_event("death")
-
-func _on_death_state_entered():
-	queue_free()
 
 func _on_hit_state_physics_processing(delta):
 	knockback = knockback.move_toward(Vector2.ZERO,1)
