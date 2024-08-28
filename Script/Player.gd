@@ -101,12 +101,15 @@ func _input(event):
 	if event.is_action_pressed("crouch"):
 		if is_on_campfire:
 			$StateChart.send_event("rest")
+			$Camera2D.zoom = Vector2(2,2)
 		else:
 			$StateChart.send_event("crouch")
 	if event.is_action_pressed("look_up"):
 		if is_on_campfire:
 			$StateChart.send_event("idle")
-
+			$Camera2D.zoom = Vector2(1,1)
+			
+			
 func _on_idle_state_physics_processing(_delta):
 	move()
 	jump()

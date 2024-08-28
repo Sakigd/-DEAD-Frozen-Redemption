@@ -56,13 +56,11 @@ func _on_recul_state_entered():
 	velocity = global_position.direction_to(navigation_agent.get_next_path_position()).rotated(deg_to_rad(180)) * (SPEED/2)
 
 func _on_idle_state_physics_processing(delta):
+	if !attack_animation_running:
+		$AnimationPlayer.play("flyingMob/idle")
+		
 	if(player_body.velocity != Vector2.ZERO && in_viewing_area):
 		$StateChart.send_event("recul")
-	
-func _on_attack_state_physics_processing(_delta):
-	#if $AttackTimer.time_left == 0 :
-		#$AttackTimer.start(3.0)
-	pass
 
 func _on_attack_timer_timeout():
 	cooldown_timeout = true
@@ -83,20 +81,20 @@ func _on_viewing_area_body_entered(body):
 	if body.is_in_group("player"):
 		in_viewing_area = true
 		player_body = body
-		print("enter viewing area")
+		#print("enter viewing area")
 		if(body.velocity != Vector2.ZERO):
-			print("body.velocity != Vector2.ZERO")
+			#print("body.velocity != Vector2.ZERO")
 			$StateChart.send_event("recul")
-			print("state recul")
+			#print("state recul")
 		else:
-			print("body.velocity == Vector2.ZERO")
+			#print("body.velocity == Vector2.ZERO")
 			$StateChart.send_event("idle")
-			print("state idle")
+			#print("state idle")
 
 func _on_viewing_area_body_exited(body):
 	if body.is_in_group("player"):
 		in_viewing_area = false
-		print("exit viewing area")
+		#print("exit viewing area")
 		$StateChart.send_event("walk")
 		
 
@@ -119,11 +117,14 @@ func _on_hitbox_area_entered(area):
 		$StateChart.send_event("hit")
 
 func _on_hit_state_entered():
-	health -= barn_attack
+	#health -= barn_attack
 	if(health <= 0):
 		$StateChart.send_event("death")
 
 func _on_hit_state_physics_processing(delta):
 	knockback = knockback.move_toward(Vector2.ZERO,1)
 	velocity += knockback*delta
+	#print("velocity ",velocity)
+	#print("global_position before velocity",global_position)
 	global_position += velocity
+	#print("global_position after velocity",global_position)

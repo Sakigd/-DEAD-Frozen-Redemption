@@ -365,10 +365,10 @@ delay_in_seconds = "0.0"
 [node name="hit" type="Node" parent="StateChart/mouvement"]
 script = ExtResource("8_k1cml")
 
-[node name="to idle" type="Node" parent="StateChart/mouvement/hit"]
+[node name="to walk" type="Node" parent="StateChart/mouvement/hit"]
 script = ExtResource("6_peb5c")
 to = NodePath("../../walk")
-event = &"idle"
+event = &"walk"
 delay_in_seconds = "0.0"
 
 [node name="to recul" type="Node" parent="StateChart/mouvement/hit"]
