@@ -48,14 +48,14 @@ func _on_walk_state_entered():
 	if !attack_animation_running:
 		$AnimationPlayer.play("flyingMob/idle")
 
-func _on_recul_state_physics_processing(delta):
+func _on_recul_state_physics_processing(_delta):
 	navigation_agent.target_position = target_to_chase.global_position
 	move_and_slide()
 	
 func _on_recul_state_entered():
 	velocity = global_position.direction_to(navigation_agent.get_next_path_position()).rotated(deg_to_rad(180)) * (SPEED/2)
 
-func _on_idle_state_physics_processing(delta):
+func _on_idle_state_physics_processing(_delta):
 	if !attack_animation_running:
 		$AnimationPlayer.play("flyingMob/idle")
 		

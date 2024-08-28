@@ -192,7 +192,7 @@ func _on_roll_state_entered():
 	else:
 		velocity.x = SPEED
 
-func _on_atk_neutral_01_state_physics_processing(delta):
+func _on_atk_neutral_01_state_physics_processing(_delta):
 	move()
 
 func _on_attack_state_entered():
