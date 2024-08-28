@@ -1474,6 +1474,12 @@ to = NodePath("../../../idle")
 event = &"end_attack"
 delay_in_seconds = "0.0"
 
+[node name="to hit" type="Node" parent="StateChart/root/attack/atk_neutral_01"]
+script = ExtResource("13_ejqix")
+to = NodePath("../../../hit")
+event = &"hit"
+delay_in_seconds = "0.0"
+
 [node name="air_attack" type="Node" parent="StateChart/root/attack"]
 script = ExtResource("18_8shf8")
 animation_player = NodePath("../../../../AnimationPlayer")
