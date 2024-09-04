@@ -13,6 +13,7 @@ var direction = 0
 var is_attacking = false
 var momentum
 var is_on_campfire = false
+var attack_direction = 0
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -192,8 +193,33 @@ func _on_roll_state_entered():
 	else:
 		velocity.x = SPEED
 
-func _on_atk_neutral_01_state_physics_processing(_delta):
-	move()
+func _on_ground_attack_state_physics_processing(delta):
+	if attack_direction == 0:
+		if !$Sprite2D.flip_h:
+			attack_direction = 1
+		else:
+			attack_direction = -1
+	
+	if Input.is_action_pressed("move_right"):
+		if attack_direction != -1:
+			direction = 1
+			attack_direction = 1
+	
+	if Input.is_action_just_released("move_right"):
+		direction = 0
+	
+	if Input.is_action_pressed("move_left"):
+		if attack_direction != 1:
+			direction = -1
+			attack_direction = -1
+	
+	if Input.is_action_just_released("move_left"):
+		direction = 0
+	
+	velocity.x = direction * SPEED
+
+func _on_ground_attack_state_exited():
+	attack_direction = 0
 
 func _on_attack_state_entered():
 	#momentum = velocity

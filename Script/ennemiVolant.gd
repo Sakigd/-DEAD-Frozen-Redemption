@@ -117,7 +117,7 @@ func _on_hitbox_area_entered(area):
 		$StateChart.send_event("hit")
 
 func _on_hit_state_entered():
-	#health -= barn_attack
+	health -= barn_attack
 	if(health <= 0):
 		$StateChart.send_event("death")
 

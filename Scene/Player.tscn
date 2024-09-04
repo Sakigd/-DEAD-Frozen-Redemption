@@ -1032,7 +1032,8 @@ tracks/4/keys = {
 
 [sub_resource type="Animation" id="Animation_mqjl2"]
 resource_name = "roll"
-length = 1.2
+length = 0.8
+step = 0.08
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -1040,10 +1041,10 @@ tracks/0/path = NodePath("Sprite2D:frame")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.08, 0.16, 0.24, 0.32, 0.4, 0.48, 0.56, 0.64, 0.72),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
-"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -1349,7 +1350,7 @@ delay_in_seconds = "0.0"
 
 [node name="to neutral attack" type="Node" parent="StateChart/root/idle"]
 script = ExtResource("13_ejqix")
-to = NodePath("../../attack/atk_neutral_01")
+to = NodePath("../../attack/ground_attack/atk_neutral_01")
 event = &"neutral_attack"
 delay_in_seconds = "0.0"
 
@@ -1373,7 +1374,7 @@ delay_in_seconds = "0.0"
 
 [node name="to top attack" type="Node" parent="StateChart/root/idle"]
 script = ExtResource("13_ejqix")
-to = NodePath("../../top_attack")
+to = NodePath("../../attack/ground_attack/top_attack")
 event = &"top_attack"
 delay_in_seconds = "0.0"
 
@@ -1461,23 +1462,50 @@ delay_in_seconds = "0.0"
 
 [node name="attack" type="Node" parent="StateChart/root"]
 script = ExtResource("11_f8fv8")
+initial_state = NodePath("ground_attack")
+
+[node name="ground_attack" type="Node" parent="StateChart/root/attack"]
+script = ExtResource("11_f8fv8")
 initial_state = NodePath("atk_neutral_01")
 
-[node name="atk_neutral_01" type="Node" parent="StateChart/root/attack"]
+[node name="atk_neutral_01" type="Node" parent="StateChart/root/attack/ground_attack"]
 script = ExtResource("18_8shf8")
-animation_player = NodePath("../../../../AnimationPlayer")
+animation_player = NodePath("../../../../../AnimationPlayer")
 animation_name = &"atk_neutral_01"
 
-[node name="to idle" type="Node" parent="StateChart/root/attack/atk_neutral_01"]
+[node name="to idle" type="Node" parent="StateChart/root/attack/ground_attack/atk_neutral_01"]
 script = ExtResource("13_ejqix")
-to = NodePath("../../../idle")
+to = NodePath("../../../../idle")
 event = &"end_attack"
 delay_in_seconds = "0.0"
 
-[node name="to hit" type="Node" parent="StateChart/root/attack/atk_neutral_01"]
+[node name="to hit" type="Node" parent="StateChart/root/attack/ground_attack/atk_neutral_01"]
 script = ExtResource("13_ejqix")
-to = NodePath("../../../hit")
+to = NodePath("../../../../hit")
 event = &"hit"
+delay_in_seconds = "0.0"
+
+[node name="top_attack" type="Node" parent="StateChart/root/attack/ground_attack"]
+script = ExtResource("18_8shf8")
+animation_player = NodePath("../../../../../AnimationPlayer")
+animation_name = &"top_attack"
+
+[node name="to idle" type="Node" parent="StateChart/root/attack/ground_attack/top_attack"]
+script = ExtResource("13_ejqix")
+to = NodePath("../../../../idle")
+event = &"end_attack"
+delay_in_seconds = "0.0"
+
+[node name="to jump" type="Node" parent="StateChart/root/attack/ground_attack/top_attack"]
+script = ExtResource("13_ejqix")
+to = NodePath("../../../../jump")
+event = &"jump"
+delay_in_seconds = "0.0"
+
+[node name="to fall" type="Node" parent="StateChart/root/attack/ground_attack/top_attack"]
+script = ExtResource("13_ejqix")
+to = NodePath("../../../../fall")
+event = &"fall"
 delay_in_seconds = "0.0"
 
 [node name="air_attack" type="Node" parent="StateChart/root/attack"]
@@ -1608,31 +1636,14 @@ delay_in_seconds = "0.0"
 
 [node name="to attack" type="Node" parent="StateChart/root/walk"]
 script = ExtResource("13_ejqix")
-to = NodePath("../../attack/atk_neutral_01")
+to = NodePath("../../attack/ground_attack/atk_neutral_01")
 event = &"neutral_attack"
 delay_in_seconds = "0.0"
 
-[node name="top_attack" type="Node" parent="StateChart/root"]
-script = ExtResource("18_8shf8")
-animation_player = NodePath("../../../AnimationPlayer")
-animation_name = &"top_attack"
-
-[node name="to idle" type="Node" parent="StateChart/root/top_attack"]
+[node name="to top attack" type="Node" parent="StateChart/root/walk"]
 script = ExtResource("13_ejqix")
-to = NodePath("../../idle")
-event = &"end_attack"
-delay_in_seconds = "0.0"
-
-[node name="to jump" type="Node" parent="StateChart/root/top_attack"]
-script = ExtResource("13_ejqix")
-to = NodePath("../../jump")
-event = &"jump"
-delay_in_seconds = "0.0"
-
-[node name="to fall" type="Node" parent="StateChart/root/top_attack"]
-script = ExtResource("13_ejqix")
-to = NodePath("../../fall")
-event = &"fall"
+to = NodePath("../../attack/ground_attack/top_attack")
+event = &"top_attack"
 delay_in_seconds = "0.0"
 
 [node name="rest" type="Node" parent="StateChart/root"]
@@ -1654,7 +1665,8 @@ delay_in_seconds = "0.0"
 [connection signal="state_physics_processing" from="StateChart/root/fall" to="." method="_on_fall_state_physics_processing"]
 [connection signal="state_physics_processing" from="StateChart/root/jump" to="." method="_on_jump_state_physics_processing"]
 [connection signal="state_entered" from="StateChart/root/attack" to="." method="_on_attack_state_entered"]
-[connection signal="state_physics_processing" from="StateChart/root/attack/atk_neutral_01" to="." method="_on_atk_neutral_01_state_physics_processing"]
+[connection signal="state_exited" from="StateChart/root/attack/ground_attack" to="." method="_on_ground_attack_state_exited"]
+[connection signal="state_physics_processing" from="StateChart/root/attack/ground_attack" to="." method="_on_ground_attack_state_physics_processing"]
 [connection signal="state_entered" from="StateChart/root/roll" to="." method="_on_roll_state_entered"]
 [connection signal="state_entered" from="StateChart/root/hit" to="." method="_on_hit_state_entered"]
 [connection signal="state_physics_processing" from="StateChart/root/walk" to="." method="_on_walk_state_physics_processing"]
