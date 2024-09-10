@@ -130,6 +130,7 @@ limit_bottom = 480
 [node name="Hud" parent="." instance=ExtResource("2_svgmr")]
 
 [node name="StateChartDebugger" parent="Hud" instance=ExtResource("4_4c6m3")]
+visible = false
 anchors_preset = -1
 anchor_left = 0.194271
 anchor_top = 0.0231481

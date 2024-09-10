@@ -1,9 +1,9 @@
 [gd_scene load_steps=30 format=3 uid="uid://brrt1khpgb4ur"]
 
-[ext_resource type="Texture2D" uid="uid://cegwjuy0ke5tb" path="res://asset/Animation/Campfire/branch.png" id="1_a1nxs"]
-[ext_resource type="Texture2D" uid="uid://2tpq4fhi23si" path="res://asset/Animation/Campfire/sparkle.png" id="2_idr5f"]
-[ext_resource type="Shader" uid="uid://dwsl4qpmnblul" path="res://asset/Animation/Campfire/glow.tres" id="3_u230e"]
-[ext_resource type="Texture2D" uid="uid://dhnuxnktota6y" path="res://asset/Animation/Campfire/blueFire.png" id="4_wfhvy"]
+[ext_resource type="Texture2D" uid="uid://cegwjuy0ke5tb" path="res://asset/Animation/FlyingMob/Campfire/branch.png" id="1_a1nxs"]
+[ext_resource type="Texture2D" uid="uid://2tpq4fhi23si" path="res://asset/Animation/FlyingMob/Campfire/sparkle.png" id="2_idr5f"]
+[ext_resource type="Shader" uid="uid://dwsl4qpmnblul" path="res://asset/Animation/FlyingMob/Campfire/glow.tres" id="3_u230e"]
+[ext_resource type="Texture2D" uid="uid://dhnuxnktota6y" path="res://asset/Animation/FlyingMob/Campfire/blueFire.png" id="4_wfhvy"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_g0y32"]
 blend_mode = 1

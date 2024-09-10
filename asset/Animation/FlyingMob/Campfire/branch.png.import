@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://2tpq4fhi23si"
-path="res://.godot/imported/sparkle.png-dff8106f58124ae03881c33b9fc17607.ctex"
+uid="uid://cegwjuy0ke5tb"
+path="res://.godot/imported/branch.png-c6885b99d2dff25c531f15767ec8653d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://asset/Animation/Campfire/sparkle.png"
-dest_files=["res://.godot/imported/sparkle.png-dff8106f58124ae03881c33b9fc17607.ctex"]
+source_file="res://asset/Animation/FlyingMob/Campfire/branch.png"
+dest_files=["res://.godot/imported/branch.png-c6885b99d2dff25c531f15767ec8653d.ctex"]
 
 [params]
 

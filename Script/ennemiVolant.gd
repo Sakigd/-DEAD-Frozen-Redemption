@@ -1,6 +1,8 @@
 extends CharacterBody2D
 
-const SPEED = 100.0
+const MAX_SPEED = 100.0
+const acceleration = 0.05
+var speed = 0
 @onready var navigation_agent = $NavigationAgent2D
 @export var target_to_chase : CharacterBody2D
 @export var projectile_scene : PackedScene
@@ -35,14 +37,15 @@ func create_projectile():
 	var angle = global_position.direction_to(navigation_agent.get_next_path_position()).angle()
 	projectile.transform = Transform2D(angle,projectile.global_position)
 	
-func move():
+func move(_delta):
 	navigation_agent.target_position = target_to_chase.global_position
-	velocity = global_position.direction_to(navigation_agent.get_next_path_position()) * SPEED
-	#print("idle",velocity)
+	#velocity = velocity.move_toward(global_position.direction_to(navigation_agent.get_next_path_position())*MAX_SPEED,0.99)
+	velocity = global_position.direction_to(navigation_agent.get_next_path_position())*MAX_SPEED
+	#print(velocity)
 	move_and_slide()
 
 func _on_walk_state_physics_processing(_delta):
-	move()
+	move(_delta)
 	
 func _on_walk_state_entered():
 	if !attack_animation_running:
@@ -53,7 +56,7 @@ func _on_recul_state_physics_processing(_delta):
 	move_and_slide()
 	
 func _on_recul_state_entered():
-	velocity = global_position.direction_to(navigation_agent.get_next_path_position()).rotated(deg_to_rad(180)) * (SPEED/2)
+	velocity = global_position.direction_to(navigation_agent.get_next_path_position()).rotated(deg_to_rad(180)) * (MAX_SPEED/2)
 
 func _on_idle_state_physics_processing(_delta):
 	if !attack_animation_running:
