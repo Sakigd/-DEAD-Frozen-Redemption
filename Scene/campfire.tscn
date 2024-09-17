@@ -1,9 +1,9 @@
 [gd_scene load_steps=30 format=3 uid="uid://brrt1khpgb4ur"]
 
-[ext_resource type="Texture2D" uid="uid://cegwjuy0ke5tb" path="res://asset/Animation/FlyingMob/Campfire/branch.png" id="1_a1nxs"]
-[ext_resource type="Texture2D" uid="uid://2tpq4fhi23si" path="res://asset/Animation/FlyingMob/Campfire/sparkle.png" id="2_idr5f"]
-[ext_resource type="Shader" uid="uid://dwsl4qpmnblul" path="res://asset/Animation/FlyingMob/Campfire/glow.tres" id="3_u230e"]
-[ext_resource type="Texture2D" uid="uid://dhnuxnktota6y" path="res://asset/Animation/FlyingMob/Campfire/blueFire.png" id="4_wfhvy"]
+[ext_resource type="Texture2D" uid="uid://cegwjuy0ke5tb" path="res://asset/Animation/Campfire/branch.png" id="1_a1nxs"]
+[ext_resource type="Texture2D" uid="uid://2tpq4fhi23si" path="res://asset/Animation/Campfire/sparkle.png" id="2_idr5f"]
+[ext_resource type="Shader" uid="uid://dwsl4qpmnblul" path="res://asset/Animation/Campfire/glow.tres" id="3_u230e"]
+[ext_resource type="Texture2D" uid="uid://dhnuxnktota6y" path="res://asset/Animation/Campfire/blueFire.png" id="4_wfhvy"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_g0y32"]
 blend_mode = 1
@@ -163,7 +163,7 @@ func _ready():
 [sub_resource type="CircleShape2D" id="CircleShape2D_4dfvc"]
 radius = 24.0
 
-[node name="Campfire" type="Node2D"]
+[node name="Campfire" type="Node2D" groups=["campfire"]]
 position = Vector2(184, 389)
 
 [node name="Base" type="Sprite2D" parent="."]
@@ -189,12 +189,14 @@ material = SubResource("ShaderMaterial_xbof1")
 position = Vector2(0, -17)
 sprite_frames = SubResource("SpriteFrames_selm2")
 animation = &"Flame"
-frame_progress = 0.614107
+frame_progress = 0.0719585
 script = SubResource("GDScript_x2673")
 
-[node name="Area2D" type="Area2D" parent="." groups=["campfire"]]
+[node name="Hitbox" type="Area2D" parent="." groups=["campfire"]]
 collision_layer = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
 position = Vector2(0, -11)
 shape = SubResource("CircleShape2D_4dfvc")
+
+[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]

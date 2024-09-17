@@ -14,6 +14,8 @@ var is_attacking = false
 var momentum
 var is_on_campfire = false
 var attack_direction = 0
+var reset_position : Vector2
+var event: bool
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -23,6 +25,7 @@ func _ready():
 	$StateChart.set_expression_property("animation_finished",false)
 	stat = db.get_item_from_player_table("barn")
 	health = stat.get("health")
+	on_enter()
 	#attack = stat.get("attack")
 	
 func _physics_process(delta):
@@ -102,6 +105,7 @@ func _input(event):
 	if event.is_action_pressed("crouch"):
 		if is_on_campfire:
 			$StateChart.send_event("rest")
+			Game.get_singleton().save_game()
 		else:
 			$StateChart.send_event("crouch")
 	if event.is_action_pressed("look_up"):
@@ -225,5 +229,7 @@ func _on_attack_state_entered():
 	#momentum = velocity
 	velocity = Vector2(0,0)
 
+func on_enter():
+	reset_position = position
 #func _on_attack_state_exited():
 	#velocity = momentum
