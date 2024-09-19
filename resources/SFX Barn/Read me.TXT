@@ -1,0 +1,9 @@
+Compositing général :
+- Reverb ajoutée dans Godot (sound buses fx)
+- Un petit peu de délai ajouté dans Godot (sound buses fx)
+
+Son d'attaque :
+- Le son "Whip Load" est joué au début de l'animation et est coupé quand tous les autres sons commencent, au moment de la fin de l'animation. Son pitch peut aussi être un peu pitché aléatoirement, mais très peu.
+- Le son "Whip Base" est toujours joué
+- Le son "Whip Woosh" est touours joué mais son pitch change de manière aléatoire à chaque coup pour éviter la répétition (dans Godot)
+- Le son "Whip Hit" est uniquement joué quand Gleipnir frappe un ennemi, un objet cassable ...

@@ -1,0 +1,9 @@
+marche
+saut 
+roulade
+chute
+atterissage
+dégâts reçus
+mort
+feu de camp ambient
+feu de camp repos
