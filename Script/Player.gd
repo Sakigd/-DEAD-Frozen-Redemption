@@ -8,6 +8,7 @@ var db = db_manager.new()
 var stat : Dictionary
 var health
 var attack
+var cendre_gelee : int
 var mob_attack = 1
 var direction = 0
 var is_attacking = false
@@ -61,8 +62,10 @@ func set_velocity_x(vel_x):
 	velocity.x = vel_x
 	
 func is_bind_key_pressed():
-	if Input.is_action_pressed("attack") || Input.is_action_pressed("crouch") || Input.is_action_pressed("Jump") || Input.is_action_pressed("look_up") || Input.is_action_pressed("move_left") || Input.is_action_pressed("move_right"):
+	if Input.is_action_pressed("attack") || Input.is_action_pressed("crouch") || Input.is_action_pressed("move_left") || Input.is_action_pressed("move_right"):
 		return true
+	else:
+		return false
 		
 func flip_animation(animation_name):
 	var atk_animation = $AnimationPlayer.get_animation(animation_name)
@@ -100,6 +103,12 @@ func jump():
 	if Input.is_action_just_pressed("Jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
 		$StateChart.send_event("jump")
+		
+func is_flip_h():
+	if($Sprite2D.flip_h):
+		return true
+	else:
+		return false
 
 func _input(event):
 	if event.is_action_pressed("crouch"):
@@ -197,7 +206,7 @@ func _on_roll_state_entered():
 	else:
 		velocity.x = SPEED
 
-func _on_ground_attack_state_physics_processing(delta):
+func _on_ground_attack_state_physics_processing(_delta):
 	if attack_direction == 0:
 		if !$Sprite2D.flip_h:
 			attack_direction = 1

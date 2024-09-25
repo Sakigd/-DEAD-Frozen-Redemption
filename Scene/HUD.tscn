@@ -14,3 +14,17 @@ offset_bottom = 46.0
 max_value = 30.0
 step = 1.0
 value = 30.0
+
+[node name="cendre_gelée_label" type="Label" parent="."]
+offset_left = 7.0
+offset_top = 341.0
+offset_right = 118.0
+offset_bottom = 364.0
+text = "cendres gelées:"
+
+[node name="cendre_gelée" type="Label" parent="."]
+offset_left = 130.0
+offset_top = 341.0
+offset_right = 170.0
+offset_bottom = 364.0
+text = "XXX"

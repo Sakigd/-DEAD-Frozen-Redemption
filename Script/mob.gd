@@ -5,6 +5,7 @@ var db = db_manager.new()
 var stat : Dictionary
 var health
 var attack
+var cendre_gelee
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -16,7 +17,7 @@ func _ready():
 	$AnimationPlayer.play("walk")
 	stat = db.get_item_from_mob_table("desesperatedSlave")
 	health = stat.get("health")
-	#attack = stat.get("attack")
+	cendre_gelee = stat.get("cendre_gelee")
 
 func _physics_process(delta):
 	last_slide_collision = get_last_slide_collision()
@@ -63,8 +64,12 @@ func _on_animation_player_animation_finished(anim_name):
 		"hit":
 			$StateChart.send_event("idle")
 		"death":
-			queue_free()
+			death()
 
 
 func _on_idle_state_physics_processing(_delta):
 	velocity.x = speed
+
+func death():
+	Game.get_singleton().player.cendre_gelee += cendre_gelee
+	queue_free()

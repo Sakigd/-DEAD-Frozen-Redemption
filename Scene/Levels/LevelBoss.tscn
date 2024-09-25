@@ -1,8 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://dl0if3u2avacx"]
+[gd_scene load_steps=8 format=3 uid="uid://dl0if3u2avacx"]
 
 [ext_resource type="Texture2D" uid="uid://d1ramg4ww0hau" path="res://asset/Map_boss.png" id="1_mospn"]
 [ext_resource type="PackedScene" uid="uid://bsg0351mx3b4u" path="res://addons/MetroidvaniaSystem/Nodes/RoomInstance.tscn" id="2_fj8k7"]
-[ext_resource type="Script" path="res://Script/doorNextMap.gd" id="3_qi6mw"]
+[ext_resource type="PackedScene" uid="uid://dv50d3foas1su" path="res://Scene/doorNextMap.tscn" id="3_s5ngs"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1862f"]
 size = Vector2(766, 53)
@@ -10,8 +10,11 @@ size = Vector2(766, 53)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vfjwq"]
 size = Vector2(855, 85)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_0jpgb"]
-size = Vector2(20, 111)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x4syr"]
+size = Vector2(20, 480)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_48yvg"]
+size = Vector2(20, 479.5)
 
 [node name="LevelBoss" type="Node2D"]
 
@@ -31,17 +34,17 @@ shape = SubResource("RectangleShape2D_1862f")
 position = Vector2(1236.5, 436.5)
 shape = SubResource("RectangleShape2D_vfjwq")
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="ground"]
+[node name="stairs" type="CollisionPolygon2D" parent="ground"]
 polygon = PackedVector2Array(766, 426, 809, 394, 809, 479, 766, 479)
 
-[node name="doorNextMap" type="Area2D" parent="."]
-position = Vector2(30, 415)
-script = ExtResource("3_qi6mw")
+[node name="leftWall" type="CollisionShape2D" parent="ground"]
+position = Vector2(-9, 240)
+shape = SubResource("RectangleShape2D_x4syr")
+
+[node name="rightWall" type="CollisionShape2D" parent="ground"]
+position = Vector2(1673, 240)
+shape = SubResource("RectangleShape2D_48yvg")
+
+[node name="doorNextMap" parent="." instance=ExtResource("3_s5ngs")]
+position = Vector2(32, 366)
 target_map = "levelTestMap.tscn"
-metadata/_edit_group_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="doorNextMap"]
-position = Vector2(0, -45.5)
-shape = SubResource("RectangleShape2D_0jpgb")
-
-[connection signal="body_entered" from="doorNextMap" to="doorNextMap" method="_on_body_entered"]

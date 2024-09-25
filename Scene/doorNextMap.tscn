@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://dv50d3foas1su"]
+
+[ext_resource type="Script" path="res://Script/doorNextMap.gd" id="1_hsj8t"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bxt6t"]
+size = Vector2(13, 120)
+
+[node name="doorNextMap" type="Area2D"]
+script = ExtResource("1_hsj8t")
+target_map = "LevelBoss.tscn"
+metadata/_edit_group_ = true
+
+[node name="Hitbox" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_bxt6t")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

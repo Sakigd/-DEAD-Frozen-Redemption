@@ -15,8 +15,21 @@ static func move_to_door():
 	var map := Game.get_singleton().map
 	# Get the door node.
 	var door = map.get_node(^"doorNextMap")
+	var end_door : Vector2 = door.get_child(0).shape.get_rect().end
 	# Move the player to door.
-	Game.get_singleton().player.position = door.position
+	var player = Game.get_singleton().player
+	var player_size = player.find_child("CollisionShape2D").shape.get_rect().size
+	var door_size = door.get_child(0).shape.get_rect().size
+	if(player.is_flip_h()):
+		player.position = door.position + Vector2(end_door.x-door_size.x-player_size.x/2-5,end_door.y-player_size.y/2)
+	else:
+		player.position = door.position + Vector2(end_door.x+player_size.x/2+5,end_door.y-player_size.y/2)	
+	
+	#print("door.position ", door.position)
+	#print("end_door ", end_door)
+	#print("door size ",door.get_child(0).shape.get_rect().size)
+	#print("player size ",player.find_child("CollisionShape2D").shape.get_rect().size)
+	#print("end door + player_size.y/2 ",Vector2(end_door.x,end_door.y-player_size.y/2)) 
 	# Disable player's "event". It's delayed to prevent re-entering the door.
 	map.get_tree().create_timer(0.1).timeout.connect(func():
 		Game.get_singleton().player.event = false)

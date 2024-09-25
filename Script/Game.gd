@@ -53,11 +53,15 @@ static func get_singleton() -> Game:
 # Save game using MetSys SaveManager.
 func save_game():
 	var save_manager := SaveManager.new()
-	#save_manager.set_value("collectible_count", collectibles)
 	#save_manager.set_value("generated_rooms", generated_rooms)
-	#save_manager.set_value("events", events)
 	#save_manager.set_value("current_room", MetSys.get_current_room_name())
-	#save_manager.set_value("abilities", player.abilities)
+	#save_manager.set_value("player_hp", player.health)
+	#save_manager.set_value("cendres_gelée", )
+	#save_manager.set_value("capacité (rune)", )
+	#save_manager.set_value("player_stat", )
+	#save_manager.set_value("player_lvl", )	
+	#save_manager.set_value("boss_vaincue", )
+	#save_manager.set_value("arbre de compétence", )
 	save_manager.save_as_text(SAVE_PATH)
 
 #func reset_map_starting_coords():

@@ -4,11 +4,12 @@ const MAX_SPEED = 100.0
 const acceleration = 0.05
 var speed = 0
 @onready var navigation_agent = $NavigationAgent2D
-@export var target_to_chase : CharacterBody2D
+var target_to_chase : CharacterBody2D
 @export var projectile_scene : PackedScene
 var db = db_manager.new()
 var stat : Dictionary
 var health
+var cendre_gelee
 var barn_attack
 var knockback = Vector2.ZERO
 
@@ -24,7 +25,9 @@ func _ready():
 	$AttackTimer.start(2.0)
 	stat = db.get_item_from_mob_table("flyingMob")
 	health = stat.get("health")
+	cendre_gelee = stat.get("cendre_gelee")
 	barn_attack = db.get_item_from_player_table("barn").get("attack")
+	target_to_chase = Game.get_singleton().player
 
 func wait_for_physics():
 	await get_tree().physics_frame
@@ -108,7 +111,7 @@ func _on_animation_player_animation_finished(anim_name):
 			cooldown_timeout = false
 			attack_animation_running = false
 		"flyingMob/death":
-			queue_free()
+			death()
 
 func _on_animation_player_animation_started(anim_name):
 	match anim_name:
@@ -131,3 +134,7 @@ func _on_hit_state_physics_processing(delta):
 	#print("global_position before velocity",global_position)
 	global_position += velocity
 	#print("global_position after velocity",global_position)
+
+func death():
+	Game.get_singleton().player.cendre_gelee += cendre_gelee
+	queue_free()
