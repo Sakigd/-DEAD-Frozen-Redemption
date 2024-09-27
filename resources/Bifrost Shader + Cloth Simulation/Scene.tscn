@@ -1,0 +1,181 @@
+[gd_scene load_steps=11 format=3 uid="uid://bbyfcgyong2sp"]
+
+[ext_resource type="Shader" path="res://ColorQuantizer.gdshader" id="1_fc7if"]
+[ext_resource type="Texture2D" uid="uid://cvetkbwfhy8jq" path="res://Igris.png" id="1_t1m4f"]
+[ext_resource type="Texture2D" uid="uid://mb07lvlabq0u" path="res://QuantizerDefaultNoise.tres" id="2_kt3v7"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pc60t"]
+shader = ExtResource("1_fc7if")
+shader_parameter/opacity = 0.6
+shader_parameter/tint_brightness = 1.3
+shader_parameter/base_brightness = 0.9
+shader_parameter/specular_color = Vector4(0.4, 0.7, 0.9, 1.2)
+shader_parameter/specular_contrast = 5.0
+shader_parameter/specular_spread = 1.0
+shader_parameter/specular_map = ExtResource("2_kt3v7")
+
+[sub_resource type="GDScript" id="GDScript_b57h3"]
+script/source = "extends Camera2D
+const speed = 100
+
+func _process(delta):
+	var move = Vector2.ZERO 
+	if Input.is_key_label_pressed(KEY_LEFT) :
+		move.x -= speed*delta
+	if Input.is_key_label_pressed(KEY_RIGHT) :
+		move.x += speed*delta
+	if Input.is_key_label_pressed(KEY_UP) :
+		move.y -= speed*delta
+	if Input.is_key_label_pressed(KEY_DOWN) :
+		move.y += speed*delta
+	position += move.normalized()
+	get_node(\"../Marker2D\").global_position = get_global_mouse_position()
+"
+
+[sub_resource type="Curve" id="Curve_k0b5e"]
+_data = [Vector2(0, 0), 3.18302, 1.31868, 0, 0, Vector2(0.9875, 0.021978), -3.43656, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_n7wf8"]
+offsets = PackedFloat32Array(0.035, 0.99)
+colors = PackedColorArray(0.0126, 0.09, 0.03066, 1, 0.36167, 0.59, 0.0826, 1)
+
+[sub_resource type="GDScript" id="GDScript_x81ac"]
+script/source = "@tool
+extends Line2D
+@export var segments = 7
+@export var segment_length = 16
+@export var min_angle = 90
+@export var inertia = 0.5
+@export var dampening = 0.5
+@export var transfer = 0.75
+var velocities = []
+var wind = 0.0
+@export var record_position = true
+
+func _ready():
+	velocities = []
+	for x in range(segments) : 
+		velocities.append(Vector2.ZERO)
+
+func _process(delta):
+	if record_position == false and Engine.is_editor_hint() :
+		return
+	
+	wind += delta
+	
+	if not points.size() == segments :
+		points = []
+		velocities = []
+		for x in range(segments) : 
+			add_point(Vector2.ZERO)
+			velocities.append(Vector2.ZERO)
+	
+	for point in range(points.size()) :
+		if point == 0 :
+			set_point_position(0,to_local(get_node(\"../Marker2D\").global_position))
+			continue
+		
+		var verylast = null
+		if point >= 2 :
+			verylast = points[point-2]
+		var last = points[point-1]
+		var current = points[point]
+		var angle = null
+		
+		#velocities[point] += Vector2.from_angle(last.direction_to(current).angle()-deg_to_rad(90))*sin(point/2)*sin(wind/10)*0.1
+		if point != points.size()-1 :
+			current += velocities[point]*inertia#*(1-(point+1)/points.size())
+			current += velocities[point+1]*inertia*0.5
+		
+		if last.distance_to(current) != segment_length :
+			
+			var newpos : Vector2
+			if current != last :
+				newpos = last.direction_to(current) * segment_length
+				velocities[point] += (current.direction_to(last+newpos) * current.distance_to(last+newpos)) * (((point+1)/points.size())*transfer+1-transfer)
+			else :
+				newpos = Vector2(1,0).normalized() * segment_length
+			
+			current = last+newpos
+			
+			if verylast :
+				var LV = verylast - last
+				var LC = current - last
+				angle = rad_to_deg(acos(  (LV.dot(LC)) / (LV.length() * LC.length())  ))
+			 
+			if angle and angle < min_angle :
+				print(\"close at point \",point)
+		
+		if last :
+			velocities[point] = velocities[point].normalized() * velocities[point].length()*dampening
+		
+		set_point_position(point,current)
+"
+
+[sub_resource type="Gradient" id="Gradient_003cn"]
+offsets = PackedFloat32Array(0.035, 0.99)
+colors = PackedColorArray(0.09, 0.0126, 0.0126, 1, 0.71, 0.0994, 0.0994, 1)
+
+[sub_resource type="Gradient" id="Gradient_i4mmp"]
+offsets = PackedFloat32Array(0.035, 0.99)
+colors = PackedColorArray(0.0126, 0.05517, 0.09, 1, 0.112, 0.8, 0.719733, 1)
+
+[node name="Scene" type="Node2D"]
+
+[node name="Igris" type="Sprite2D" parent="."]
+texture_filter = 1
+material = SubResource("ShaderMaterial_pc60t")
+texture = ExtResource("1_t1m4f")
+
+[node name="Camera" type="Camera2D" parent="."]
+script = SubResource("GDScript_b57h3")
+
+[node name="Line2D" type="Line2D" parent="."]
+points = PackedVector2Array(-4, 8, 0.950342, 1.71557, 6.89453, 7.06969, 13.8702, 3.15313, 21.3618, 0.346721, 27.7544, -4.46323, 33.4142, -10.1171, 38.6068, -16.2029, 43.8003, -22.2879, 49.3073, -28.0908, 55.3309, -33.3553, 61.969, -37.8204, 69.2086, -41.2245, 76.9232, -43.3423, 84.893, -44.0365, 92.8589, -43.2991, 100.592, -41.2498, 107.942, -38.0917, 114.847, -34.0517, 121.31, -29.3363, 127.368, -24.1117, 133.072, -18.5019, 138.467, -12.5951, 143.593, -6.45345, 148.48, -0.119461, 153.148, 6.3778, 157.61, 13.0176, 161.875, 19.7857, 165.948, 26.6713, 169.831, 33.6661, 173.521, 40.7638, 177.019, 47.9587, 180.321, 55.2453, 183.424, 62.6191, 186.324, 70.0751, 189.017, 77.6082, 191.498, 85.2138, 193.764, 92.8863, 195.809, 100.62, 197.63, 108.41, 199.223, 116.25, 200.583, 124.134, 201.707, 132.054, 202.59, 140.005, 203.23, 147.98, 203.622, 155.97, 203.764, 163.969, 203.652, 171.968, 203.285, 179.96, 202.66, 187.935, 201.775, 195.886, 200.628, 203.803, 199.218, 211.678, 197.544, 219.501, 195.605, 227.263, 193.402, 234.953, 190.935, 242.563, 188.205, 250.083, 185.212, 257.502, 181.96, 264.811, 178.449, 272, 174.684, 279.059, 170.667, 285.977, 166.403, 292.746, 161.896, 299.356, 157.151, 305.797, 152.174, 312.06, 146.971, 318.136, 141.548, 324.018, 135.913, 329.696, 130.073, 335.164, 124.036, 340.413, 117.81, 345.438, 111.405, 350.231, 104.829, 354.786, 98.0918, 359.1, 91.2025, 363.167, 84.171, 366.982, 77.007, 370.543, 69.7207, 373.846, 62.3219, 376.888, 54.8207, 379.669, 47.2269, 382.186, 39.5505, 384.438, 31.8012, 386.425, 23.9888, 388.148, 16.1227, 389.605, 8.21226, 390.799, 0.266637, 391.73, -7.70529, 392.4, -15.6948, 392.81, -23.6933, 392.962, -31.6926, 392.858, -39.6847, 392.502, -47.6617, 391.896, -55.6158, 391.04, -63.5398, 389.94, -71.4263, 388.598, -79.2683, 387.015, -87.0588, 385.196, -94.7909, 383.143, -102.458, 380.86, -110.054, 378.348, -117.571, 375.612, -125.004, 372.654, -132.346, 369.477, -139.591, 366.084, -146.733, 362.479, -153.764, 358.663, -160.679, 354.641, -167.472, 350.415, -174.136, 345.989, -180.665, 341.366, -187.052, 336.549, -193.292, 331.542, -199.377, 326.349, -205.301, 320.972, -211.058, 315.417, -216.642, 309.688, -222.045, 303.789, -227.262, 297.724, -232.287, 291.499, -237.115, 285.12, -241.704, 278.567, -246.453, 272.129, -248.298, 264.345, -249.184, 272.296, -253.775, 265.744)
+width = 32.0
+width_curve = SubResource("Curve_k0b5e")
+default_color = Color(0, 0.0627451, 0, 1)
+gradient = SubResource("Gradient_n7wf8")
+joint_mode = 2
+begin_cap_mode = 2
+script = SubResource("GDScript_x81ac")
+segments = 128
+segment_length = 8
+min_angle = 0
+inertia = 0.1
+dampening = 0.9
+
+[node name="Line2D2" type="Line2D" parent="."]
+points = PackedVector2Array(-4, 8, -2.35403, 0.171157, -2.88854, 8.15328, 4.32078, 11.6211, 12.319, 11.7909, 20.1347, 10.0835, 27.4242, 6.78765, 33.6407, 1.75226, 38.1416, -4.86149, 40.6469, -12.4591, 41.4808, -20.4155, 41.2791, -28.413, 40.6339, -36.3869, 39.9792, -44.3601, 39.6188, -52.352, 39.7693, -60.3505, 40.5931, -68.308, 42.2148, -76.1419, 44.7283, -83.7368, 48.1947, -90.9468, 52.6345, -97.6017, 58.0173, -103.52, 64.2555, -108.528, 71.2071, -112.488, 78.6908, -115.315, 86.512, -116.997, 94.4902, -117.587, 102.48, -117.187, 110.381, -115.928, 118.131, -113.944, 125.703, -111.363, 133.091, -108.293, 140.3, -104.825, 147.342, -101.029, 154.231, -96.962, 160.979, -92.6652, 167.597, -88.1713, 174.095, -83.5046, 180.479, -78.6831, 186.754, -73.7208, 192.924, -68.6281, 198.99, -63.4131, 204.955, -58.0818, 210.818, -52.6387, 216.579, -47.0882, 222.237, -41.4328, 227.791, -35.6749, 233.239, -29.8168, 238.58, -23.8604, 243.811, -17.8072, 248.929, -11.6587, 253.932, -5.41654, 258.819, 0.917582, 263.586, 7.3424, 268.23, 13.8563, 272.749, 20.4572, 277.141, 27.1438, 281.404, 33.9137, 285.535, 40.7647, 289.532, 47.6947, 293.392, 54.7017, 297.114, 61.7831, 300.696, 68.9364, 304.135, 76.1594, 307.431, 83.4489, 310.581, 90.8027, 313.583, 98.218, 316.437, 105.692, 319.14, 113.221, 321.69, 120.804, 324.088, 128.436, 326.329, 136.116, 328.415, 143.839, 330.343, 151.603, 332.111, 159.405, 333.719, 167.242, 335.166, 175.11, 336.45, 183.007, 337.57, 190.928, 338.524, 198.871, 339.313, 206.832, 339.935, 214.807, 340.389, 222.794, 340.675, 230.789, 340.793, 238.788, 340.74, 246.788, 340.517, 254.785, 340.125, 262.776, 339.562, 270.756, 338.829, 278.722, 337.926, 286.671, 336.853, 294.599, 335.611, 302.502, 334.201, 310.376, 332.622, 318.219, 330.878, 326.027, 328.967, 333.795, 326.892, 341.521, 324.654, 349.202, 322.255, 356.834, 319.696, 364.413, 316.98, 371.938, 314.108, 379.405, 311.083, 386.811, 307.907, 394.153, 304.582, 401.43, 301.112, 408.638, 297.498, 415.775, 293.745, 422.84, 289.853, 429.83, 285.827, 436.743, 281.669, 443.578, 277.383, 450.332, 272.971, 457.006, 268.437, 463.597, 263.783, 470.104, 259.013, 476.526, 254.13, 482.864, 249.138, 489.114, 244.038, 495.278, 238.835, 501.355, 233.529, 507.342, 228.162, 513.275, 222.434, 518.859, 219.192, 526.173, 211.495, 528.355, 218.294, 524.138, 211.874, 528.912)
+width = 32.0
+width_curve = SubResource("Curve_k0b5e")
+default_color = Color(0, 0.0627451, 0, 1)
+gradient = SubResource("Gradient_003cn")
+joint_mode = 2
+begin_cap_mode = 2
+script = SubResource("GDScript_x81ac")
+segments = 128
+segment_length = 8
+min_angle = 0
+inertia = 0.2
+dampening = 0.9
+
+[node name="Line2D3" type="Line2D" parent="."]
+position = Vector2(-172, 204)
+points = PackedVector2Array(168, -196, 172.609, -202.539, 167.761, -196.175, 170.485, -188.653, 177.525, -184.853, 185.487, -184.073, 193.434, -184.993, 201.075, -187.363, 207.989, -191.387, 213.528, -197.16, 217.002, -204.366, 218.073, -212.294, 216.975, -220.218, 214.298, -227.757, 210.634, -234.869, 206.42, -241.669, 201.944, -248.299, 197.394, -254.879, 192.902, -261.499, 188.563, -268.22, 184.453, -275.083, 180.636, -282.114, 177.17, -289.324, 174.104, -296.714, 171.489, -304.274, 169.369, -311.988, 167.788, -319.83, 166.79, -327.768, 166.413, -335.759, 166.695, -343.754, 167.669, -351.694, 169.36, -359.514, 171.787, -367.137, 174.956, -374.482, 178.858, -381.466, 183.469, -388.003, 188.748, -394.015, 194.636, -399.43, 201.061, -404.197, 207.94, -408.28, 215.188, -411.667, 222.72, -414.364, 230.457, -416.399, 238.331, -417.812, 246.287, -418.654, 254.28, -418.978, 262.279, -418.842, 270.26, -418.299, 278.21, -417.399, 286.117, -416.186, 293.978, -414.7, 301.79, -412.975, 309.552, -411.039, 317.265, -408.918, 324.931, -406.63, 332.552, -404.194, 340.128, -401.625, 347.661, -398.933, 355.154, -396.129, 362.607, -393.221, 370.021, -390.217, 377.399, -387.123, 384.739, -383.943, 392.044, -380.681, 399.313, -377.341, 406.547, -373.924, 413.746, -370.435, 420.909, -366.873, 428.037, -363.239, 435.127, -359.535, 442.181, -355.76, 449.195, -351.913, 456.17, -347.994, 463.103, -344.003, 469.993, -339.938, 476.839, -335.798, 483.637, -331.582, 490.387, -327.288, 497.086, -322.915, 503.732, -318.462, 510.323, -313.927, 516.856, -309.311, 523.33, -304.61, 529.741, -299.825, 536.087, -294.954, 542.366, -289.997, 548.576, -284.953, 554.713, -279.821, 560.777, -274.603, 566.763, -269.296, 572.671, -263.902, 578.497, -258.419, 584.239, -252.849, 589.895, -247.191, 595.463, -241.447, 600.941, -235.617, 606.326, -229.701, 611.617, -223.7, 616.81, -217.615, 621.905, -211.447, 626.899, -205.197, 631.79, -198.866, 636.577, -192.456, 641.256, -185.968, 645.829, -179.403, 650.291, -172.763, 654.642, -166.05, 658.88, -159.265, 663.004, -152.41, 667.012, -145.486, 670.903, -138.496, 674.676, -131.442, 678.331, -124.326, 681.866, -117.149, 685.28, -109.914, 688.574, -102.624, 691.746, -95.2795, 694.797, -87.884, 697.726, -80.4393, 700.534, -72.9483, 703.222, -65.4135, 705.751, -57.8239, 708.439, -50.2889, 709.876, -42.4191, 717.626, -40.435, 716.509, -32.5134, 716.489, -40.5134, 715.648, -32.5577)
+width = 32.0
+width_curve = SubResource("Curve_k0b5e")
+default_color = Color(0, 0.0627451, 0, 1)
+gradient = SubResource("Gradient_i4mmp")
+joint_mode = 2
+begin_cap_mode = 2
+script = SubResource("GDScript_x81ac")
+segments = 128
+segment_length = 8
+min_angle = 0
+inertia = 0.3
+dampening = 0.9
+
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(-4, 8)
