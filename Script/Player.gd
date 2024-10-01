@@ -7,8 +7,11 @@ const JUMP_VELOCITY = -368.0
 var db = db_manager.new()
 var stat : Dictionary
 var health
+var max_health
 var attack
 var cendre_gelee : int
+var nbr_potion = 2
+var potion_regen = 20
 var mob_attack = 1
 var direction = 0
 var is_attacking = false
@@ -26,6 +29,7 @@ func _ready():
 	$StateChart.set_expression_property("animation_finished",false)
 	stat = db.get_item_from_player_table("barn")
 	health = stat.get("health")
+	max_health = stat.get("health")
 	on_enter()
 	#attack = stat.get("attack")
 	
@@ -55,7 +59,6 @@ func _physics_process(delta):
 		else:
 			flip_animation("atk_neutral_01")
 			$StateChart.send_event("neutral_attack")
-
 	move_and_slide()
 
 func set_velocity_x(vel_x):
@@ -120,8 +123,15 @@ func _input(event):
 	if event.is_action_pressed("look_up"):
 		if is_on_campfire:
 			$StateChart.send_event("idle")
-			
-			
+	
+	if event.is_action_pressed("potion"):
+		if(is_on_floor() && health != max_health && nbr_potion>0):
+			if(health + potion_regen > max_health):
+				health = max_health
+			else :
+				health += potion_regen
+			nbr_potion -= 1
+
 func _on_idle_state_physics_processing(_delta):
 	move()
 	jump()

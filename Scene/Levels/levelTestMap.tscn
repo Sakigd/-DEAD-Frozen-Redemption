@@ -1,7 +1,7 @@
 [gd_scene load_steps=19 format=3 uid="uid://cek0f3q58j730"]
 
 [ext_resource type="PackedScene" uid="uid://bsg0351mx3b4u" path="res://addons/MetroidvaniaSystem/Nodes/RoomInstance.tscn" id="1_1ud2h"]
-[ext_resource type="Texture2D" uid="uid://2fgqx5i8emlx" path="res://asset/Test_map.png" id="1_hi56p"]
+[ext_resource type="Texture2D" uid="uid://2fgqx5i8emlx" path="res://asset/Map/Test_map.png" id="1_hi56p"]
 [ext_resource type="PackedScene" uid="uid://b41oickcktc0y" path="res://Scene/desesperatedSlave.tscn" id="5_8ig20"]
 [ext_resource type="PackedScene" uid="uid://c6m0m4apmdsgw" path="res://Scene/ennemiVolant.tscn" id="5_a8pdo"]
 [ext_resource type="PackedScene" uid="uid://bvasv3lk3dws6" path="res://Scene/projectile.tscn" id="6_3e52m"]

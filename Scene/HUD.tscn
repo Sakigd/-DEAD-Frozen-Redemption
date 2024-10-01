@@ -1,26 +1,16 @@
-[gd_scene load_steps=5 format=3 uid="uid://bdf02g78toy3i"]
+[gd_scene load_steps=8 format=3 uid="uid://bdf02g78toy3i"]
 
 [ext_resource type="Script" path="res://Script/HUD.gd" id="1_35hbv"]
 [ext_resource type="Texture2D" uid="uid://8ex0jsw55m63" path="res://asset/HUD/hud frozen ashes.png" id="2_i7aci"]
 [ext_resource type="Texture2D" uid="uid://do75wfftkigo4" path="res://asset/HUD/hud profile.png" id="3_da5jp"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cfbwy"]
-bg_color = Color(1, 0, 0, 1)
+[ext_resource type="Texture2D" uid="uid://b5w6b1gc22msn" path="res://asset/HUD/potion/potion_checked.png" id="4_2batk"]
+[ext_resource type="Texture2D" uid="uid://dnkejiunwktpi" path="res://asset/HUD/health bar/healthbar font.png" id="4_5ystf"]
+[ext_resource type="Texture2D" uid="uid://cmp104lljy8rr" path="res://asset/HUD/health bar/healthbar cadre.png" id="5_osojv"]
+[ext_resource type="Texture2D" uid="uid://q6cmmd0v06gs" path="res://asset/HUD/health bar/healthbar.png" id="6_3vfg3"]
 
 [node name="Hud" type="CanvasLayer"]
 script = ExtResource("1_35hbv")
 metadata/_edit_use_anchors_ = true
-
-[node name="health_bar" type="ProgressBar" parent="."]
-offset_left = 49.0
-offset_top = 19.0
-offset_right = 168.0
-offset_bottom = 23.0
-theme_override_styles/fill = SubResource("StyleBoxFlat_cfbwy")
-max_value = 30.0
-step = 1.0
-value = 30.0
-show_percentage = false
 
 [node name="HudFrozenAshes" type="Sprite2D" parent="."]
 position = Vector2(60.3023, 348.75)
@@ -34,7 +24,46 @@ offset_right = 85.0
 offset_bottom = 361.0
 text = "XXX"
 
+[node name="potion1" type="TextureButton" parent="."]
+offset_left = 88.0
+offset_top = 43.0
+offset_right = 105.0
+offset_bottom = 60.0
+scale = Vector2(0.4, 0.4)
+toggle_mode = true
+texture_pressed = ExtResource("4_2batk")
+
+[node name="potion2" type="TextureButton" parent="."]
+offset_left = 101.0
+offset_top = 43.0
+offset_right = 118.0
+offset_bottom = 60.0
+scale = Vector2(0.4, 0.4)
+toggle_mode = true
+texture_pressed = ExtResource("4_2batk")
+
+[node name="potion3" type="TextureButton" parent="."]
+offset_left = 113.0
+offset_top = 43.0
+offset_right = 130.0
+offset_bottom = 60.0
+scale = Vector2(0.4, 0.4)
+toggle_mode = true
+texture_pressed = ExtResource("4_2batk")
+
 [node name="HudProfile" type="Sprite2D" parent="."]
 position = Vector2(98, 34)
 scale = Vector2(0.303571, 0.303571)
 texture = ExtResource("3_da5jp")
+
+[node name="health_bar" type="TextureProgressBar" parent="."]
+offset_left = 46.0
+offset_top = 16.0
+offset_right = 457.0
+offset_bottom = 44.0
+scale = Vector2(0.3, 0.3)
+max_value = 30.0
+value = 30.0
+texture_under = ExtResource("4_5ystf")
+texture_over = ExtResource("5_osojv")
+texture_progress = ExtResource("6_3vfg3")

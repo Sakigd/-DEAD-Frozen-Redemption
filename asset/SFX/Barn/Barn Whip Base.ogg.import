@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bnm06kb7auuvd"
+path="res://.godot/imported/Barn Whip Base.ogg-137e9568942afb99da3c191718f28f88.oggvorbisstr"
+
+[deps]
+
+source_file="res://asset/SFX/Barn/Barn Whip Base.ogg"
+dest_files=["res://.godot/imported/Barn Whip Base.ogg-137e9568942afb99da3c191718f28f88.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
