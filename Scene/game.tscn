@@ -22,6 +22,7 @@ limit_bottom = 480
 [node name="Hud" parent="." instance=ExtResource("3_hkmnn")]
 
 [node name="StateChartDebugger" parent="Hud" instance=ExtResource("4_eytw0")]
+visible = false
 offset_left = 279.0
 offset_top = 4.0
 offset_right = 341.0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bdf02g78toy3i"]
+[gd_scene load_steps=11 format=3 uid="uid://bdf02g78toy3i"]
 
 [ext_resource type="Script" path="res://Script/HUD.gd" id="1_35hbv"]
 [ext_resource type="Texture2D" uid="uid://8ex0jsw55m63" path="res://asset/HUD/hud frozen ashes.png" id="2_i7aci"]
@@ -7,6 +7,9 @@
 [ext_resource type="Texture2D" uid="uid://dnkejiunwktpi" path="res://asset/HUD/health bar/healthbar font.png" id="4_5ystf"]
 [ext_resource type="Texture2D" uid="uid://cmp104lljy8rr" path="res://asset/HUD/health bar/healthbar cadre.png" id="5_osojv"]
 [ext_resource type="Texture2D" uid="uid://q6cmmd0v06gs" path="res://asset/HUD/health bar/healthbar.png" id="6_3vfg3"]
+[ext_resource type="Texture2D" uid="uid://b6x6s0hs1ico7" path="res://asset/HUD/stamina bar/staminabar font.png" id="8_ys16q"]
+[ext_resource type="Texture2D" uid="uid://c1p0n8gpsojxc" path="res://asset/HUD/stamina bar/staminabar cadre.png" id="9_skwc7"]
+[ext_resource type="Texture2D" uid="uid://5w8mrjnrmy7f" path="res://asset/HUD/stamina bar/staminabar.png" id="10_p05uo"]
 
 [node name="Hud" type="CanvasLayer"]
 script = ExtResource("1_35hbv")
@@ -57,9 +60,9 @@ scale = Vector2(0.303571, 0.303571)
 texture = ExtResource("3_da5jp")
 
 [node name="health_bar" type="TextureProgressBar" parent="."]
-offset_left = 46.0
+offset_left = 47.0
 offset_top = 16.0
-offset_right = 457.0
+offset_right = 458.0
 offset_bottom = 44.0
 scale = Vector2(0.3, 0.3)
 max_value = 30.0
@@ -67,3 +70,14 @@ value = 30.0
 texture_under = ExtResource("4_5ystf")
 texture_over = ExtResource("5_osojv")
 texture_progress = ExtResource("6_3vfg3")
+
+[node name="stamina_bar" type="TextureProgressBar" parent="."]
+offset_left = 54.0
+offset_top = 27.0
+offset_right = 343.0
+offset_bottom = 44.0
+scale = Vector2(0.345, 0.345)
+value = 100.0
+texture_under = ExtResource("8_ys16q")
+texture_over = ExtResource("9_skwc7")
+texture_progress = ExtResource("10_p05uo")
