@@ -1,9 +1,35 @@
-[gd_resource type="AudioBusLayout" format=3 uid="uid://r7lqc50u4k4m"]
+[gd_resource type="AudioBusLayout" load_steps=3 format=3 uid="uid://r7lqc50u4k4m"]
+
+[sub_resource type="AudioEffectDelay" id="AudioEffectDelay_wg70y"]
+resource_name = "Delay"
+dry = 0.68
+tap1_active = false
+tap2_active = false
+feedback_active = true
+feedback_delay_ms = 250.0
+feedback_level_db = -17.2
+
+[sub_resource type="AudioEffectReverb" id="AudioEffectReverb_t1fbn"]
+resource_name = "Reverb"
+room_size = 0.98
+damping = 0.14
+hipass = 0.44
+wet = 0.09
 
 [resource]
-bus/1/name = &"whipWoosh"
+bus/1/name = &"SFX"
 bus/1/solo = false
 bus/1/mute = false
 bus/1/bypass_fx = false
 bus/1/volume_db = 0.0
 bus/1/send = &"Master"
+bus/1/effect/0/effect = SubResource("AudioEffectDelay_wg70y")
+bus/1/effect/0/enabled = true
+bus/1/effect/1/effect = SubResource("AudioEffectReverb_t1fbn")
+bus/1/effect/1/enabled = true
+bus/2/name = &"BGM"
+bus/2/solo = false
+bus/2/mute = false
+bus/2/bypass_fx = false
+bus/2/volume_db = 0.0
+bus/2/send = &"Master"
