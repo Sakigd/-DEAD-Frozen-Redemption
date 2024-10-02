@@ -1,0 +1,89 @@
+[gd_scene load_steps=9 format=3 uid="uid://dtjhopnkpy0yo"]
+
+[ext_resource type="Texture2D" uid="uid://dx257msdkel1m" path="res://asset/Map/map level test.png" id="1_f1txs"]
+[ext_resource type="Script" path="res://Script/Game.gd" id="2_pmp1e"]
+[ext_resource type="PackedScene" uid="uid://bcwyfattjly6" path="res://Scene/Player.tscn" id="3_k0yo1"]
+[ext_resource type="PackedScene" uid="uid://bdf02g78toy3i" path="res://Scene/HUD.tscn" id="4_fuwd1"]
+[ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="5_nq0t6"]
+
+[sub_resource type="GDScript" id="GDScript_oj18k"]
+script/source = "extends SubViewportContainer
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	print($PixelArtViewport.get_camera_2d())
+"
+
+[sub_resource type="Gradient" id="Gradient_vrsgc"]
+offsets = PackedFloat32Array(0.20068, 0.22449, 0.751701, 0.789116)
+colors = PackedColorArray(0, 0, 0, 1, 0, 1, 0, 1, 0.929141, 0.0368664, 0.929141, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_hj3a6"]
+gradient = SubResource("Gradient_vrsgc")
+fill_to = Vector2(1, 1)
+
+[node name="PixelArt" type="SubViewportContainer"]
+process_priority = 100
+offset_left = -320.0
+offset_top = -190.0
+offset_right = 960.0
+offset_bottom = 570.0
+pivot_offset = Vector2(640, 380)
+stretch = true
+script = SubResource("GDScript_oj18k")
+
+[node name="PixelArtViewport" type="SubViewport" parent="."]
+disable_3d = true
+handle_input_locally = false
+snap_2d_transforms_to_pixel = true
+snap_2d_vertices_to_pixel = true
+canvas_item_default_texture_filter = 0
+audio_listener_enable_2d = true
+size = Vector2i(1280, 760)
+render_target_update_mode = 4
+
+[node name="Test" type="TextureRect" parent="PixelArtViewport"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_hj3a6")
+
+[node name="Sprite2D" type="Sprite2D" parent="PixelArtViewport"]
+visible = false
+position = Vector2(550, 340)
+texture = ExtResource("1_f1txs")
+
+[node name="Game" type="Node2D" parent="PixelArtViewport"]
+script = ExtResource("2_pmp1e")
+starting_map = "levelTestMap.tscn"
+
+[node name="Player" parent="PixelArtViewport/Game" instance=ExtResource("3_k0yo1")]
+z_index = 1
+position = Vector2(305, 190)
+metadata/_edit_group_ = true
+
+[node name="Camera2D" type="Camera2D" parent="PixelArtViewport/Game/Player"]
+limit_left = 0
+limit_top = 0
+limit_bottom = 480
+
+[node name="Hud" parent="PixelArtViewport/Game" instance=ExtResource("4_fuwd1")]
+visible = false
+
+[node name="StateChartDebugger" parent="PixelArtViewport/Game/Hud" instance=ExtResource("5_nq0t6")]
+visible = false
+offset_left = 279.0
+offset_top = 4.0
+offset_right = 341.0
+offset_bottom = -72.0
+scale = Vector2(0.5, 0.5)
+initial_node_to_watch = NodePath("../../Player")

@@ -1,0 +1,111 @@
+[gd_scene load_steps=7 format=3 uid="uid://bfr6p2de5ji72"]
+
+[ext_resource type="Texture2D" uid="uid://dx257msdkel1m" path="res://asset/Map/map level test.png" id="1_rtgit"]
+[ext_resource type="PackedScene" uid="uid://c6w345fuao3ue" path="res://Scene/game.tscn" id="2_d7xuh"]
+
+[sub_resource type="GDScript" id="GDScript_u86wk"]
+script/source = "@tool
+extends ColorRect
+@export var ingame_zoom : float = 1
+
+func _process(_delta):
+	size.y = ProjectSettings.get(\"display/window/size/viewport_height\")
+	size.x = ProjectSettings.get(\"display/window/size/viewport_width\")
+	scale = Vector2.ONE
+	position = Vector2.ZERO
+	rotation = 0
+	if abs(ingame_zoom) < 0.5 :
+		ingame_zoom = 0.5 * sign(ingame_zoom)
+	$PixelArt.scale = Vector2(ingame_zoom,ingame_zoom)
+"
+
+[sub_resource type="GDScript" id="GDScript_74l62"]
+script/source = "@tool
+extends SubViewportContainer
+
+func _process(_delta):
+	position = (get_parent().scale)*(get_parent().size)/-2
+	print($PixelArtViewport.get_camera_2d())
+"
+
+[sub_resource type="Gradient" id="Gradient_vrsgc"]
+offsets = PackedFloat32Array(0.20068, 0.22449, 0.751701, 0.789116)
+colors = PackedColorArray(0, 0, 0, 1, 0, 1, 0, 1, 0.929141, 0.0368664, 0.929141, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_hj3a6"]
+gradient = SubResource("Gradient_vrsgc")
+fill_to = Vector2(1, 1)
+
+[node name="Screen" type="ColorRect"]
+custom_minimum_size = Vector2(640, 380)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_u86wk")
+
+[node name="HiRes" type="SubViewportContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 1.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PixelArt" type="SubViewportContainer" parent="."]
+process_priority = 100
+layout_mode = 0
+offset_left = -320.0
+offset_top = -190.0
+offset_right = 960.0
+offset_bottom = 570.0
+pivot_offset = Vector2(640, 380)
+stretch = true
+script = SubResource("GDScript_74l62")
+
+[node name="PixelArtViewport" type="SubViewport" parent="PixelArt"]
+disable_3d = true
+transparent_bg = true
+handle_input_locally = false
+snap_2d_transforms_to_pixel = true
+snap_2d_vertices_to_pixel = true
+canvas_item_default_texture_filter = 0
+audio_listener_enable_2d = true
+size = Vector2i(1280, 760)
+render_target_update_mode = 4
+
+[node name="Test" type="TextureRect" parent="PixelArt/PixelArtViewport"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_hj3a6")
+
+[node name="Sprite2D" type="Sprite2D" parent="PixelArt/PixelArtViewport"]
+visible = false
+position = Vector2(550, 340)
+texture = ExtResource("1_rtgit")
+
+[node name="Game" parent="PixelArt/PixelArtViewport" instance=ExtResource("2_d7xuh")]
+
+[node name="Frame" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = -2
+theme_override_constants/margin_top = -2
+theme_override_constants/margin_right = -2
+theme_override_constants/margin_bottom = -2
+
+[node name="FrameOutline" type="ReferenceRect" parent="Frame"]
+layout_mode = 2
+border_color = Color(1, 1, 1, 1)
+border_width = 2.0
