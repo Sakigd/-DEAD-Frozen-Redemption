@@ -276,6 +276,7 @@ position = Vector2(3, -3.5)
 shape = SubResource("RectangleShape2D_wm4i0")
 
 [node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
 position = Vector2(3, 1.5)

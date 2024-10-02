@@ -55,7 +55,7 @@ metadata/_edit_lock_ = true
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 navigation_polygon = SubResource("NavigationPolygon_1h7ml")
 
-[node name="ground" type="StaticBody2D" parent="NavigationRegion2D"]
+[node name="ground" type="StaticBody2D" parent="NavigationRegion2D" groups=["ground"]]
 collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="NavigationRegion2D/ground"]
@@ -74,7 +74,7 @@ shape = SubResource("RectangleShape2D_sf8c6")
 position = Vector2(842, 240)
 shape = SubResource("RectangleShape2D_qghaj")
 
-[node name="plateforme" type="StaticBody2D" parent="NavigationRegion2D"]
+[node name="plateforme" type="StaticBody2D" parent="NavigationRegion2D" groups=["plateforme"]]
 position = Vector2(481, 261)
 collision_layer = 2
 metadata/_edit_group_ = true
@@ -83,7 +83,7 @@ metadata/_edit_group_ = true
 position = Vector2(-1, 29.25)
 shape = SubResource("RectangleShape2D_fgemk")
 
-[node name="StaticBody2D" type="StaticBody2D" parent="NavigationRegion2D"]
+[node name="StaticBody2D" type="StaticBody2D" parent="NavigationRegion2D" groups=["plateforme"]]
 position = Vector2(305, 203)
 collision_layer = 2
 metadata/_edit_group_ = true
@@ -108,7 +108,7 @@ collision_layer = 2
 position = Vector2(0, 2)
 shape = SubResource("RectangleShape2D_e6fnv")
 
-[node name="echaffaudage" type="StaticBody2D" parent="."]
+[node name="echaffaudage" type="StaticBody2D" parent="." groups=["plateforme"]]
 position = Vector2(672, 333)
 collision_layer = 2
 metadata/_edit_group_ = true
@@ -120,7 +120,6 @@ one_way_collision = true
 
 [node name="desesperatedSlave" parent="." instance=ExtResource("5_8ig20")]
 position = Vector2(518, 394)
-collision_layer = 0
 
 [node name="EnnemiVolant" parent="." instance=ExtResource("5_a8pdo")]
 position = Vector2(594, 277)

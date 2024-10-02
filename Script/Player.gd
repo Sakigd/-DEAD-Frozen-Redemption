@@ -252,3 +252,7 @@ func on_enter():
 	reset_position = position
 #func _on_attack_state_exited():
 	#velocity = momentum
+
+func _on_hitbox_ruban_body_entered(body):
+	if body.is_in_group("plateforme") || body.is_in_group("mob"):
+		$SFX/WhipHit.play()
