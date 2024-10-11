@@ -5,7 +5,7 @@ const SPEED = 200.0
 const JUMP_VELOCITY = -368.0
 
 var db = db_manager.new()
-var stat : Dictionary
+var stat
 var health
 var max_health
 var attack
@@ -27,9 +27,9 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 func _ready():
 	$StateChart.set_expression_property("spike_touched",false)
 	$StateChart.set_expression_property("animation_finished",false)
-	stat = db.get_item_from_player_table("barn")
-	health = stat.get("health")
-	max_health = stat.get("health")
+	stat = db.get_item_from_player_table("player")
+	health = stat.health
+	max_health = stat.health
 	on_enter()
 	#attack = stat.get("attack")
 	
@@ -167,7 +167,7 @@ func _on_hitbox_area_entered(area):
 		is_on_campfire = true
 	
 	if area.is_in_group("projectile"):
-		mob_attack = db.get_item_from_mob_table("flyingMob").get("attack")
+		mob_attack = db.get_item_from_mob_table("frozenThrower").attack
 		$StateChart.send_event("hit")
 		
 func _on_hitbox_area_exited(area):
@@ -176,7 +176,7 @@ func _on_hitbox_area_exited(area):
 			
 func _on_hitbox_body_entered(body):
 	if body.is_in_group("mob"):
-		mob_attack = db.get_item_from_mob_table("desesperatedSlave").get("attack")
+		mob_attack = db.get_item_from_mob_table("desperatedSlave").attack
 		print("hit")
 		$StateChart.send_event("hit")
 

@@ -115,3 +115,6 @@ class MetSysExport extends EditorExportPlugin:
 	
 	func _export_end() -> void:
 		MetSys.map_data.save_data()
+	
+	func _get_name():
+		return "MetroidvaniaSystem"

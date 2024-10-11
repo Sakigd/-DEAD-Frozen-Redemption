@@ -4,6 +4,7 @@ class_name Transition
 extends Node
 
 const ExpressionUtil = preload("expression_util.gd")
+const DebugUtil = preload("debug_util.gd")
 
 ## Fired when this transition is taken. For delayed transitions, this signal
 ## will be fired when the transition is actually executed (e.g. when its delay
@@ -87,9 +88,9 @@ func evaluate_delay() -> float:
 		push_error("Transitions must be children of states.")
 		return 0.0
 
-	var result = ExpressionUtil.evaluate_expression("delay of " + str(get_path()), parent_state._chart, delay_in_seconds, 0.0)	
+	var result = ExpressionUtil.evaluate_expression("delay of " + DebugUtil.path_of(self), parent_state._chart, delay_in_seconds, 0.0)	
 	if typeof(result) != TYPE_FLOAT:
-		push_error("Expression result is not a boolean. Returning false.")
+		push_error("Expression: ", delay_in_seconds ," result: ", result,  " is not a float. Returning 0.0.")
 		return 0.0
 
 	return result

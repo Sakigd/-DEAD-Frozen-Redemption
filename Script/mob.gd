@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 var speed = -30.0
 var db = db_manager.new()
-var stat : Dictionary
+var stat
 var health
 var attack
 var cendre_gelee
@@ -15,9 +15,9 @@ var last_slide_collision = null
 
 func _ready():
 	$AnimationPlayer.play("walk")
-	stat = db.get_item_from_mob_table("desesperatedSlave")
-	health = stat.get("health")
-	cendre_gelee = stat.get("cendre_gelee")
+	stat = db.get_item_from_mob_table("desperatedSlave")
+	health = stat.health
+	cendre_gelee = stat.cendre_gelee
 
 func _physics_process(delta):
 	last_slide_collision = get_last_slide_collision()
@@ -49,7 +49,7 @@ func _on_hitbox_area_entered(area):
 		$StateChart.send_event("hit")
 
 func _on_hit_state_entered():
-	health -= db.get_item_from_player_table("barn").get("attack")
+	health -= db.get_item_from_player_table("player").attack
 	#print("mob health ",health)
 	#print("barn attack ",db.get_item_from_player_table("barn").get("attack"))
 	if (health <= 0):
@@ -57,7 +57,6 @@ func _on_hit_state_entered():
 
 func _on_hit_state_physics_processing(_delta):
 	velocity.x = 0
-
 
 func _on_animation_player_animation_finished(anim_name):
 	match anim_name:

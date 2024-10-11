@@ -7,7 +7,7 @@ var speed = 0
 var target_to_chase : CharacterBody2D
 @export var projectile_scene : PackedScene
 var db = db_manager.new()
-var stat : Dictionary
+var stat
 var health
 var cendre_gelee
 var barn_attack
@@ -23,10 +23,10 @@ func _ready():
 	set_physics_process(false)
 	call_deferred("wait_for_physics")
 	$AttackTimer.start(2.0)
-	stat = db.get_item_from_mob_table("flyingMob")
-	health = stat.get("health")
-	cendre_gelee = stat.get("cendre_gelee")
-	barn_attack = db.get_item_from_player_table("barn").get("attack")
+	stat = db.get_item_from_mob_table("frozenThrower")
+	health = stat.health
+	cendre_gelee = stat.cendre_gelee
+	barn_attack = db.get_item_from_player_table("player").attack
 	target_to_chase = Game.get_singleton().player
 
 func wait_for_physics():
