@@ -1667,21 +1667,26 @@ libraries = {
 
 [node name="SFX" type="Node" parent="."]
 
-[node name="WhipBase" type="AudioStreamPlayer2D" parent="SFX"]
+[node name="WhipBase" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource("15_3750s")
-panning_strength = 0.0
+volume_db = -1.724
+max_polyphony = 6
+bus = &"SFX"
 
-[node name="WhipLoad" type="AudioStreamPlayer2D" parent="SFX"]
+[node name="WhipLoad" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource("17_2jggr")
-panning_strength = 0.0
+max_polyphony = 6
+bus = &"SFX"
 
-[node name="WhipWoosh" type="AudioStreamPlayer2D" parent="SFX"]
+[node name="WhipWoosh" type="AudioStreamPlayer" parent="SFX"]
 stream = SubResource("AudioStreamRandomizer_r1q4c")
-panning_strength = 0.0
+max_polyphony = 6
+bus = &"SFX"
 
-[node name="WhipHit" type="AudioStreamPlayer2D" parent="SFX"]
+[node name="WhipHit" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource("16_0m3d6")
-panning_strength = 0.0
+max_polyphony = 6
+bus = &"SFX"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-1.5, 1)
