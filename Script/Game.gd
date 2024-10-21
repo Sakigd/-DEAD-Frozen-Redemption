@@ -16,7 +16,7 @@ func _ready():
 	# Make sure MetSys is in initial state.
 	MetSys.reset_state()
 	# Assign player for MetSysGame.
-	set_player($Player)
+	set_player($Screen/PixelArt/PixelArtViewport/Player)
 	
 	if FileAccess.file_exists(SAVE_PATH):
 		# If save data exists, load it using MetSys SaveManager.
@@ -34,7 +34,7 @@ func _ready():
 	# Initialize room when it changes.
 	room_loaded.connect(init_room,CONNECT_DEFERRED)
 	# Load the starting room.
-	load_room(starting_map)
+	load_room(starting_map,$Screen/PixelArt/PixelArtViewport)
 	
 	# Find the save point and teleport the player to it, to start at the save point.
 	var start := map.get_node_or_null(^"Campfire")
@@ -45,6 +45,7 @@ func _ready():
 	#reset_map_starting_coords.call_deferred()
 	# Add module for room transitions.
 	add_module("RoomTransitions.gd")
+	#print(get_tree_string_pretty())
 
 # Returns this node from anywhere.
 static func get_singleton() -> Game:
@@ -68,5 +69,5 @@ func save_game():
 	#$UI/MapWindow.reset_starting_coords()
 
 func init_room():
-	MetSys.get_current_room_instance().adjust_camera_limits($Player/Camera2D)
+	MetSys.get_current_room_instance().adjust_camera_limits($playerCamera)
 	player.on_enter()	

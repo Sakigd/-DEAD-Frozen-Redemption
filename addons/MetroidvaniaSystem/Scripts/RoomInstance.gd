@@ -108,17 +108,20 @@ func _update_neighbor_previews():
 
 ## Adjusts the limits of the given [param camera] to be within this room's rectangular bounds.
 func adjust_camera_limits(camera: Camera2D):
-	camera.limit_left = 0
-	camera.limit_top = 0
-	camera.limit_right = get_size().x
-	camera.limit_bottom = get_size().y
-	print("get_size ",get_size())
-
-## Returns the full size of this room, based on the cells and [code]in_game_cell_size[/code] defined in MetSys Settings.
-func get_size() -> Vector2:
+	print("======= enter adjust_camera_limits =======")
+	camera.limit_left = -320
+	camera.limit_top = -190
+	camera.limit_right = get_size().x-320
+	camera.limit_bottom = get_size().y-190
 	print("min_cell ",min_cell," Vector2i.MAX ", Vector2i.MAX)
 	print("max_cell ",max_cell," Vector2i.MIN ", Vector2i.MIN)
 	print("in game cell size ",MetSys.settings.in_game_cell_size)
+	print("get_size ",get_size())
+	print("camera limit left ",camera.limit_left," top ",camera.limit_top," right ",camera.limit_right," bottom ",camera.limit_bottom)
+	print("======= exit adjust_camera_limits =======")
+
+## Returns the full size of this room, based on the cells and [code]in_game_cell_size[/code] defined in MetSys Settings.
+func get_size() -> Vector2:
 	return Vector2(max_cell - min_cell + Vector2i.ONE) * MetSys.settings.in_game_cell_size
 
 ## Returns this rooms cells in local coordinates, i.e. with [code](0, 0)[/code] being the top-left cell.

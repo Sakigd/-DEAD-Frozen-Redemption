@@ -1,10 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://dtjhopnkpy0yo"]
+[gd_scene load_steps=5 format=3 uid="uid://dtjhopnkpy0yo"]
 
 [ext_resource type="Texture2D" uid="uid://dx257msdkel1m" path="res://asset/Map/map level test.png" id="1_f1txs"]
-[ext_resource type="Script" path="res://Script/Game.gd" id="2_pmp1e"]
-[ext_resource type="PackedScene" uid="uid://bcwyfattjly6" path="res://Scene/Player.tscn" id="3_k0yo1"]
-[ext_resource type="PackedScene" uid="uid://bdf02g78toy3i" path="res://Scene/HUD.tscn" id="4_fuwd1"]
-[ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="5_nq0t6"]
 
 [sub_resource type="GDScript" id="GDScript_oj18k"]
 script/source = "extends SubViewportContainer
@@ -61,29 +57,3 @@ texture = SubResource("GradientTexture2D_hj3a6")
 visible = false
 position = Vector2(550, 340)
 texture = ExtResource("1_f1txs")
-
-[node name="Game" type="Node2D" parent="PixelArtViewport"]
-script = ExtResource("2_pmp1e")
-starting_map = "levelTestMap.tscn"
-
-[node name="Player" parent="PixelArtViewport/Game" instance=ExtResource("3_k0yo1")]
-z_index = 1
-position = Vector2(305, 190)
-metadata/_edit_group_ = true
-
-[node name="Camera2D" type="Camera2D" parent="PixelArtViewport/Game/Player"]
-limit_left = 0
-limit_top = 0
-limit_bottom = 480
-
-[node name="Hud" parent="PixelArtViewport/Game" instance=ExtResource("4_fuwd1")]
-visible = false
-
-[node name="StateChartDebugger" parent="PixelArtViewport/Game/Hud" instance=ExtResource("5_nq0t6")]
-visible = false
-offset_left = 279.0
-offset_top = 4.0
-offset_right = 341.0
-offset_bottom = -72.0
-scale = Vector2(0.5, 0.5)
-initial_node_to_watch = NodePath("../../Player")

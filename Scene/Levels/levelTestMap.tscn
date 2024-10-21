@@ -1,10 +1,8 @@
-[gd_scene load_steps=19 format=3 uid="uid://cek0f3q58j730"]
+[gd_scene load_steps=17 format=3 uid="uid://cek0f3q58j730"]
 
 [ext_resource type="PackedScene" uid="uid://bsg0351mx3b4u" path="res://addons/MetroidvaniaSystem/Nodes/RoomInstance.tscn" id="1_1ud2h"]
 [ext_resource type="Texture2D" uid="uid://2fgqx5i8emlx" path="res://asset/Map/Test_map.png" id="1_hi56p"]
 [ext_resource type="PackedScene" uid="uid://b41oickcktc0y" path="res://Scene/desesperatedSlave.tscn" id="5_8ig20"]
-[ext_resource type="PackedScene" uid="uid://c6m0m4apmdsgw" path="res://Scene/ennemiVolant.tscn" id="5_a8pdo"]
-[ext_resource type="PackedScene" uid="uid://bvasv3lk3dws6" path="res://Scene/projectile.tscn" id="6_3e52m"]
 [ext_resource type="PackedScene" uid="uid://brrt1khpgb4ur" path="res://Scene/campfire.tscn" id="6_073y2"]
 [ext_resource type="Texture2D" uid="uid://c46438mmwhkh7" path="res://asset/door.png" id="6_bqgi1"]
 [ext_resource type="PackedScene" uid="uid://dv50d3foas1su" path="res://Scene/doorNextMap.tscn" id="8_lqkjy"]
@@ -120,10 +118,6 @@ one_way_collision = true
 
 [node name="desesperatedSlave" parent="." instance=ExtResource("5_8ig20")]
 position = Vector2(518, 394)
-
-[node name="EnnemiVolant" parent="." instance=ExtResource("5_a8pdo")]
-position = Vector2(594, 277)
-projectile_scene = ExtResource("6_3e52m")
 
 [node name="Campfire" parent="." instance=ExtResource("6_073y2")]
 position = Vector2(68, 391)
