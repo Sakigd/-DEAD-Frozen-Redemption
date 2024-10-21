@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://cclgcfc6tat0h"]
+
+[ext_resource type="Texture2D" uid="uid://dpqao4vq5vj2w" path="res://Viewport Layout/PixelViewportDemoTexture.png" id="1_b6i38"]
+
+[sub_resource type="Gradient" id="Gradient_vrsgc"]
+offsets = PackedFloat32Array(0.20068, 0.22449, 0.751701, 0.789116)
+colors = PackedColorArray(0, 0, 0, 1, 0, 1, 0, 1, 0.929141, 0.0368664, 0.929141, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_hj3a6"]
+gradient = SubResource("Gradient_vrsgc")
+fill_to = Vector2(1, 1)
+
+[node name="SceneTest" type="Node"]
+
+[node name="Test" type="TextureRect" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_hj3a6")
+
+[node name="Sprite2D" type="TextureRect" parent="."]
+texture_repeat = 2
+offset_right = 2338.0
+offset_bottom = 1230.0
+texture = ExtResource("1_b6i38")
+stretch_mode = 1
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(944, 416)
