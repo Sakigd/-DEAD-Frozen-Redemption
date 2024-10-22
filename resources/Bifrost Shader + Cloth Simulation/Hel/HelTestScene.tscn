@@ -1,0 +1,598 @@
+[gd_scene load_steps=26 format=3 uid="uid://h5owsfgwjvfa"]
+
+[ext_resource type="Script" path="res://Hel/Hel.gd" id="2_qs883"]
+[ext_resource type="Texture2D" uid="uid://cvetkbwfhy8jq" path="res://Igris.png" id="3_12vkd"]
+[ext_resource type="Script" path="res://Hel/Hand.gd" id="3_d4bl7"]
+[ext_resource type="Script" path="res://Hel/CloakPart.gd" id="4_xigfx"]
+
+[sub_resource type="GDScript" id="GDScript_b57h3"]
+script/source = "extends Camera2D
+const speed = 300
+var last_frame_mouse = false
+var last_frame_mouse_right = false
+var last_frame_mouse_left = false
+var hold_left = Vector2.ZERO
+var hold_right = Vector2.ZERO
+var hold_mouse_for_left = Vector2.ZERO
+var hold_mouse_for_right = Vector2.ZERO
+
+func _process(delta):
+	var move = Vector2.ZERO 
+	if Input.is_key_label_pressed(KEY_LEFT) :
+		move.x -= speed*delta
+	if Input.is_key_label_pressed(KEY_RIGHT) :
+		move.x += speed*delta
+	if Input.is_key_label_pressed(KEY_UP) :
+		move.y -= speed*delta
+	if Input.is_key_label_pressed(KEY_DOWN) :
+		move.y += speed*delta
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE) and not last_frame_mouse :
+		if get_node(\"../Hel\").direction == 1 :
+			get_node(\"../Hel\").direction = 0
+		else :
+			get_node(\"../Hel\").direction = 1
+	position += move
+	
+	if not (Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT) or Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)) :
+		get_node(\"../Hel\").global_position = get_global_mouse_position()
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT) :
+		var right = get_node(\"../Hel/RightHand\")
+		if not last_frame_mouse_right :
+			hold_right = right.global_position
+			hold_mouse_for_right = get_global_mouse_position()
+		var mouse_diff = get_global_mouse_position() - hold_mouse_for_right
+		right.global_position = hold_right + mouse_diff
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) :
+		var left = get_node(\"../Hel/LeftHand\")
+		if not last_frame_mouse_left :
+			hold_left = left.global_position
+			hold_mouse_for_left = get_global_mouse_position()
+		var mouse_diff = get_global_mouse_position() - hold_mouse_for_left
+		left.global_position = hold_left + mouse_diff
+	
+	#if Input.is_key_label_pressed(KEY_ESCAPE) :
+		#get_tree().root.queue_free()
+	
+	last_frame_mouse = Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE)
+	last_frame_mouse_right = Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)
+	last_frame_mouse_left = Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
+"
+
+[sub_resource type="Curve" id="Curve_yvh1l"]
+_data = [Vector2(0.411429, 0.542969), 0.0, 0.0, 0, 0]
+point_count = 1
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_bn682"]
+width = 1365
+curve_x = SubResource("Curve_yvh1l")
+curve_y = SubResource("Curve_yvh1l")
+curve_z = SubResource("Curve_yvh1l")
+
+[sub_resource type="GDScript" id="GDScript_w5fil"]
+script/source = "@tool
+extends Sprite2D
+
+func _process(_delta: float) -> void:
+	position = get_node(\"../Hel\").position
+"
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_j4eab"]
+blend_mode = 3
+
+[sub_resource type="Curve" id="Curve_k0b5e"]
+_data = [Vector2(0, 0.78022), 3.18302, 1.31868, 0, 0, Vector2(0.836842, 0.736264), -1.78087, -1.78087, 0, 0, Vector2(0.9875, 0.021978), -3.43656, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_003cn"]
+offsets = PackedFloat32Array(0.035, 0.99)
+colors = PackedColorArray(0.09, 0.0126, 0.0126, 1, 0.61971, 0.91, 0.3822, 1)
+
+[sub_resource type="Gradient" id="Gradient_i4mmp"]
+offsets = PackedFloat32Array(0.035, 0.99)
+colors = PackedColorArray(0.0126, 0.05517, 0.09, 1, 0.479733, 0.56, 0.0784, 1)
+
+[sub_resource type="Gradient" id="Gradient_n7wf8"]
+offsets = PackedFloat32Array(0.035, 0.99)
+colors = PackedColorArray(0.0126, 0.09, 0.03066, 1, 0.13395, 0.45, 0.063, 1)
+
+[sub_resource type="SkeletonModification2DTwoBoneIK" id="SkeletonModification2DTwoBoneIK_1k0yx"]
+target_nodepath = NodePath("../RightHandSkeleton/RightHandComp")
+flip_bend_direction = true
+joint_one_bone_idx = 0
+joint_one_bone2d_node = NodePath("RightUpper")
+joint_two_bone_idx = 1
+joint_two_bone2d_node = NodePath("RightUpper/RightLower")
+
+[sub_resource type="SkeletonModification2DJiggle" id="SkeletonModification2DJiggle_7j5cw"]
+target_nodepath = NodePath("../RightHandSkeleton/RightHandComp")
+jiggle_data_chain_length = 1
+stiffness = 11.0
+mass = 2.0
+joint_data/0/bone_index = 1
+joint_data/0/bone2d_node = NodePath("RightUpper/RightLower")
+joint_data/0/override_defaults = false
+
+[sub_resource type="SkeletonModification2DJiggle" id="SkeletonModification2DJiggle_i356p"]
+target_nodepath = NodePath("RightUpper/RightLower")
+jiggle_data_chain_length = 1
+stiffness = 11.0
+mass = 2.0
+joint_data/0/bone_index = 0
+joint_data/0/bone2d_node = NodePath("RightUpper")
+joint_data/0/override_defaults = false
+
+[sub_resource type="SkeletonModificationStack2D" id="SkeletonModificationStack2D_2q6o8"]
+enabled = true
+modification_count = 3
+modifications/0 = SubResource("SkeletonModification2DTwoBoneIK_1k0yx")
+modifications/1 = SubResource("SkeletonModification2DJiggle_7j5cw")
+modifications/2 = SubResource("SkeletonModification2DJiggle_i356p")
+
+[sub_resource type="Curve" id="Curve_7lqmm"]
+_data = [Vector2(0, 0.929348), 0.0, 0.0, 0, 0, Vector2(1, 0.717391), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_vwtoj"]
+_data = [Vector2(0, 0.687238), 0.0, 0.0, 0, 0, Vector2(1, 0.208696), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="SkeletonModification2DTwoBoneIK" id="SkeletonModification2DTwoBoneIK_04p5a"]
+target_nodepath = NodePath("../LeftHandSkeleton/LeftHandComp")
+flip_bend_direction = true
+joint_one_bone_idx = 0
+joint_one_bone2d_node = NodePath("LeftUpper")
+joint_two_bone_idx = 1
+joint_two_bone2d_node = NodePath("LeftUpper/LeftLower")
+
+[sub_resource type="SkeletonModification2DJiggle" id="SkeletonModification2DJiggle_ufbcs"]
+target_nodepath = NodePath("../LeftHandSkeleton/LeftHandComp")
+jiggle_data_chain_length = 1
+stiffness = 11.0
+mass = 2.0
+joint_data/0/bone_index = 1
+joint_data/0/bone2d_node = NodePath("LeftUpper/LeftLower")
+joint_data/0/override_defaults = false
+
+[sub_resource type="SkeletonModification2DJiggle" id="SkeletonModification2DJiggle_2pl8k"]
+target_nodepath = NodePath("LeftUpper/LeftLower")
+jiggle_data_chain_length = 1
+stiffness = 11.0
+mass = 2.0
+joint_data/0/bone_index = 0
+joint_data/0/bone2d_node = NodePath("LeftUpper")
+joint_data/0/override_defaults = false
+
+[sub_resource type="SkeletonModificationStack2D" id="SkeletonModificationStack2D_b5jib"]
+enabled = true
+modification_count = 3
+modifications/0 = SubResource("SkeletonModification2DTwoBoneIK_04p5a")
+modifications/1 = SubResource("SkeletonModification2DJiggle_ufbcs")
+modifications/2 = SubResource("SkeletonModification2DJiggle_2pl8k")
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_56www"]
+size = Vector2(6, 6)
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_vhpbg"]
+size = Vector2(6, 6)
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Scene" type="Node2D" parent="."]
+
+[node name="Camera" type="Camera2D" parent="Scene"]
+script = SubResource("GDScript_b57h3")
+
+[node name="Background" type="Sprite2D" parent="Scene"]
+z_index = -2
+position = Vector2(-1, 0)
+scale = Vector2(0.5, 682.5)
+texture = SubResource("CurveXYZTexture_bn682")
+script = SubResource("GDScript_w5fil")
+
+[node name="Igris" type="Sprite2D" parent="Scene"]
+position = Vector2(120, 0)
+texture = ExtResource("3_12vkd")
+
+[node name="Hel" type="Node2D" parent="Scene"]
+position = Vector2(-1, 0)
+script = ExtResource("2_qs883")
+
+[node name="BodyComponents" type="Node2D" parent="Scene/Hel"]
+
+[node name="CloakParts" type="Node2D" parent="Scene/Hel/BodyComponents"]
+position = Vector2(1, 0)
+scale = Vector2(0.5, 0.5)
+
+[node name="ThinCloak1" type="Line2D" parent="Scene/Hel/BodyComponents/CloakParts" node_paths=PackedStringArray("target")]
+texture_filter = 1
+material = SubResource("CanvasItemMaterial_j4eab")
+points = PackedVector2Array(-2, -4, 5.59508, -6.51291, 5.35774, 1.48357, 2.71267, 9.03364, -1.18444, 16.0202, -4.47667, 23.3114, -6.10544, 31.1439, -6.52588, 39.1328, -7.10855, 47.1115, -8.88153, 54.9126, -11.85, 62.3415, -15.1359, 69.6355, -17.6252, 77.2384, -18.5379, 85.1861, -18.0309, 93.17, -17.1946, 101.126, -17.3871, 109.124, -19.721, 116.776, -24.4768, 123.209, -30.8155, 128.089, -37.644, 132.257, -44.1557, 136.905, -49.5011, 142.857, -52.5556, 150.251, -52.3058, 158.247, -48.9211, 165.495, -43.8282, 171.665, -38.4172, 177.557, -33.7104, 184.026, -30.6576, 191.421, -30.0893, 199.401, -32.1826, 207.122, -36.1448, 214.072, -40.8148, 220.567, -45.2252, 227.242, -48.6486, 234.472, -50.6621, 242.215, -51.3088, 250.189, -51.0333, 258.184, -50.3645, 266.156, -49.654, 274.124, -49.0222, 282.099, -48.4784, 290.081, -48.1192, 298.073, -48.2553, 306.072, -49.3835, 313.992, -52.2291, 321.468, -56.1368, 328.449, -62.3708, 333.463, -69.3417, 337.388)
+width = 16.0
+width_curve = SubResource("Curve_k0b5e")
+default_color = Color(0, 0.0627451, 0, 1)
+gradient = SubResource("Gradient_003cn")
+joint_mode = 2
+begin_cap_mode = 2
+script = ExtResource("4_xigfx")
+target = NodePath("../../..")
+offset = Vector2(0, -2)
+segments = 50
+segment_length = 8
+min_angle = 0
+inertia = 0.35
+dampening = 0.9
+natural_direction = 190.0
+resistance = 0.4
+oscillation_strength = 0.995
+oscillation_speed = 2.0
+
+[node name="ThinCloak2" type="Line2D" parent="Scene/Hel/BodyComponents/CloakParts" node_paths=PackedStringArray("target")]
+texture_filter = 1
+material = SubResource("CanvasItemMaterial_j4eab")
+position = Vector2(-172, 204)
+points = PackedVector2Array(170, -204, 174.813, -210.39, 178.223, -203.153, 181.079, -195.68, 180.838, -187.684, 176.616, -180.889, 171.037, -175.155, 166.776, -168.384, 166.3, -160.399, 169.724, -153.168, 174.165, -146.514, 177.493, -139.239, 178.758, -131.34, 178.204, -123.359, 176.439, -115.556, 173.539, -108.1, 169.212, -101.372, 163.486, -95.7851, 156.911, -91.2275, 150.109, -87.0164, 143.568, -82.4113, 137.756, -76.9131, 133.23, -70.3164, 130.665, -62.7389, 130.821, -54.7404, 134.308, -47.5402, 140.878, -42.9763, 148.846, -42.2576, 156.497, -44.5959, 163.499, -48.4648, 170.177, -52.8695, 176.848, -57.285, 183.705, -61.4065, 190.842, -65.0204, 198.286, -67.9501, 206.01, -70.0337, 213.937, -71.1154, 221.936, -71.0455, 229.82, -69.6843, 237.324, -66.9119, 244.092, -62.6458, 249.631, -56.8742, 253.247, -49.7379, 253.902, -41.7648, 249.876, -34.8516, 242.425, -37.762, 246.701, -44.5232, 239.062, -46.8993, 244.377, -40.9204, 240.188, -47.7359)
+width = 16.0
+width_curve = SubResource("Curve_k0b5e")
+default_color = Color(0, 0.0627451, 0, 1)
+gradient = SubResource("Gradient_i4mmp")
+joint_mode = 2
+begin_cap_mode = 2
+script = ExtResource("4_xigfx")
+target = NodePath("../../..")
+segments = 50
+segment_length = 8
+min_angle = 0
+inertia = 0.55
+dampening = 0.9
+natural_direction = 180.0
+resistance = 0.4
+oscillation_strength = 0.995
+oscillation_speed = 2.0
+
+[node name="ThinCloak3" type="Line2D" parent="Scene/Hel/BodyComponents/CloakParts" node_paths=PackedStringArray("target")]
+texture_filter = 1
+material = SubResource("CanvasItemMaterial_j4eab")
+points = PackedVector2Array(-2, 4, 2.91248, -2.31407, 6.77363, 4.69246, 8.57839, 12.4862, 7.35541, 20.3922, 4.92864, 28.0152, 3.78321, 35.9328, 5.23309, 43.8003, 8.58688, 51.0634, 12.2217, 58.1899, 14.7835, 65.7687, 15.3199, 73.7507, 13.5884, 81.5611, 10.3342, 88.8693, 6.79728, 96.045, 4.22847, 103.621, 3.8959, 111.614, 6.86395, 119.043, 12.9658, 124.217, 20.5626, 126.725, 28.4701, 127.938, 36.3554, 129.288, 43.9832, 131.7, 50.8977, 135.723, 56.3303, 141.596, 59.1356, 149.088, 57.9412, 156.998, 52.3551, 162.725, 44.5372, 164.422, 36.605, 163.383, 28.858, 161.387, 21.1084, 159.401, 13.2456, 157.926, 5.27301, 157.264, -2.7188, 157.626, -10.568, 159.172, -18.0428, 162.023, -24.8298, 166.258, -30.5057, 171.896, -34.488, 178.834, -35.9768, 186.695, -34.0081, 194.449, -28.1382, 199.884, -20.1669, 200.561, -12.8861, 197.246, -6.52683, 192.392, -0.544037, 187.081, 6.12625, 182.664, 6.88653, 174.701, 14.5759, 172.493)
+width = 16.0
+width_curve = SubResource("Curve_k0b5e")
+default_color = Color(0, 0.0627451, 0, 1)
+gradient = SubResource("Gradient_n7wf8")
+joint_mode = 2
+begin_cap_mode = 2
+script = ExtResource("4_xigfx")
+target = NodePath("../../..")
+offset = Vector2(0, 2)
+segments = 50
+segment_length = 8
+min_angle = 0
+inertia = 0.45
+dampening = 0.9
+natural_direction = 170.0
+resistance = 0.4
+oscillation_strength = 0.995
+oscillation_speed = 2.0
+
+[node name="ThinCloak4" type="Line2D" parent="Scene/Hel/BodyComponents/CloakParts" node_paths=PackedStringArray("target")]
+texture_filter = 1
+material = SubResource("CanvasItemMaterial_j4eab")
+points = PackedVector2Array(-2, -4, 4.98126, -7.90666, 6.64917, -0.0824637, 6.28313, 7.90916, 5.4677, 15.8675, 5.713, 23.8637, 7.13219, 31.7368, 8.7772, 39.5659, 9.79076, 47.5014, 10.079, 55.4962, 10.2135, 63.4951, 10.8, 71.4736, 11.9282, 79.3936, 13.0896, 87.3089, 13.5346, 95.2965, 12.7612, 103.259, 10.9046, 111.041, 8.70345, 118.732, 7.12712, 126.575, 7.07148, 134.575, 9.04858, 142.327, 12.8575, 149.362, 17.7165, 155.717, 22.7648, 161.923, 27.2887, 168.521, 30.7516, 175.733, 32.9199, 183.433, 33.9801, 191.363, 34.4332, 199.35, 34.8429, 207.339, 35.6362, 215.3, 37.0091, 223.181, 38.9197, 230.95, 41.1522, 238.632, 43.4136, 246.306, 45.4176, 254.051, 46.9475, 261.903, 47.9053, 269.846, 48.345, 277.833, 48.4727, 285.832, 48.6025, 293.831, 49.0765, 301.817, 50.1606, 309.743, 51.9346, 317.544, 54.2338, 325.207, 56.6857, 332.822, 58.7722, 340.545, 59.9144, 348.463, 62.2999, 356.099, 69.8454, 358.757)
+width = 23.0
+width_curve = SubResource("Curve_k0b5e")
+default_color = Color(0, 0.0627451, 0, 1)
+gradient = SubResource("Gradient_003cn")
+joint_mode = 2
+begin_cap_mode = 2
+script = ExtResource("4_xigfx")
+target = NodePath("../../..")
+offset = Vector2(0, -2)
+segments = 50
+segment_length = 8
+min_angle = 0
+inertia = 0.3
+dampening = 0.9
+natural_direction = 170.0
+resistance = 0.4
+oscillation_strength = 0.995
+oscillation_speed = 2.0
+
+[node name="ThinCloak5" type="Line2D" parent="Scene/Hel/BodyComponents/CloakParts" node_paths=PackedStringArray("target")]
+texture_filter = 1
+material = SubResource("CanvasItemMaterial_j4eab")
+position = Vector2(-172, 204)
+points = PackedVector2Array(170, -204, 176.323, -208.901, 178.091, -201.098, 178.309, -193.101, 175.14, -185.756, 169.699, -179.892, 164.48, -173.828, 161.603, -166.363, 161.953, -158.371, 163.896, -150.61, 165.441, -142.761, 165.439, -134.761, 163.43, -127.017, 159.41, -120.101, 153.759, -114.439, 147.174, -109.895, 140.35, -105.72, 133.869, -101.03, 128.401, -95.1899, 124.885, -88.0043, 124.5, -80.0135, 128.057, -72.8479, 134.72, -68.42, 142.546, -66.7596, 150.541, -66.4762, 158.54, -66.4031, 166.52, -65.836, 174.381, -64.3478, 181.92, -61.6728, 188.842, -57.6612, 194.755, -52.2728, 199.165, -45.598, 201.443, -37.9294, 200.808, -29.9547, 196.491, -23.2196, 188.911, -20.6608, 181.703, -24.131, 176.98, -30.5883, 173.371, -37.728, 169.924, -44.9473, 166.264, -52.061, 162.247, -58.9793, 157.823, -65.6447, 152.969, -72.0039, 147.697, -78.0207, 142.061, -83.6986, 135.934, -88.8424, 128.62, -92.084, 130.317, -99.902, 122.546, -101.803)
+width = 23.0
+width_curve = SubResource("Curve_k0b5e")
+default_color = Color(0, 0.0627451, 0, 1)
+gradient = SubResource("Gradient_i4mmp")
+joint_mode = 2
+begin_cap_mode = 2
+script = ExtResource("4_xigfx")
+target = NodePath("../../..")
+segments = 50
+segment_length = 8
+min_angle = 0
+dampening = 0.9
+natural_direction = 190.0
+resistance = 0.4
+oscillation_strength = 0.995
+oscillation_speed = 2.0
+
+[node name="ThinCloak6" type="Line2D" parent="Scene/Hel/BodyComponents/CloakParts" node_paths=PackedStringArray("target")]
+texture_filter = 1
+material = SubResource("CanvasItemMaterial_j4eab")
+points = PackedVector2Array(-2, 4, 4.49069, -0.676633, 6.42811, 7.08522, 5.88577, 15.0668, 3.11174, 22.5705, 0.195958, 30.0202, -1.05026, 37.9225, -0.221653, 45.8795, 1.50478, 53.691, 2.57965, 61.6184, 1.93, 69.592, -0.511421, 77.2104, -3.76281, 84.5199, -6.45424, 92.0535, -7.21203, 100.018, -5.13163, 107.742, -0.691523, 114.397, 4.67072, 120.334, 9.68834, 126.565, 13.2229, 133.742, 13.9985, 141.704, 10.9896, 149.117, 4.7233, 154.09, -2.9086, 156.489, -10.7981, 157.814, -18.6344, 159.424, -26.1415, 162.189, -32.7955, 166.63, -37.7226, 172.932, -39.6629, 180.693, -37.3789, 188.361, -31.2132, 193.458, -23.434, 195.324, -15.4372, 195.552, -7.43787, 195.656, 0.505684, 196.605, 8.11492, 199.074, 14.7372, 203.563, 19.1576, 210.23, 19.6164, 218.217, 15.3561, 224.989, 8.4698, 229.06, 0.982211, 231.877, -6.33312, 235.116, -12.7791, 239.854, -17.0445, 246.622, -17.232, 254.619, -13.6879, 261.792, -5.69077, 262.004, -0.407805, 268.012)
+width = 23.0
+width_curve = SubResource("Curve_k0b5e")
+default_color = Color(0, 0.0627451, 0, 1)
+gradient = SubResource("Gradient_n7wf8")
+joint_mode = 2
+begin_cap_mode = 2
+script = ExtResource("4_xigfx")
+target = NodePath("../../..")
+offset = Vector2(0, 2)
+segments = 50
+segment_length = 8
+min_angle = 0
+inertia = 0.4
+dampening = 0.9
+natural_direction = 180.0
+resistance = 0.4
+oscillation_strength = 0.995
+oscillation_speed = 2.0
+
+[node name="LongCloak1" type="Line2D" parent="Scene/Hel/BodyComponents/CloakParts" node_paths=PackedStringArray("target")]
+texture_filter = 1
+material = SubResource("CanvasItemMaterial_j4eab")
+points = PackedVector2Array(-2, -4, 5.68617, -1.78125, 4.34385, 6.10533, 1.86019, 13.71, -1.66203, 20.8929, -5.333, 28.0009, -8.23547, 35.4559, -10.0254, 43.253, -11.1459, 51.1742, -12.3702, 59.0799, -14.1767, 66.8733, -16.4956, 74.5299, -18.8647, 82.171, -20.7296, 89.9506, -21.6694, 97.8952, -21.5307, 105.894, -20.4596, 113.822, -18.8295, 121.654, -17.1383, 129.473, -15.947, 137.384, -15.8446, 145.384, -17.3699, 153.237, -20.8217, 160.454, -26.0355, 166.521, -32.4292, 171.33, -39.3627, 175.321, -46.3544, 179.209, -52.9923, 183.674, -58.7772, 189.2, -63.0659, 195.953, -65.2005, 203.663, -64.8537, 211.655, -62.3186, 219.243, -58.3371, 226.182, -53.6781, 232.685, -48.9471, 239.136, -44.636, 245.875, -41.3453, 253.167, -37.2872, 260.062, -40.0538, 267.568)
+width = 32.0
+width_curve = SubResource("Curve_k0b5e")
+default_color = Color(0, 0.0627451, 0, 1)
+gradient = SubResource("Gradient_003cn")
+joint_mode = 2
+begin_cap_mode = 2
+script = ExtResource("4_xigfx")
+target = NodePath("../../..")
+offset = Vector2(0, -2)
+segments = 40
+segment_length = 8
+min_angle = 0
+inertia = 0.3
+dampening = 0.9
+natural_direction = 190.0
+resistance = 0.6
+oscillation_strength = 0.995
+oscillation_speed = 2.0
+
+[node name="LongCloak2" type="Line2D" parent="Scene/Hel/BodyComponents/CloakParts" node_paths=PackedStringArray("target")]
+texture_filter = 1
+material = SubResource("CanvasItemMaterial_j4eab")
+position = Vector2(-172, 204)
+points = PackedVector2Array(170, -204, 177.475, -206.85, 178.729, -198.949, 180.559, -191.161, 181.966, -183.286, 181.425, -175.304, 178.022, -168.064, 172.567, -162.213, 166.633, -156.847, 161.591, -150.636, 159.091, -143.037, 160.817, -135.225, 166.156, -129.267, 172.718, -124.691, 179.022, -119.766, 183.845, -113.383, 185.437, -105.543, 182.349, -98.163, 176.041, -93.2425, 168.92, -89.5972, 162.142, -85.3477, 156.842, -79.3551, 154.824, -71.6136, 157.303, -64.0073, 162.519, -57.941, 168.134, -52.2433, 172.643, -45.6347, 174.56, -37.8679, 172.71, -30.0848, 167.597, -23.9318, 160.939, -19.497, 153.86, -15.77, 146.87, -11.8797, 140.297, -7.3195, 134.53, -1.77401, 129.954, 4.78741, 126.956, 12.2047, 128.935, 19.9563, 124.048, 26.29, 131.792, 28.2977)
+width = 32.0
+width_curve = SubResource("Curve_k0b5e")
+default_color = Color(0, 0.0627451, 0, 1)
+gradient = SubResource("Gradient_i4mmp")
+joint_mode = 2
+begin_cap_mode = 2
+script = ExtResource("4_xigfx")
+target = NodePath("../../..")
+segments = 40
+segment_length = 8
+min_angle = 0
+dampening = 0.9
+natural_direction = 180.0
+resistance = 0.6
+oscillation_strength = 0.995
+oscillation_speed = 2.0
+
+[node name="LongCloak3" type="Line2D" parent="Scene/Hel/BodyComponents/CloakParts" node_paths=PackedStringArray("target")]
+texture_filter = 1
+material = SubResource("CanvasItemMaterial_j4eab")
+points = PackedVector2Array(-2, 4, 5.56409, 1.39527, 7.92076, 9.04027, 9.7699, 16.8236, 9.99863, 24.8204, 8.3127, 32.6407, 5.77625, 40.228, 4.01075, 48.0307, 4.41813, 56.0203, 7.28833, 63.4877, 11.4413, 70.3253, 15.328, 77.3177, 17.6378, 84.977, 17.6947, 92.9768, 16.0116, 100.798, 13.8002, 108.486, 12.1206, 116.308, 11.5447, 124.287, 12.0725, 132.27, 13.3426, 140.168, 15.0504, 147.984, 17.2249, 155.682, 20.2076, 163.106, 24.4011, 169.918, 29.9495, 175.682, 36.5891, 180.144, 43.848, 183.507, 51.337, 186.321, 58.7999, 189.202, 66.0066, 192.676, 72.6511, 197.131, 78.2833, 202.812, 82.2558, 209.756, 83.7141, 217.622, 81.7817, 225.385, 76.3756, 231.282, 68.789, 233.821, 60.7912, 234.01, 60.7773, 226.01, 53.0221, 224.046)
+width = 32.0
+width_curve = SubResource("Curve_k0b5e")
+default_color = Color(0, 0.0627451, 0, 1)
+gradient = SubResource("Gradient_n7wf8")
+joint_mode = 2
+begin_cap_mode = 2
+script = ExtResource("4_xigfx")
+target = NodePath("../../..")
+offset = Vector2(0, 2)
+segments = 40
+segment_length = 8
+min_angle = 0
+inertia = 0.4
+dampening = 0.9
+natural_direction = 170.0
+resistance = 0.6
+oscillation_strength = 0.995
+oscillation_speed = 2.0
+
+[node name="ShortCloak1" type="Line2D" parent="Scene/Hel/BodyComponents/CloakParts" node_paths=PackedStringArray("target")]
+texture_filter = 1
+material = SubResource("CanvasItemMaterial_j4eab")
+points = PackedVector2Array(-2, -4, 4.91162, -8.02859, 6.00428, -0.103556, 7.73319, 7.70739, 8.96014, 15.6127, 7.82599, 23.5319, 3.6512, 30.3562, -1.95352, 36.0648, -6.85163, 42.39, -8.97255, 50.1037, -6.90521, 57.832, -2.14434, 64.2612, 2.59875, 70.7034, 5.23275, 78.2574, 4.28638, 86.2012, 0.299249, 93.1368, -4.56975, 99.4845, -8.33726, 106.542, -10.893, 114.123, -5.70862, 120.215)
+width = 32.0
+width_curve = SubResource("Curve_k0b5e")
+default_color = Color(0, 0.0627451, 0, 1)
+gradient = SubResource("Gradient_003cn")
+joint_mode = 2
+begin_cap_mode = 2
+script = ExtResource("4_xigfx")
+target = NodePath("../../..")
+offset = Vector2(0, -2)
+segments = 20
+segment_length = 8
+min_angle = 0
+inertia = 0.6
+dampening = 0.8
+transfer = 0.6
+natural_direction = 180.0
+resistance = 0.6
+oscillation_strength = 0.995
+oscillation_speed = 2.0
+
+[node name="ShortCloak2" type="Line2D" parent="Scene/Hel/BodyComponents/CloakParts" node_paths=PackedStringArray("target")]
+texture_filter = 1
+material = SubResource("CanvasItemMaterial_j4eab")
+position = Vector2(-166, 208)
+points = PackedVector2Array(164, -208, 171.506, -210.767, 171.206, -202.773, 171.552, -194.78, 171.388, -186.782, 168.896, -179.18, 163.599, -173.184, 157.089, -168.536, 151.167, -163.157, 147.738, -155.929, 148.432, -147.959, 152.004, -140.801, 155.557, -133.633, 156.838, -125.736, 154.526, -118.078, 149.403, -111.933, 143.513, -106.52, 138.455, -100.322, 135.58, -92.8559, 135.551, -84.856, 137.438, -77.0816, 139.478, -69.346, 140.287, -61.3871, 139.42, -53.4342, 137.612, -45.6412, 136.082, -37.7888, 136.576, -29.804, 137.305, -21.8374, 139.766, -14.225, 139.448, -6.23133)
+width = 32.0
+width_curve = SubResource("Curve_k0b5e")
+default_color = Color(0, 0.0627451, 0, 1)
+gradient = SubResource("Gradient_i4mmp")
+joint_mode = 2
+begin_cap_mode = 2
+script = ExtResource("4_xigfx")
+target = NodePath("../../..")
+segments = 30
+segment_length = 8
+min_angle = 0
+inertia = 0.6
+dampening = 0.8
+transfer = 0.6
+natural_direction = 190.0
+resistance = 0.6
+oscillation_strength = 0.995
+oscillation_speed = 2.0
+
+[node name="ShortCloak3" type="Line2D" parent="Scene/Hel/BodyComponents/CloakParts" node_paths=PackedStringArray("target")]
+texture_filter = 1
+material = SubResource("CanvasItemMaterial_j4eab")
+position = Vector2(278, -152)
+points = PackedVector2Array(-280, 156, -274.883, 149.85, -271.146, 156.924, -266.85, 163.672, -262.993, 170.681, -261.35, 178.511, -262.939, 186.351, -266.253, 193.633, -268.693, 201.252, -268.047, 209.226, -263.462, 215.781, -256.789, 220.194, -250.128, 224.625, -245.07, 230.823, -243.244, 238.612, -244.608, 246.495, -247.002, 254.128, -248.283, 262.025, -247.044, 269.928, -243.055, 276.863, -237.542, 282.66, -232.054, 288.481, -227.033, 294.709, -221.738, 300.706, -223.3, 308.552)
+width = 32.0
+width_curve = SubResource("Curve_k0b5e")
+default_color = Color(0, 0.0627451, 0, 1)
+gradient = SubResource("Gradient_n7wf8")
+joint_mode = 2
+begin_cap_mode = 2
+script = ExtResource("4_xigfx")
+target = NodePath("../../..")
+offset = Vector2(0, 2)
+segments = 25
+segment_length = 8
+min_angle = 0
+inertia = 0.6
+dampening = 0.8
+transfer = 0.6
+natural_direction = 160.0
+resistance = 0.6
+oscillation_strength = 0.995
+oscillation_speed = 2.0
+
+[node name="RightArmSkeleton" type="Skeleton2D" parent="Scene/Hel/BodyComponents"]
+process_priority = 1
+z_index = -1
+position = Vector2(16, 2)
+modification_stack = SubResource("SkeletonModificationStack2D_2q6o8")
+
+[node name="RightUpper" type="Bone2D" parent="Scene/Hel/BodyComponents/RightArmSkeleton"]
+rotation = 1.17475
+scale = Vector2(0.99998, 0.99998)
+rest = Transform2D(1, 0, 0, 1, 0, 0)
+editor_settings/show_bone_gizmo = false
+metadata/_local_pose_override_enabled_ = true
+
+[node name="Sprite" type="Line2D" parent="Scene/Hel/BodyComponents/RightArmSkeleton/RightUpper"]
+self_modulate = Color(0.7, 0.7, 0.7, 1)
+points = PackedVector2Array(0, 0, 40.8048, 0.287539)
+width = 16.0
+width_curve = SubResource("Curve_7lqmm")
+default_color = Color(0.289909, 0.522952, 4.81307e-07, 1)
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="RightLower" type="Bone2D" parent="Scene/Hel/BodyComponents/RightArmSkeleton/RightUpper"]
+position = Vector2(40, 0)
+rotation = -2.36606
+scale = Vector2(0.999986, 0.999986)
+rest = Transform2D(1, 0, 0, 1, 40, 0)
+editor_settings/show_bone_gizmo = false
+metadata/_local_pose_override_enabled_ = true
+
+[node name="RightTip" type="Bone2D" parent="Scene/Hel/BodyComponents/RightArmSkeleton/RightUpper/RightLower"]
+position = Vector2(40, 0)
+rest = Transform2D(1, 0, 0, 1, 40, 0)
+editor_settings/show_bone_gizmo = false
+
+[node name="Sprite" type="Line2D" parent="Scene/Hel/BodyComponents/RightArmSkeleton/RightUpper/RightLower"]
+self_modulate = Color(0.7, 0.7, 0.7, 1)
+points = PackedVector2Array(0, 0, 40.8048, 0.287539)
+width = 16.0
+width_curve = SubResource("Curve_vwtoj")
+default_color = Color(0.289909, 0.522952, 4.81307e-07, 1)
+begin_cap_mode = 2
+end_cap_mode = 1
+
+[node name="LeftArmSkeleton" type="Skeleton2D" parent="Scene/Hel/BodyComponents"]
+process_priority = 1
+z_index = 1
+position = Vector2(-16, 1)
+modification_stack = SubResource("SkeletonModificationStack2D_b5jib")
+
+[node name="LeftUpper" type="Bone2D" parent="Scene/Hel/BodyComponents/LeftArmSkeleton"]
+rotation = 0.679188
+scale = Vector2(0.99998, 0.99998)
+rest = Transform2D(1, 0, 0, 1, 0, 0)
+editor_settings/show_bone_gizmo = false
+metadata/_local_pose_override_enabled_ = true
+
+[node name="Sprite" type="Line2D" parent="Scene/Hel/BodyComponents/LeftArmSkeleton/LeftUpper"]
+points = PackedVector2Array(0, 0, 40.8048, 0.287539)
+width = 16.0
+width_curve = SubResource("Curve_7lqmm")
+default_color = Color(0.289909, 0.522952, 4.81307e-07, 1)
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="LeftLower" type="Bone2D" parent="Scene/Hel/BodyComponents/LeftArmSkeleton/LeftUpper"]
+position = Vector2(40.0001, -4.48227e-05)
+rotation = -1.70028
+scale = Vector2(0.999986, 0.999986)
+rest = Transform2D(1, 0, 0, 1, 40, 0)
+editor_settings/show_bone_gizmo = false
+metadata/_local_pose_override_enabled_ = true
+
+[node name="LeftTip" type="Bone2D" parent="Scene/Hel/BodyComponents/LeftArmSkeleton/LeftUpper/LeftLower"]
+position = Vector2(40, 0)
+rest = Transform2D(1, 0, 0, 1, 40, 0)
+editor_settings/show_bone_gizmo = false
+
+[node name="Sprite" type="Line2D" parent="Scene/Hel/BodyComponents/LeftArmSkeleton/LeftUpper/LeftLower"]
+points = PackedVector2Array(0, 0, 40.8048, 0.287539)
+width = 16.0
+width_curve = SubResource("Curve_vwtoj")
+default_color = Color(0.289909, 0.522952, 4.81307e-07, 1)
+begin_cap_mode = 2
+end_cap_mode = 1
+
+[node name="RightHandSkeleton" type="Node2D" parent="Scene/Hel/BodyComponents"]
+position = Vector2(1, 0)
+
+[node name="RightHandComp" type="Sprite2D" parent="Scene/Hel/BodyComponents/RightHandSkeleton"]
+position = Vector2(75.04, -9.04001)
+texture = SubResource("PlaceholderTexture2D_56www")
+script = ExtResource("3_d4bl7")
+pull_strength = 0.1
+max_distance = 48.0
+
+[node name="LeftHandSkeleton" type="Node2D" parent="Scene/Hel/BodyComponents"]
+position = Vector2(1, 0)
+
+[node name="LeftHandComp" type="Sprite2D" parent="Scene/Hel/BodyComponents/LeftHandSkeleton"]
+position = Vector2(27.04, 22.96)
+texture = SubResource("PlaceholderTexture2D_56www")
+script = ExtResource("3_d4bl7")
+pull_strength = 0.1
+max_distance = 48.0
+
+[node name="RightHand" type="Sprite2D" parent="Scene/Hel"]
+self_modulate = Color(0.35, 1, 0, 1)
+position = Vector2(76, -9)
+texture = SubResource("PlaceholderTexture2D_vhpbg")
+
+[node name="LeftHand" type="Sprite2D" parent="Scene/Hel"]
+self_modulate = Color(0.35, 1, 0, 1)
+position = Vector2(28, 23)
+texture = SubResource("PlaceholderTexture2D_vhpbg")

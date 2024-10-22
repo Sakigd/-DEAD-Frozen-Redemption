@@ -12,6 +12,8 @@ config_version=5
 
 config/name="Bifrost Shader"
 run/main_scene="res://Scene.tscn"
+config/auto_accept_quit=false
+config/quit_on_go_back=false
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 
