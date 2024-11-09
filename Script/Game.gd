@@ -1,7 +1,7 @@
-extends "res://addons/MetroidvaniaSystem/Template/Scripts/MetSysGame.gd"
+extends "res://GameCore/MetSysGame.gd"
 class_name Game
 
-const SaveManager = preload("res://addons/MetroidvaniaSystem/Template/Scripts/SaveManager.gd")
+const SaveManager = preload("res://GameCore/SaveManager.gd")
 const SAVE_PATH = "user://example_save_data.sav"
 
 # The game starts in this map. Note that it's scene name only, just like MetSys refers to rooms.

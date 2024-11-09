@@ -19,10 +19,6 @@ run/main_scene="res://Scene/game.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 
-[autoload]
-
-MetSys="*res://addons/MetroidvaniaSystem/Nodes/Singleton.tscn"
-
 [display]
 
 window/size/viewport_width=640
@@ -37,11 +33,12 @@ version_control/autoload_on_startup=true
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/MetroidvaniaSystem/EditorExtension/plugin.cfg", "res://addons/MetroidvaniaSystem/plugin.cfg", "res://addons/godot_state_charts/plugin.cfg")
+enabled=PackedStringArray("res://addons/godot_state_charts/plugin.cfg")
 
 [file_customization]
 
 folder_colors={
+"res://GameCore/": "blue",
 "res://Viewport Layout/": "blue"
 }
 

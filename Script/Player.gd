@@ -31,6 +31,7 @@ func _ready():
 	health = stat.health
 	max_health = stat.health
 	on_enter()
+	#$RemoteTransform2D.remote_path = $""
 	#attack = stat.get("attack")
 	
 func _physics_process(delta):
@@ -117,7 +118,7 @@ func _input(event):
 	if event.is_action_pressed("crouch"):
 		if is_on_campfire:
 			$StateChart.send_event("rest")
-			Game.get_singleton().save_game()
+			#Game.get_singleton().save_game()
 		else:
 			$StateChart.send_event("crouch")
 	if event.is_action_pressed("look_up"):

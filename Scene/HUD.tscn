@@ -12,71 +12,80 @@
 [ext_resource type="Texture2D" uid="uid://5w8mrjnrmy7f" path="res://asset/HUD/stamina bar/staminabar.png" id="10_p05uo"]
 
 [node name="Hud" type="CanvasLayer"]
+follow_viewport_enabled = true
 script = ExtResource("1_35hbv")
 metadata/_edit_use_anchors_ = true
 
+[node name="PixelFrame" type="Node2D" parent="."]
+visible = false
+metadata/_edit_lock_ = true
+metadata/_edit_group_ = true
+
+[node name="PixelFrameOutline" type="ReferenceRect" parent="PixelFrame"]
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 1288.0
+offset_bottom = 768.0
+border_color = Color(0.848096, 0.717694, 1.54018e-06, 1)
+border_width = 16.0
+
 [node name="HudFrozenAshes" type="Sprite2D" parent="."]
-position = Vector2(60.3023, 348.75)
-scale = Vector2(0.415033, 0.415033)
+position = Vector2(147, 683)
 texture = ExtResource("2_i7aci")
 
-[node name="cendre_gelée" type="Label" parent="."]
-offset_left = 45.0
-offset_top = 338.0
-offset_right = 85.0
-offset_bottom = 361.0
+[node name="cendre_gelée" type="Label" parent="HudFrozenAshes"]
+offset_left = -27.0
+offset_top = -9.0
+offset_right = 3.0
+offset_bottom = 14.0
 text = "XXX"
 
-[node name="potion1" type="TextureButton" parent="."]
-offset_left = 88.0
-offset_top = 43.0
-offset_right = 105.0
-offset_bottom = 60.0
-scale = Vector2(0.4, 0.4)
-toggle_mode = true
-texture_pressed = ExtResource("4_2batk")
+[node name="HudProfile" type="Node2D" parent="."]
 
-[node name="potion2" type="TextureButton" parent="."]
-offset_left = 101.0
-offset_top = 43.0
-offset_right = 118.0
-offset_bottom = 60.0
-scale = Vector2(0.4, 0.4)
-toggle_mode = true
-texture_pressed = ExtResource("4_2batk")
-
-[node name="potion3" type="TextureButton" parent="."]
-offset_left = 113.0
-offset_top = 43.0
-offset_right = 130.0
-offset_bottom = 60.0
-scale = Vector2(0.4, 0.4)
-toggle_mode = true
-texture_pressed = ExtResource("4_2batk")
-
-[node name="HudProfile" type="Sprite2D" parent="."]
-position = Vector2(98, 34)
-scale = Vector2(0.303571, 0.303571)
+[node name="HudProfile" type="Sprite2D" parent="HudProfile"]
+position = Vector2(322, 112)
 texture = ExtResource("3_da5jp")
 
-[node name="health_bar" type="TextureProgressBar" parent="."]
-offset_left = 47.0
-offset_top = 16.0
-offset_right = 458.0
-offset_bottom = 44.0
-scale = Vector2(0.3, 0.3)
+[node name="potion1" type="TextureButton" parent="HudProfile"]
+offset_left = 292.0
+offset_top = 144.0
+offset_right = 309.0
+offset_bottom = 161.0
+texture_pressed = ExtResource("4_2batk")
+
+[node name="potion2" type="TextureButton" parent="HudProfile"]
+offset_left = 334.0
+offset_top = 144.0
+offset_right = 351.0
+offset_bottom = 161.0
+toggle_mode = true
+texture_pressed = ExtResource("4_2batk")
+
+[node name="potion3" type="TextureButton" parent="HudProfile"]
+offset_left = 375.0
+offset_top = 145.0
+offset_right = 392.0
+offset_bottom = 162.0
+toggle_mode = true
+texture_pressed = ExtResource("4_2batk")
+
+[node name="health_bar" type="TextureProgressBar" parent="HudProfile"]
+offset_left = 148.0
+offset_top = 52.0
+offset_right = 559.0
+offset_bottom = 80.0
 max_value = 30.0
 value = 30.0
 texture_under = ExtResource("4_5ystf")
 texture_over = ExtResource("5_osojv")
 texture_progress = ExtResource("6_3vfg3")
 
-[node name="stamina_bar" type="TextureProgressBar" parent="."]
-offset_left = 54.0
-offset_top = 27.0
-offset_right = 343.0
-offset_bottom = 44.0
-scale = Vector2(0.345, 0.345)
+[node name="stamina_bar" type="TextureProgressBar" parent="HudProfile"]
+offset_left = 176.0
+offset_top = 87.0
+offset_right = 465.0
+offset_bottom = 104.0
+scale = Vector2(1.14, 1.14)
 value = 100.0
 texture_under = ExtResource("8_ys16q")
 texture_over = ExtResource("9_skwc7")

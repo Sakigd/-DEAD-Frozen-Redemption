@@ -1,10 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://dl0if3u2avacx"]
+[gd_scene load_steps=9 format=3 uid="uid://dl0if3u2avacx"]
 
-[ext_resource type="PackedScene" uid="uid://bsg0351mx3b4u" path="res://addons/MetroidvaniaSystem/Nodes/RoomInstance.tscn" id="1_tiygo"]
 [ext_resource type="Texture2D" uid="uid://d1ramg4ww0hau" path="res://asset/Map/Map_boss.png" id="2_qmoyh"]
 [ext_resource type="Texture2D" uid="uid://c46438mmwhkh7" path="res://asset/door.png" id="3_2g0ds"]
 [ext_resource type="PackedScene" uid="uid://dv50d3foas1su" path="res://Scene/doorNextMap.tscn" id="4_cf70q"]
-[ext_resource type="PackedScene" uid="uid://brrt1khpgb4ur" path="res://Scene/campfire.tscn" id="5_k55sl"]
+[ext_resource type="PackedScene" uid="uid://bcwyfattjly6" path="res://Scene/Player.tscn" id="5_ydj53"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1862f"]
 size = Vector2(766, 53)
@@ -20,9 +19,7 @@ size = Vector2(20, 479.5)
 
 [node name="LevelBoss" type="Node2D"]
 
-[node name="RoomInstance" parent="." instance=ExtResource("1_tiygo")]
-
-[node name="MapBoss" type="Sprite2D" parent="."]
+[node name="Background" type="Sprite2D" parent="."]
 position = Vector2(832, 240)
 texture = ExtResource("2_qmoyh")
 
@@ -48,15 +45,15 @@ shape = SubResource("RectangleShape2D_x4syr")
 position = Vector2(1673, 240)
 shape = SubResource("RectangleShape2D_48yvg")
 
+[node name="doorNextMap" parent="." instance=ExtResource("4_cf70q")]
+position = Vector2(32, 366)
+target_map = "levelTestMap.tscn"
+
+[node name="Player" parent="." instance=ExtResource("5_ydj53")]
+position = Vector2(652, 381)
+
 [node name="Door" type="Sprite2D" parent="."]
 z_index = 2
 position = Vector2(28, 375)
 texture = ExtResource("3_2g0ds")
 flip_h = true
-
-[node name="doorNextMap" parent="." instance=ExtResource("4_cf70q")]
-position = Vector2(32, 366)
-target_map = "levelTestMap.tscn"
-
-[node name="Campfire" parent="." instance=ExtResource("5_k55sl")]
-position = Vector2(185, 420)

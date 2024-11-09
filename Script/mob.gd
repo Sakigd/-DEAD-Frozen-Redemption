@@ -70,5 +70,5 @@ func _on_idle_state_physics_processing(_delta):
 	velocity.x = speed
 
 func death():
-	Game.get_singleton().player.cendre_gelee += cendre_gelee
+	#Game.get_singleton().player.cendre_gelee += cendre_gelee
 	queue_free()

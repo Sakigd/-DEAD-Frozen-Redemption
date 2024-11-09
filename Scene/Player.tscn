@@ -1655,6 +1655,8 @@ expression = "!key_pressed"
 collision_mask = 3
 script = ExtResource("1_e08mr")
 
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("6_ydx2a")
 hframes = 12

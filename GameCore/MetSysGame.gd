@@ -3,12 +3,12 @@
 ## MetSysGame is responsible for map management and player tracking. You can extend it by adding MetSysModules.
 extends Node
 
-const MetSysModule = preload("res://addons/MetroidvaniaSystem/Template/Scripts/MetSysModule.gd")
+#const MetSysModule = preload("res://addons/MetroidvaniaSystem/Template/Scripts/MetSysModule.gd")
 
 var player: Node2D
 var map: Node2D
 
-var modules: Array[MetSysModule]
+#var modules: Array[MetSysModule]
 
 ## Emitted when [method load_room] has loaded a room. You can use it when you want to call some methods after loading a room (e.g. positioning the player).
 signal room_loaded
@@ -19,10 +19,10 @@ func set_player(p_player: Node2D):
 	player.get_tree().physics_frame.connect(_physics_tick, CONNECT_DEFERRED)
 
 ## Adds a module. [param module_name] refers to a file located in [code]Template/Scripts/Modules[/code]. The script must extend [code]MetSysModule.gd[/code].
-func add_module(module_name: String):
-	module_name = "res://addons/MetroidvaniaSystem/Template/Scripts/Modules/".path_join(module_name)
-	var module: MetSysModule = load(module_name).new(self)
-	modules.append(module)
+#func add_module(module_name: String):
+	#module_name = "res://addons/MetroidvaniaSystem/Template/Scripts/Modules/".path_join(module_name)
+	#var module: MetSysModule = load(module_name).new(self)
+	#modules.append(module)
 
 func _physics_tick():
 	if can_process():
@@ -48,8 +48,8 @@ func get_save_data() -> Dictionary:
 	var data: Dictionary
 	data.merge(_get_save_data())
 	
-	for module in modules:
-		data.merge(module._get_save_data())
+	#for module in modules:
+		#data.merge(module._get_save_data())
 	
 	return data
 
@@ -60,8 +60,8 @@ func _get_save_data() -> Dictionary:
 func set_save_data(data: Dictionary):
 	_set_save_data(data)
 	
-	for module in modules:
-		module._set_save_data(data)
+	#for module in modules:
+		#module._set_save_data(data)
 
 ## Virtual method to be overriden in your game class. Called by SaveManager's retrieve_game(). The provided [Dictionary] holds your previously saved data.
 func _set_save_data(data: Dictionary):

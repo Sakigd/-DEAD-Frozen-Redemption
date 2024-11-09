@@ -13,11 +13,13 @@ func _on_body_entered(body: Node2D):
 # Needs to be static, because the old door disappears before the new scene is loaded.
 static func move_to_door():
 	var map := Game.get_singleton().map
+	print("map in move_to_door ",map.get_path())
 	# Get the door node.
 	var door = map.get_node(^"doorNextMap")
 	var end_door : Vector2 = door.get_child(0).shape.get_rect().end
 	# Move the player to door.
 	var player = Game.get_singleton().player
+	print("player in move_to_door ",player.get_path())
 	var player_size = player.find_child("CollisionShape2D").shape.get_rect().size
 	var door_size = door.get_child(0).shape.get_rect().size
 	if(player.is_flip_h()):
