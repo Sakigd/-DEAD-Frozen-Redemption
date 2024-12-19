@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=3 uid="uid://bcwyfattjly6"]
+[gd_scene load_steps=53 format=3 uid="uid://bcwyfattjly6"]
 
 [ext_resource type="Script" path="res://Script/Player.gd" id="1_e08mr"]
 [ext_resource type="Texture2D" uid="uid://u3tvlleown5w" path="res://asset/Animation/Barn/air_attack.png" id="3_eq2gb"]
@@ -18,7 +18,9 @@
 [ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="13_ejqix"]
 [ext_resource type="Texture2D" uid="uid://b7sxkbmambhwh" path="res://asset/Animation/Barn/Air_attack_top.png" id="14_0ucvh"]
 [ext_resource type="AudioStream" uid="uid://bnm06kb7auuvd" path="res://asset/SFX/Barn/Barn Whip Base.ogg" id="15_3750s"]
+[ext_resource type="Texture2D" uid="uid://bj5bi2nslne36" path="res://asset/Animation/Barn/side_climbing1.png" id="15_x7v7u"]
 [ext_resource type="AudioStream" uid="uid://dt3cyelh6em63" path="res://asset/SFX/Barn/Barn Whip Hit.ogg" id="16_0m3d6"]
+[ext_resource type="Texture2D" uid="uid://8cu1l4p4etnb" path="res://asset/Animation/Barn/side_climbing_idle.png" id="16_j0wqq"]
 [ext_resource type="AudioStream" uid="uid://ffj43u3gfgs5" path="res://asset/SFX/Barn/Barn Whip Load.ogg" id="17_2jggr"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/state_is_active_guard.gd" id="17_4hcgv"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/expression_guard.gd" id="17_u2f5k"]
@@ -230,6 +232,18 @@ tracks/16/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [false]
+}
+tracks/17/type = "value"
+tracks/17/imported = false
+tracks/17/enabled = true
+tracks/17/path = NodePath("Hitbox/hitbox:position")
+tracks/17/interp = 1
+tracks/17/loop_wrap = true
+tracks/17/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.5, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_dgvc3"]
@@ -1052,6 +1066,66 @@ tracks/4/keys = {
 "update": 0,
 "values": [Vector2(0, 0)]
 }
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("CollisionShape2D:shape:size")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(31, 42)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("CollisionShape2D:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-0.5, -1)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Hitbox/hitbox:shape:size")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(33, 44)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Hitbox/hitbox:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1.5, -2)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("Hitbox:position")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-2, 1)]
+}
 
 [sub_resource type="Animation" id="Animation_upjnd"]
 resource_name = "hit"
@@ -1181,6 +1255,66 @@ tracks/4/keys = {
 "update": 0,
 "values": [Vector2(0, 0)]
 }
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("CollisionShape2D:shape:size")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(27, 46)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("CollisionShape2D:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-1.5, 1)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Hitbox/hitbox:shape:size")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(30, 48)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Hitbox/hitbox:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.5, 0)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("Hitbox:position")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-2, 1)]
+}
 
 [sub_resource type="Animation" id="Animation_is1x2"]
 resource_name = "jump"
@@ -1244,6 +1378,195 @@ tracks/4/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2(-3, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_0olwm"]
+resource_name = "ledge_grab_idle"
+length = 1.3
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("16_j0wqq")]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:hframes")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [8]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D:vframes")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [2]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Sprite2D:offset")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -19)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("CollisionShape2D:shape:size")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(14, 52)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("CollisionShape2D:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-3, 1)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Hitbox/hitbox:shape:size")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(16, 54)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Hitbox/hitbox:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-1, 0)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("Hitbox:position")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-2, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_en372"]
+resource_name = "legde_grab"
+length = 1.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("15_x7v7u")]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:hframes")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [12]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D:vframes")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [2]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Sprite2D:offset")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(8, -23)]
 }
 
 [sub_resource type="Animation" id="Animation_ump2u"]
@@ -1614,6 +1937,8 @@ _data = {
 "hit": SubResource("Animation_upjnd"),
 "idle": SubResource("Animation_frfgo"),
 "jump": SubResource("Animation_is1x2"),
+"ledge_grab_idle": SubResource("Animation_0olwm"),
+"legde_grab": SubResource("Animation_en372"),
 "rest": SubResource("Animation_ump2u"),
 "roll": SubResource("Animation_mqjl2"),
 "top_attack": SubResource("Animation_hlvcu"),
@@ -1635,6 +1960,9 @@ size = Vector2(30, 48)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sgg55"]
 size = Vector2(0, 0)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dnyrr"]
+size = Vector2(54, 46)
+
 [sub_resource type="Resource" id="Resource_axisn"]
 script = ExtResource("17_4hcgv")
 state = NodePath("../../attack/air_attack")
@@ -1654,8 +1982,6 @@ expression = "!key_pressed"
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 collision_mask = 3
 script = ExtResource("1_e08mr")
-
-[node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("6_ydx2a")
@@ -1701,7 +2027,7 @@ collision_mask = 15
 metadata/_edit_group_ = true
 
 [node name="hitbox" type="CollisionShape2D" parent="Hitbox"]
-position = Vector2(0.500001, 0)
+position = Vector2(0.5, 0)
 shape = SubResource("RectangleShape2D_4u3n8")
 
 [node name="hitbox_ruban" type="Area2D" parent="." groups=["hitbox_ruban"]]
@@ -1713,6 +2039,19 @@ metadata/_edit_group_ = true
 [node name="hitbox_ruban" type="CollisionShape2D" parent="hitbox_ruban"]
 position = Vector2(25, -2)
 shape = SubResource("RectangleShape2D_sgg55")
+
+[node name="LedgeGrabRaycast" type="RayCast2D" parent="."]
+position = Vector2(16, -22)
+target_position = Vector2(0, 26)
+collision_mask = 2
+
+[node name="Legde_grab_area" type="Area2D" parent="."]
+visible = false
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Legde_grab_area"]
+shape = SubResource("RectangleShape2D_dnyrr")
+disabled = true
 
 [node name="StateChart" type="Node" parent="."]
 script = ExtResource("10_hhda8")
@@ -1820,6 +2159,12 @@ delay_in_seconds = "0.0"
 script = ExtResource("13_ejqix")
 to = NodePath("../../walk")
 event = &"walk"
+delay_in_seconds = "0.0"
+
+[node name="to ledge grab" type="Node" parent="StateChart/root/fall"]
+script = ExtResource("13_ejqix")
+to = NodePath("../../ledgeGrab")
+event = &"ledge_grab"
 delay_in_seconds = "0.0"
 
 [node name="jump" type="Node" parent="StateChart/root"]
@@ -2054,6 +2399,28 @@ to = NodePath("../../idle")
 event = &"idle"
 delay_in_seconds = "0.0"
 
+[node name="ledgeGrab" type="Node" parent="StateChart/root"]
+script = ExtResource("18_8shf8")
+animation_player = NodePath("../../../AnimationPlayer")
+animation_name = &"ledge_grab_idle"
+
+[node name="to idle" type="Node" parent="StateChart/root/ledgeGrab"]
+script = ExtResource("13_ejqix")
+to = NodePath("../../idle")
+event = &"idle"
+delay_in_seconds = "0.0"
+
+[node name="to hit" type="Node" parent="StateChart/root/ledgeGrab"]
+script = ExtResource("13_ejqix")
+to = NodePath("../../hit")
+event = &"hit"
+delay_in_seconds = "0.0"
+
+[node name="to fall" type="Node" parent="StateChart/root/ledgeGrab"]
+script = ExtResource("13_ejqix")
+to = NodePath("../../fall")
+delay_in_seconds = "3.0"
+
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
 [connection signal="area_exited" from="Hitbox" to="." method="_on_hitbox_area_exited"]
@@ -2068,3 +2435,6 @@ delay_in_seconds = "0.0"
 [connection signal="state_entered" from="StateChart/root/roll" to="." method="_on_roll_state_entered"]
 [connection signal="state_entered" from="StateChart/root/hit" to="." method="_on_hit_state_entered"]
 [connection signal="state_physics_processing" from="StateChart/root/walk" to="." method="_on_walk_state_physics_processing"]
+[connection signal="state_entered" from="StateChart/root/ledgeGrab" to="." method="_on_ledge_grab_state_entered"]
+[connection signal="state_exited" from="StateChart/root/ledgeGrab" to="." method="_on_ledge_grab_state_exited"]
+[connection signal="state_input" from="StateChart/root/ledgeGrab" to="." method="_on_ledge_grab_state_input"]

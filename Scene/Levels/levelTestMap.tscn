@@ -41,7 +41,7 @@ size = Vector2(64, 44)
 size = Vector2(96, 10)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_apcu4"]
-size = Vector2(47, 92)
+size = Vector2(47, 80)
 
 [node name="LevelTest" type="Node2D"]
 
@@ -118,20 +118,20 @@ position = Vector2(3, 2)
 shape = SubResource("RectangleShape2D_lnva6")
 one_way_collision = true
 
-[node name="blocTestAccroche" type="StaticBody2D" parent="."]
-position = Vector2(668, 269)
+[node name="blocTestAccroche" type="StaticBody2D" parent="." groups=["plateforme"]]
+position = Vector2(198, 336)
 collision_layer = 2
 metadata/_edit_group_ = true
 
 [node name="ColorRect" type="ColorRect" parent="blocTestAccroche"]
 offset_left = -10.0
-offset_top = -42.0
+offset_top = -30.0
 offset_right = 37.0
 offset_bottom = 49.0
 color = Color(0.211765, 0.2, 0.25098, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="blocTestAccroche"]
-position = Vector2(13.5, 4)
+position = Vector2(13.5, 10)
 shape = SubResource("RectangleShape2D_apcu4")
 
 [node name="desesperatedSlave" parent="." instance=ExtResource("5_8ig20")]

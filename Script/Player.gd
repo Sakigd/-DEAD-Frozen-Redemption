@@ -15,6 +15,7 @@ var potion_regen = 20
 var mob_attack = 1
 var direction = 0
 var is_attacking = false
+#var is_legde_grabbing = false
 var momentum
 var is_on_campfire = false
 var attack_direction = 0
@@ -52,6 +53,7 @@ func _physics_process(delta):
 		$Sprite2D.flip_h = true
 	elif direction > 0:
 		$Sprite2D.flip_h = false
+	
 		
 	if Input.is_action_just_pressed("attack"):
 		if Input.is_action_pressed("look_up"):
@@ -61,6 +63,25 @@ func _physics_process(delta):
 			flip_animation("atk_neutral_01")
 			$StateChart.send_event("neutral_attack")
 	move_and_slide()
+	
+	if($LedgeGrabRaycast.is_colliding()):
+		var ledge_grab_collider = $LedgeGrabRaycast.get_collider()
+		var ledge_grab_shape_id = $LedgeGrabRaycast.get_collider_shape()
+		var ledge_grab_owner_id = ledge_grab_collider.shape_find_owner(ledge_grab_shape_id)
+		var ledge_grab_shape = ledge_grab_collider.shape_owner_get_owner(ledge_grab_owner_id)
+		var ledge_grab_object_collided = ledge_grab_shape.get_parent()
+		#print("ledge_grab_shape parent :",ledge_grab_shape.get_parent())
+		#print("ledge_grab_raycast collision point ",$LedgeGrabRaycast.get_collision_point())
+		#print("legde_grab_area global position ",$Legde_grab_area.global_position)
+		
+		if(ledge_grab_object_collided.is_in_group("plateforme")):
+			$StateChart.send_event("ledge_grab")
+	
+	#var target = get_collider() # A CollisionObject2D.
+	#var shape_id = get_collider_shape() # The shape index in the collider.
+	#var owner_id = target.shape_find_owner(shape_id) # The owner ID in the collider.
+	#var shape = target.shape_owner_get_owner(owner_id)
+
 
 func set_velocity_x(vel_x):
 	velocity.x = vel_x
@@ -257,3 +278,26 @@ func on_enter():
 func _on_hitbox_ruban_body_entered(body):
 	if body.is_in_group("plateforme") || body.is_in_group("mob"):
 		$SFX/WhipHit.play()
+
+#func _on_ledge_grab_state_physics_processing(_delta):
+	#velocity = Vector2(0,0)
+
+func _on_ledge_grab_state_entered():
+	var collision_point = $LedgeGrabRaycast.get_collision_point()
+	var player_hand_position = Vector2(5,-23)
+	print("player hand global_position ",to_global(player_hand_position))
+	print("player position ",position)
+	print("raycast collision point - player hand global_position ",collision_point-to_global(player_hand_position))
+	print("ledge_grab_raycast collision point ",$LedgeGrabRaycast.get_collision_point())
+	global_translate(collision_point-to_global(player_hand_position))
+	gravity = 0
+	velocity = Vector2(0,0)
+	
+func _on_ledge_grab_state_exited():
+	gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+
+func _on_ledge_grab_state_input(event):
+	if event.is_action_pressed("look_up"):
+		var collision_point = $LedgeGrabRaycast.get_collision_point()
+		$Legde_grab_area.global_position = Vector2(collision_point.x,collision_point.y-24)
+		#x horizontal, y vertical

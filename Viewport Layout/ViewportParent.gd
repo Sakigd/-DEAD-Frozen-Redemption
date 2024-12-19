@@ -1,8 +1,8 @@
 @tool
-extends ColorRect
 class_name Game
+extends ColorRect
 
-@export var ingame_zoom : float = 1
+@export var ingame_zoom : float = 1.0
 @export var test = false
 #const SaveManager = preload("res://GameCore/SaveManager.gd")
 const SAVE_PATH = "user://example_save_data.sav"
@@ -25,6 +25,7 @@ func _ready():
 	player = map.find_child("Player")
 	#print(player.get_path())
 	PlayerCamera = $PlayerCamera
+	init_room()
 
 func _process(delta):
 	$FeedGrabber.global_position = ingame_zoom * ($PixelArt.size/2.0)
