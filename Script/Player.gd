@@ -85,6 +85,9 @@ func _physics_process(delta):
 
 func set_velocity_x(vel_x):
 	velocity.x = vel_x
+
+func set_vel(vel: Vector2):
+	set_velocity(vel)
 	
 func is_bind_key_pressed():
 	if Input.is_action_pressed("attack") || Input.is_action_pressed("crouch") || Input.is_action_pressed("move_left") || Input.is_action_pressed("move_right"):
@@ -176,7 +179,11 @@ func _on_animation_player_animation_finished(animation_name):
 		"air_attack","air_attack_top","air_attack_down":
 			is_attacking = false
 			$StateChart.send_event("end_air_attack")
-
+		"ledge_grab":
+			$StateChart.send_event("idle")
+			print("CollisionShape position after ledge grab animation",$CollisionShape2D.position)
+			print("CollisionShape size ",$CollisionShape2D.shape.get_rect().size)
+			print("player position after ledge grab animation ", position)
 
 func _on_hitbox_area_entered(area):
 	if area.is_in_group("spike"):
@@ -285,19 +292,27 @@ func _on_hitbox_ruban_body_entered(body):
 func _on_ledge_grab_state_entered():
 	var collision_point = $LedgeGrabRaycast.get_collision_point()
 	var player_hand_position = Vector2(5,-23)
-	print("player hand global_position ",to_global(player_hand_position))
-	print("player position ",position)
-	print("raycast collision point - player hand global_position ",collision_point-to_global(player_hand_position))
-	print("ledge_grab_raycast collision point ",$LedgeGrabRaycast.get_collision_point())
+	#print("player hand global_position ",to_global(player_hand_position))
+	#print("player position ",position)
+	#print("raycast collision point - player hand global_position ",collision_point-to_global(player_hand_position))
+	#print("ledge_grab_raycast collision point ",$LedgeGrabRaycast.get_collision_point())
 	global_translate(collision_point-to_global(player_hand_position))
 	gravity = 0
 	velocity = Vector2(0,0)
+	print("CollisionShape position before ledge grab animation",$CollisionShape2D.position)
+	print("player position before ledge grab animation ", position)
 	
 func _on_ledge_grab_state_exited():
 	gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 func _on_ledge_grab_state_input(event):
 	if event.is_action_pressed("look_up"):
-		var collision_point = $LedgeGrabRaycast.get_collision_point()
-		$Legde_grab_area.global_position = Vector2(collision_point.x,collision_point.y-24)
+		#var collision_point = $LedgeGrabRaycast.get_collision_point()
+		#$LegdeGrabArea.global_position = Vector2(collision_point.x,collision_point.y-$CollisionShape2D.shape.get_rect().size.y/2)
+		if(!$LegdeGrabArea.has_overlapping_bodies()):
+			$AnimationPlayer.play("ledge_grab")
 		#x horizontal, y vertical
+
+func print_player_position():
+	#print("player position ",position)
+	print("collisionShape2D position", $CollisionShape2D.position)
