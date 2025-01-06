@@ -51,8 +51,12 @@ func _physics_process(delta):
 	
 	if direction < 0:
 		$Sprite2D.flip_h = true
+		if($LedgeGrabRaycast.position.x > 0):
+			$LedgeGrabRaycast.position.x = -$LedgeGrabRaycast.position.x-1
 	elif direction > 0:
 		$Sprite2D.flip_h = false
+		if($LedgeGrabRaycast.position.x < 0):
+			$LedgeGrabRaycast.position.x = -$LedgeGrabRaycast.position.x-1
 	
 		
 	if Input.is_action_just_pressed("attack"):
@@ -76,12 +80,6 @@ func _physics_process(delta):
 		
 		if(ledge_grab_object_collided.is_in_group("plateforme")):
 			$StateChart.send_event("ledge_grab")
-	
-	#var target = get_collider() # A CollisionObject2D.
-	#var shape_id = get_collider_shape() # The shape index in the collider.
-	#var owner_id = target.shape_find_owner(shape_id) # The owner ID in the collider.
-	#var shape = target.shape_owner_get_owner(owner_id)
-
 
 func set_velocity_x(vel_x):
 	velocity.x = vel_x
@@ -179,11 +177,11 @@ func _on_animation_player_animation_finished(animation_name):
 		"air_attack","air_attack_top","air_attack_down":
 			is_attacking = false
 			$StateChart.send_event("end_air_attack")
-		"ledge_grab":
+		"ledge_grab_2":
 			$StateChart.send_event("idle")
-			print("CollisionShape position after ledge grab animation",$CollisionShape2D.position)
-			print("CollisionShape size ",$CollisionShape2D.shape.get_rect().size)
-			print("player position after ledge grab animation ", position)
+			#print("CollisionShape position after ledge grab animation",$CollisionShape2D.position)
+			#print("CollisionShape size ",$CollisionShape2D.shape.get_rect().size)
+			#print("player position after ledge grab animation ", position)
 
 func _on_hitbox_area_entered(area):
 	if area.is_in_group("spike"):
@@ -299,8 +297,8 @@ func _on_ledge_grab_state_entered():
 	global_translate(collision_point-to_global(player_hand_position))
 	gravity = 0
 	velocity = Vector2(0,0)
-	print("CollisionShape position before ledge grab animation",$CollisionShape2D.position)
-	print("player position before ledge grab animation ", position)
+	#print("CollisionShape position before ledge grab animation",$CollisionShape2D.position)
+	#print("player position before ledge grab animation ", position)
 	
 func _on_ledge_grab_state_exited():
 	gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -310,9 +308,18 @@ func _on_ledge_grab_state_input(event):
 		#var collision_point = $LedgeGrabRaycast.get_collision_point()
 		#$LegdeGrabArea.global_position = Vector2(collision_point.x,collision_point.y-$CollisionShape2D.shape.get_rect().size.y/2)
 		if(!$LegdeGrabArea.has_overlapping_bodies()):
-			$AnimationPlayer.play("ledge_grab")
+			$AnimationPlayer.play("ledge_grab_2")
 		#x horizontal, y vertical
 
+func ledge_grab_movement(vector : Vector2):
+	print("sprite2D.flip_h ",$Sprite2D.flip_h)
+	print("vector before condition", vector)
+	if (($Sprite2D.flip_h && vector.x > 0) || (!$Sprite2D.flip_h && vector.x < 0)):
+		vector.x = - vector.x
+	print("vector after condition", vector)
+	global_translate(vector)
+
 func print_player_position():
-	#print("player position ",position)
-	print("collisionShape2D position", $CollisionShape2D.position)
+	print("player position ",position)
+	#print("collisionShape2D position", $CollisionShape2D.global_position)
+	

@@ -119,7 +119,7 @@ shape = SubResource("RectangleShape2D_lnva6")
 one_way_collision = true
 
 [node name="blocTestAccroche" type="StaticBody2D" parent="." groups=["plateforme"]]
-position = Vector2(198, 336)
+position = Vector2(149, 336)
 collision_layer = 2
 metadata/_edit_group_ = true
 
