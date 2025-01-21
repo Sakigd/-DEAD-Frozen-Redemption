@@ -2349,6 +2349,7 @@ max_polyphony = 6
 bus = &"SFX"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(-1.5, 1)
 shape = SubResource("RectangleShape2D_kxqr5")
 
@@ -2359,6 +2360,7 @@ collision_mask = 15
 metadata/_edit_group_ = true
 
 [node name="hitbox" type="CollisionShape2D" parent="Hitbox"]
+visible = false
 position = Vector2(0.5, 0)
 shape = SubResource("RectangleShape2D_4u3n8")
 debug_color = Color(0.761631, 0.451261, 0, 0.42)
@@ -2370,10 +2372,12 @@ monitorable = false
 metadata/_edit_group_ = true
 
 [node name="hitbox_ruban" type="CollisionShape2D" parent="hitbox_ruban"]
+visible = false
 position = Vector2(25, -2)
 shape = SubResource("RectangleShape2D_sgg55")
 
 [node name="LedgeGrabRaycast" type="RayCast2D" parent="."]
+visible = false
 position = Vector2(16, -22)
 target_position = Vector2(0, 26)
 collision_mask = 2
@@ -2383,6 +2387,7 @@ position = Vector2(16, -49)
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LegdeGrabArea"]
+visible = false
 shape = SubResource("RectangleShape2D_dnyrr")
 debug_color = Color(0, 0.6, 0.701961, 0)
 

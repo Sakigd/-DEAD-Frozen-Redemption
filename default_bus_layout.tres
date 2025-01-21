@@ -19,7 +19,7 @@ wet = 0.09
 [resource]
 bus/1/name = &"SFX"
 bus/1/solo = false
-bus/1/mute = false
+bus/1/mute = true
 bus/1/bypass_fx = false
 bus/1/volume_db = 0.0
 bus/1/send = &"Master"
@@ -29,7 +29,7 @@ bus/1/effect/1/effect = SubResource("AudioEffectReverb_t1fbn")
 bus/1/effect/1/enabled = true
 bus/2/name = &"BGM"
 bus/2/solo = false
-bus/2/mute = false
+bus/2/mute = true
 bus/2/bypass_fx = false
 bus/2/volume_db = 0.0
 bus/2/send = &"Master"
