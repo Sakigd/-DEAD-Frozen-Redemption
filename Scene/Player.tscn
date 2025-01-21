@@ -2282,7 +2282,6 @@ _data = {
 random_pitch = 1.1
 streams_count = 1
 stream_0/stream = ExtResource("18_pbtge")
-stream_0/weight = 1.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kxqr5"]
 size = Vector2(27, 46)
@@ -2362,6 +2361,7 @@ metadata/_edit_group_ = true
 [node name="hitbox" type="CollisionShape2D" parent="Hitbox"]
 position = Vector2(0.5, 0)
 shape = SubResource("RectangleShape2D_4u3n8")
+debug_color = Color(0.761631, 0.451261, 0, 0.42)
 
 [node name="hitbox_ruban" type="Area2D" parent="." groups=["hitbox_ruban"]]
 collision_mask = 7
@@ -2384,6 +2384,7 @@ metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LegdeGrabArea"]
 shape = SubResource("RectangleShape2D_dnyrr")
+debug_color = Color(0, 0.6, 0.701961, 0)
 
 [node name="StateChart" type="Node" parent="."]
 script = ExtResource("10_hhda8")
