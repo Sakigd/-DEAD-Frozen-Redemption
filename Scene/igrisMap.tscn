@@ -1,7 +1,6 @@
-[gd_scene load_steps=16 format=3 uid="uid://hb2cu7nquytr"]
+[gd_scene load_steps=15 format=3 uid="uid://hb2cu7nquytr"]
 
 [ext_resource type="Texture2D" uid="uid://d1ramg4ww0hau" path="res://asset/Map/Map_boss.png" id="1_urno3"]
-[ext_resource type="PackedScene" uid="uid://dv50d3foas1su" path="res://Scene/doorNextMap.tscn" id="2_5nvuc"]
 [ext_resource type="PackedScene" uid="uid://bcwyfattjly6" path="res://Scene/Player.tscn" id="3_lj6d0"]
 [ext_resource type="Script" path="res://Igris/igris_boss_behavior.gd" id="4_ft4xk"]
 [ext_resource type="Texture2D" uid="uid://bwt78i27uctf8" path="res://Igris/Sprites/igris_idle.png" id="4_y5wiy"]
@@ -65,10 +64,6 @@ shape = SubResource("RectangleShape2D_x4syr")
 [node name="RightWall" type="CollisionShape2D" parent="Ground"]
 position = Vector2(1672, 239.938)
 shape = SubResource("RectangleShape2D_48yvg")
-
-[node name="Doorway" parent="." instance=ExtResource("2_5nvuc")]
-position = Vector2(31, 364)
-target_map = "levelTestMap.tscn"
 
 [node name="Player" parent="." instance=ExtResource("3_lj6d0")]
 position = Vector2(880, 360)

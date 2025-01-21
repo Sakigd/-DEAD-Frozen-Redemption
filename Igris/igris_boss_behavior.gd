@@ -9,17 +9,20 @@ extends CharacterBody2D
 var health : float = 100
 var hit_tween : Tween = null
 var direction : int = -1
-enum s {IDLE,FLIP,BRUTAL,BRUTAL_BACK,DASH}
+enum s {IDLE,FLIP,BRUTAL,BRUTAL_BACK,DASH_LOAD,DASH}
 var state : int = s.IDLE
 var state_time = 0
 var player_in_small_range : bool
 var player_in_big_range : bool
+var dash_velocity : float = 0.0
 const flip_length : float = 0.4
 const brutal_length : float = 1.0
 const brutal_hit_start : float = 0.75
 const brutal_hit_duration : float = 0.15
+const dash_load_length : float = 0.3
+const dash_speed : float = 600
 const dash_length : float = 1.0
-
+const dash_deceleration : float = 700
 
 func _ready():
 	if not player :
@@ -27,6 +30,8 @@ func _ready():
 
 
 func _physics_process(delta):
+	velocity = Vector2.ZERO
+	
 	$Sprite.flip_h = (direction == 1)
 	
 	player_in_small_range = $SmallRange.get_overlapping_bodies().has(player)
@@ -46,10 +51,19 @@ func _physics_process(delta):
 	$Attacks/BrutalBack.disabled = not (state == s.BRUTAL_BACK and state_time >= brutal_hit_start \
 		and state_time <= brutal_hit_start+brutal_hit_duration)
 	
+	if state == s.DASH or state == s.IDLE or state == s.DASH_LOAD :
+		dash_velocity = clamp(dash_velocity - delta * dash_deceleration,0,INF)
+	else :
+		dash_velocity = 0
+	
+	velocity.x += direction * dash_velocity
+	
 	for attack_box in $Attacks.get_children() :
 		attack_box.position.x = abs(attack_box.position.x) * direction
 		if attack_box.name.contains("Back") :
 			attack_box.position.x *= -1
+	
+	move_and_slide()
 
 
 func _transitions() -> s :
@@ -70,8 +84,15 @@ func _transitions() -> s :
 		if state_time >= brutal_length :
 			return s.IDLE
 	
-	if player_in_big_range :
+	if player_in_big_range and state == s.IDLE :
+		return s.DASH_LOAD
+	
+	if state == s.DASH_LOAD and state_time >= dash_load_length :
+		dash_velocity = dash_speed
 		return s.DASH
+	
+	if state == s.DASH and state_time >= dash_length :
+		return s.IDLE
 	
 	return state
 
