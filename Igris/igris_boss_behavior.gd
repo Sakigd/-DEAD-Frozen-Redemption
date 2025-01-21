@@ -1,5 +1,10 @@
 extends CharacterBody2D
 
+##TO DO LIST :
+	#Blood and death animation
+	#Animations
+	#Discovery cutscene*
+
 var health : float = 100
 var hit_tween : Tween = null
 
@@ -18,6 +23,8 @@ func _hit(value:float=10) :
 	hit_tween = create_tween()
 	hit_tween.parallel().tween_property($Sprite,"self_modulate:g",1.0,0.3)
 	hit_tween.parallel().tween_property($Sprite,"self_modulate:b",1.0,0.3)
+	if health <= 0 :
+		queue_free()
 
 
 func _on_hitbox_area_entered(area):

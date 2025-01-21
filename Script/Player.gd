@@ -21,6 +21,8 @@ var is_on_campfire = false
 var attack_direction = 0
 var reset_position : Vector2
 var event: bool
+var knockback_force : Vector2 = Vector2.ZERO
+var rolling = false
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -36,6 +38,8 @@ func _ready():
 	#attack = stat.get("attack")
 	
 func _physics_process(delta):
+	set_collision_mask_value(5,!rolling)
+	
 	# Add the gravity.
 	if not is_on_floor() && !is_attacking:
 		velocity.y += gravity * delta
@@ -66,7 +70,12 @@ func _physics_process(delta):
 		else:
 			flip_animation("atk_neutral_01")
 			$StateChart.send_event("neutral_attack")
+	
+	velocity += knockback_force
 	move_and_slide()
+	velocity -= knockback_force
+	knockback_force.x = sign(knockback_force.x) * clamp(abs(knockback_force.x) - delta * 500, 0, INF)
+	knockback_force.y = sign(knockback_force.y) * clamp(abs(knockback_force.y) - delta * 500, 0, INF)
 	
 	if($LedgeGrabRaycast.is_colliding()):
 		var ledge_grab_collider = $LedgeGrabRaycast.get_collider()
@@ -80,13 +89,27 @@ func _physics_process(delta):
 		
 		if(ledge_grab_object_collided.is_in_group("plateforme")):
 			$StateChart.send_event("ledge_grab")
+	
+	if !rolling :
+		for area in $Hitbox.get_overlapping_areas() :
+			if area.is_in_group("mob"):
+				mob_attack = db.get_item_from_mob_table("desperatedSlave").attack
+				$StateChart.send_event("hit")
+				if area.global_position.x > global_position.x :
+					knockback(-1)
+				else :
+					knockback(1)
 
 func set_velocity_x(vel_x):
 	velocity.x = vel_x
 
 func set_vel(vel: Vector2):
 	set_velocity(vel)
-	
+
+func knockback(direction: int):
+	knockback_force.x = 250 * direction
+	knockback_force.y = -200
+
 func is_bind_key_pressed():
 	if Input.is_action_pressed("attack") || Input.is_action_pressed("crouch") || Input.is_action_pressed("move_left") || Input.is_action_pressed("move_right"):
 		return true
@@ -172,6 +195,7 @@ func _on_animation_player_animation_finished(animation_name):
 			$StateChart.send_event("end_attack")
 		"roll":
 			$StateChart.send_event("end_roll")
+			rolling = false
 		"hit":
 			$StateChart.send_event("end_hit")
 		"air_attack","air_attack_top","air_attack_down":
@@ -204,7 +228,6 @@ func _on_hitbox_area_exited(area):
 func _on_hitbox_body_entered(body):
 	if body.is_in_group("mob"):
 		mob_attack = db.get_item_from_mob_table("desperatedSlave").attack
-		print("hit")
 		$StateChart.send_event("hit")
 
 func _on_hit_state_entered():
@@ -238,6 +261,7 @@ func _on_fall_state_physics_processing(_delta):
 	detect_air_attack_input()
 
 func _on_roll_state_entered():
+	rolling = true
 	if $Sprite2D.flip_h:
 		velocity.x = -SPEED
 	else:
