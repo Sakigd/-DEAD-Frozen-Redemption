@@ -77,11 +77,12 @@ position_smoothing_speed = 3.0
 drag_horizontal_enabled = true
 drag_vertical_enabled = true
 
-[node name="Igris" type="CharacterBody2D" parent="."]
+[node name="Igris" type="CharacterBody2D" parent="." node_paths=PackedStringArray("player")]
 position = Vector2(1112, 344)
 collision_layer = 16
 collision_mask = 2
 script = ExtResource("4_ft4xk")
+player = NodePath("../Player")
 metadata/_edit_group_ = true
 
 [node name="CollisionShape" type="CollisionShape2D" parent="Igris"]
