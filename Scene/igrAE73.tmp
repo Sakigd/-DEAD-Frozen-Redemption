@@ -130,7 +130,7 @@ position = Vector2(192, 8)
 shape = SubResource("RectangleShape2D_6mkq5")
 debug_color = Color(0, 0.517647, 0.231373, 0.12549)
 
-[node name="Attacks" type="Area2D" parent="Igris" groups=["mob"]]
+[node name="Attacks" type="Area2D" parent="Igris"]
 collision_layer = 4
 collision_mask = 0
 
