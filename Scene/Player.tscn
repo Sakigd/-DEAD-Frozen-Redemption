@@ -2372,7 +2372,6 @@ monitorable = false
 metadata/_edit_group_ = true
 
 [node name="hitbox_ruban" type="CollisionShape2D" parent="hitbox_ruban"]
-visible = false
 position = Vector2(25, -2)
 shape = SubResource("RectangleShape2D_sgg55")
 

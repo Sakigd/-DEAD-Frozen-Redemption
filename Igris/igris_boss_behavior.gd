@@ -141,6 +141,7 @@ func _physics_process(delta):
 	else :
 		$Sprite.self_modulate.v = 1
 
+
 func _transitions() -> s :
 	if attacks_progression >= progression_goal :
 		change_pause_goal()

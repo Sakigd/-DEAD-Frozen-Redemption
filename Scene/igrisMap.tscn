@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=3 uid="uid://c7byyguvenup5"]
+[gd_scene load_steps=53 format=3 uid="uid://hb2cu7nquytr"]
 
 [ext_resource type="Texture2D" uid="uid://drk73n37f4t8" path="res://Igris/IgrisBg3.png" id="1_ixrul"]
 [ext_resource type="Texture2D" uid="uid://ddpkx0onc612a" path="res://Igris/IgrisBg2.png" id="2_rvxo1"]
@@ -13,18 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://dcdqdy6exjlp0" path="res://Igris/Sprites/igris_dash.png" id="8_l3pmi"]
 [ext_resource type="Texture2D" uid="uid://csfmx585wo2wk" path="res://Igris/Sprites/igris_jump.png" id="9_sqlhu"]
 [ext_resource type="Texture2D" uid="uid://bdwywfns8hj7a" path="res://Igris/Sprites/igris_spe_atk_1.png" id="10_7gok7"]
-
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_tinib"]
-blend_mode = 1
-light_mode = 1
-
-[sub_resource type="Gradient" id="Gradient_krjwd"]
-offsets = PackedFloat32Array(0.272727, 0.642857)
-colors = PackedColorArray(0.843137, 1, 1, 1, 0, 0, 0, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_wsas3"]
-gradient = SubResource("Gradient_krjwd")
-fill_to = Vector2(0, 1)
+[ext_resource type="Texture2D" uid="uid://vkbsdcxwkwjx" path="res://NormalMap.png" id="11_phqri"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_vjcqg"]
 blend_mode = 1
@@ -62,7 +51,7 @@ colors = PackedColorArray(0, 1, 0.858824, 0, 0.337389, 1, 0.935214, 0.541096, 0.
 gradient = SubResource("Gradient_4q8ah")
 width = 8
 height = 500
-fill_from = Vector2(0.695157, 1)
+fill_from = Vector2(0, 1)
 fill_to = Vector2(0, 0)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1862f"]
@@ -105,10 +94,7 @@ func _process(delta):
 size = Vector2(40, 72)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j782r"]
-size = Vector2(64, 88)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_l0rgt"]
-size = Vector2(48, 88)
+size = Vector2(56, 88)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cvecx"]
 size = Vector2(288, 80)
@@ -865,6 +851,10 @@ alpha_curve = SubResource("CurveTexture_48m51")
 hue_variation_min = -0.17
 hue_variation_max = -2.23517e-08
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_tinib"]
+blend_mode = 1
+light_mode = 1
+
 [sub_resource type="Gradient" id="Gradient_orkan"]
 offsets = PackedFloat32Array(0.513605, 0.819728, 1)
 colors = PackedColorArray(0, 0, 0, 1, 0, 0.965986, 0.965986, 1, 0, 0, 1, 1)
@@ -890,36 +880,29 @@ adjustment_saturation = 0.95
 metadata/_edit_horizontal_guides_ = [480.0, 0.0, 240.0]
 metadata/_edit_vertical_guides_ = [0.0, 1208.0]
 
-[node name="BackgroundLayer4" type="Parallax2D" parent="."]
+[node name="Parallax2D" type="Parallax2D" parent="."]
 scroll_scale = Vector2(0.6, 1)
 scroll_offset = Vector2(1208, 240)
 
-[node name="Background" type="Sprite2D" parent="BackgroundLayer4"]
+[node name="Background4" type="Sprite2D" parent="Parallax2D"]
 position = Vector2(-1208, -240)
 texture = ExtResource("1_ixrul")
 centered = false
 
-[node name="BackgroundLayer3" type="Parallax2D" parent="."]
+[node name="Parallax2D2" type="Parallax2D" parent="."]
 scroll_scale = Vector2(0.7, 1)
 scroll_offset = Vector2(1208, 240)
 
-[node name="Background" type="Sprite2D" parent="BackgroundLayer3"]
+[node name="Background3" type="Sprite2D" parent="Parallax2D2"]
 position = Vector2(-1208, -240)
 texture = ExtResource("2_rvxo1")
 centered = false
 
-[node name="UpGlow" type="Sprite2D" parent="BackgroundLayer3"]
-modulate = Color(1, 1, 1, 0.0705882)
-material = SubResource("CanvasItemMaterial_tinib")
-position = Vector2(-512, 0)
-scale = Vector2(30.25, 7.5)
-texture = SubResource("GradientTexture2D_wsas3")
-
-[node name="GodRays" type="GPUParticles2D" parent="BackgroundLayer3"]
+[node name="GPUParticles2D3" type="GPUParticles2D" parent="Parallax2D2"]
 self_modulate = Color(1, 1, 1, 0.486275)
 texture_filter = 2
 material = SubResource("CanvasItemMaterial_vjcqg")
-position = Vector2(0, -32)
+position = Vector2(0, -72)
 amount = 80
 process_material = SubResource("ParticleProcessMaterial_n8xrx")
 texture = SubResource("GradientTexture2D_qfm8a")
@@ -930,11 +913,11 @@ fixed_fps = 10
 visibility_rect = Rect2(-1000, -1000, 2000, 2000)
 trail_lifetime = 0.01
 
-[node name="BackgroundLayer2" type="Parallax2D" parent="."]
+[node name="Parallax2D3" type="Parallax2D" parent="."]
 scroll_scale = Vector2(0.8, 1)
-scroll_offset = Vector2(1208, 238)
+scroll_offset = Vector2(1208, 240)
 
-[node name="Background" type="Sprite2D" parent="BackgroundLayer2"]
+[node name="Background2" type="Sprite2D" parent="Parallax2D3"]
 position = Vector2(-1208, -240)
 texture = ExtResource("3_5dtf7")
 centered = false
@@ -969,7 +952,7 @@ shape = SubResource("RectangleShape2D_x4syr")
 position = Vector2(1624, 240)
 shape = SubResource("RectangleShape2D_48yvg")
 
-[node name="Camera" type="Camera2D" parent="." node_paths=PackedStringArray("player", "igris")]
+[node name="BossCamera" type="Camera2D" parent="." node_paths=PackedStringArray("player", "igris")]
 position = Vector2(1215, 242)
 limit_left = 0
 limit_top = 0
@@ -985,7 +968,7 @@ igris = NodePath("../Igris")
 position = Vector2(880, 360)
 
 [node name="Igris" type="CharacterBody2D" parent="." node_paths=PackedStringArray("player")]
-position = Vector2(1536, 344)
+position = Vector2(1544, 344)
 collision_layer = 16
 collision_mask = 2
 script = ExtResource("4_ft4xk")
@@ -997,22 +980,13 @@ position = Vector2(0, 12)
 shape = SubResource("RectangleShape2D_qfgbo")
 debug_color = Color(0.997391, 0, 0.166974, 0.42)
 
-[node name="Hitbox" type="Area2D" parent="Igris"]
-collision_layer = 0
+[node name="Hitbox" type="Area2D" parent="Igris" groups=["mob"]]
+collision_layer = 4
 
 [node name="HitboxShape" type="CollisionShape2D" parent="Igris/Hitbox"]
 position = Vector2(0, 12)
 shape = SubResource("RectangleShape2D_j782r")
-debug_color = Color(0.0208922, 0.521525, 2.88785e-07, 0.42)
-
-[node name="KillBox" type="Area2D" parent="Igris" groups=["mob"]]
-collision_layer = 4
-collision_mask = 0
-
-[node name="KillboxShape" type="CollisionShape2D" parent="Igris/KillBox"]
-position = Vector2(0, 12)
-shape = SubResource("RectangleShape2D_l0rgt")
-debug_color = Color(0.576471, 0.00392157, 0.921569, 0)
+debug_color = Color(0.578218, 0.00357015, 0.920396, 0.42)
 
 [node name="SmallRange" type="Area2D" parent="Igris"]
 collision_layer = 0
@@ -1020,7 +994,7 @@ collision_layer = 0
 [node name="SmallShape" type="CollisionShape2D" parent="Igris/SmallRange"]
 position = Vector2(0, 8)
 shape = SubResource("RectangleShape2D_cvecx")
-debug_color = Color(0.478431, 0.435294, 0, 0)
+debug_color = Color(0.478431, 0.435294, 0, 0.0980392)
 
 [node name="BigRange" type="Area2D" parent="Igris"]
 collision_layer = 0
@@ -1028,17 +1002,17 @@ collision_layer = 0
 [node name="BigShape" type="CollisionShape2D" parent="Igris/BigRange"]
 position = Vector2(0, -76)
 shape = SubResource("RectangleShape2D_dnhwb")
-debug_color = Color(0.478431, 0.435294, 0, 0)
+debug_color = Color(0, 0.517647, 0.231373, 0.12549)
 
 [node name="BigShape2" type="CollisionShape2D" parent="Igris/BigRange"]
 position = Vector2(-192, 8)
 shape = SubResource("RectangleShape2D_6mkq5")
-debug_color = Color(0.478431, 0.435294, 0, 0)
+debug_color = Color(0, 0.517647, 0.231373, 0.12549)
 
 [node name="BigShape3" type="CollisionShape2D" parent="Igris/BigRange"]
 position = Vector2(192, 8)
 shape = SubResource("RectangleShape2D_6mkq5")
-debug_color = Color(0.478431, 0.435294, 0, 0)
+debug_color = Color(0, 0.517647, 0.231373, 0.12549)
 
 [node name="Attacks" type="Area2D" parent="Igris" groups=["mob"]]
 collision_layer = 4
@@ -1047,22 +1021,22 @@ collision_mask = 0
 [node name="Brutal" type="CollisionShape2D" parent="Igris/Attacks" groups=["mob"]]
 position = Vector2(-86, -4)
 shape = SubResource("RectangleShape2D_f8u18")
-debug_color = Color(0.92549, 0, 0.678431, 0.0705882)
+debug_color = Color(0.924935, 4.34139e-05, 0.678148, 0.42)
 
 [node name="BrutalBack" type="CollisionShape2D" parent="Igris/Attacks" groups=["mob"]]
 position = Vector2(86, -4)
 shape = SubResource("RectangleShape2D_f8u18")
-debug_color = Color(0.92549, 0, 0.678431, 0.0705882)
+debug_color = Color(0.924935, 4.34139e-05, 0.678148, 0.42)
 
 [node name="Dash" type="CollisionShape2D" parent="Igris/Attacks" groups=["mob"]]
 position = Vector2(-74, -20)
 shape = SubResource("RectangleShape2D_wdgyp")
-debug_color = Color(0.92549, 0, 0.678431, 0.0705882)
+debug_color = Color(0.924935, 4.34139e-05, 0.678148, 0.42)
 
 [node name="SmallBack" type="CollisionShape2D" parent="Igris/Attacks" groups=["mob"]]
 position = Vector2(74, 24)
 shape = SubResource("RectangleShape2D_sfrtb")
-debug_color = Color(0.92549, 0, 0.678431, 0.0705882)
+debug_color = Color(0.924935, 4.34139e-05, 0.678148, 0.42)
 
 [node name="Animations" type="AnimationPlayer" parent="Igris"]
 root_node = NodePath("../Sprite")
@@ -1076,10 +1050,10 @@ texture = ExtResource("4_y5wiy")
 hframes = 3
 vframes = 4
 
-[node name="RisingFireflies" type="GPUParticles2D" parent="."]
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
 modulate = Color(1, 1, 1, 0.180392)
 material = SubResource("CanvasItemMaterial_vjcqg")
-position = Vector2(1225, 481)
+position = Vector2(1225, 480)
 amount = 20
 process_material = SubResource("ParticleProcessMaterial_tfl0i")
 texture = SubResource("GradientTexture2D_qfm8a")
@@ -1089,14 +1063,18 @@ randomness = 0.3
 trail_enabled = true
 trail_lifetime = 0.6
 
-[node name="DownGlow" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0.0705882)
 material = SubResource("CanvasItemMaterial_tinib")
 position = Vector2(696, 240)
 scale = Vector2(30.25, 7.5)
 texture = SubResource("GradientTexture2D_u1nb4")
 
-[node name="WorldShader" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_w5mso")
+
+[node name="NormalMap" type="Sprite2D" parent="."]
+position = Vector2(2000, -32)
+texture = ExtResource("11_phqri")
 
 [connection signal="area_entered" from="Igris/Hitbox" to="Igris" method="_on_hitbox_area_entered"]

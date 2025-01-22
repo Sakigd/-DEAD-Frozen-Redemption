@@ -135,9 +135,8 @@ collision_layer = 0
 [node name="Campfire" parent="." instance=ExtResource("6_1bjdw")]
 position = Vector2(68, 391)
 
-[node name="EnnemiVolant" parent="." node_paths=PackedStringArray("target_to_chase") instance=ExtResource("7_7qxet")]
+[node name="EnnemiVolant" parent="." instance=ExtResource("7_7qxet")]
 position = Vector2(619, 246)
-target_to_chase = NodePath("../Player")
 projectile_scene = ExtResource("8_51qwo")
 
 [node name="Hud" parent="." instance=ExtResource("3_dnja6")]

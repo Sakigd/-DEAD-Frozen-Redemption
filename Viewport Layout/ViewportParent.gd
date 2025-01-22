@@ -7,7 +7,7 @@ extends ColorRect
 #const SaveManager = preload("res://GameCore/SaveManager.gd")
 const SAVE_PATH = "user://example_save_data.sav"
 var player : CharacterBody2D
-var PlayerCamera : Camera2D
+var ActiveCamera : Camera2D
 var map: Node2D
 ## Emitted when [method load_room] has loaded a room. You can use it when you want to call some methods after loading a room (e.g. positioning the player).
 signal room_loaded
@@ -24,7 +24,7 @@ func _ready():
 	#print(map.get_path())
 	player = map.find_child("Player")
 	#print(player.get_path())
-	PlayerCamera = $PlayerCamera
+	ActiveCamera = $PixelArt/PixelArtViewport.get_camera_2d()
 	init_room()
 
 func _process(delta):
@@ -35,8 +35,8 @@ func _process(delta):
 	scale = Vector2.ONE
 	global_position = Vector2.ZERO
 	rotation = 0
-	if PlayerCamera != null && player != null:
-		PlayerCamera.position = player.position
+	if ActiveCamera != null && player != null:
+		ActiveCamera.position = player.position
 	#print(get_tree_string())
 	#if abs(ingame_zoom) < 0.5 :
 		#ingame_zoom = 0.5 * sign(ingame_zoom)
@@ -68,11 +68,12 @@ func load_room(path: String, parent_node = $PixelArt/PixelArtViewport):
 	room_loaded.emit()
 	
 func init_room():
+	pass
 	var background_size = map.get_node("Background").get_rect().size
-	PlayerCamera.limit_bottom = background_size.y
-	PlayerCamera.limit_top = 0
-	PlayerCamera.limit_left = 0
-	PlayerCamera.limit_right = background_size.x
+	ActiveCamera.limit_bottom = background_size.y
+	ActiveCamera.limit_top = 0
+	ActiveCamera.limit_left = 0
+	ActiveCamera.limit_right = background_size.x
 
 func reset_state():
 	pass
