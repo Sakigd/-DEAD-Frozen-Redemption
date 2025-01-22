@@ -13,7 +13,7 @@ extends CharacterBody2D
 var health : float = 100
 var hit_tween : Tween = null
 var direction : int = -1
-enum s {IDLE,FLIP,BRUTAL,BRUTAL_BACK,DASH_LOAD,DASH,SMALL_BACK,FROST,JUMP}
+enum s {IDLE,FLIP,BRUTAL,BRUTAL_BACK,DASH_LOAD,DASH,SMALL_BACK,FROST,JUMP,WAIT,DASH_WARN_LOAD}
 var state : int = s.IDLE
 var state_time = 0
 var player_in_small_range : bool
@@ -25,7 +25,10 @@ const flip_length : float = 0.4
 const brutal_length : float = 1.0
 const brutal_hit_start : float = 0.75
 const brutal_hit_duration : float = 0.15
+const brutal_max_combo : int = 4
+var chained_brutals : int = 0
 const dash_load_length : float = 0.3
+const dash_warn_load_length : float = 0.6
 const dash_speed : float = 600
 const dash_length : float = 1.2
 const dash_deceleration : float = 800
@@ -39,10 +42,21 @@ const jump_height : float = 240
 var jump_x : Tween = null
 var jump_y : Tween = null
 var jump_pos : Vector2 = Vector2.ZERO
+var attacks_progression : int = 0
+const progression_goal_range : Array = [7,9]
+var progression_goal : int = progression_goal_range[0]
+const wait_time_range : Array = [2.5,3.5]
+var wait_time : float = 0
+
 
 func _ready():
 	if not player :
 		queue_free()
+	change_pause_goal()
+
+
+func change_pause_goal() :
+	progression_goal = randi_range(progression_goal_range[0],progression_goal_range[1])
 
 
 func _physics_process(delta):
@@ -82,6 +96,9 @@ func _physics_process(delta):
 	if state != s.FROST and state != s.IDLE :
 		chained_frost_waves = 0
 	
+	if state != s.BRUTAL and state != s.BRUTAL_BACK and state != s.IDLE :
+		chained_brutals = 0
+	
 	if state == s.DASH or state == s.IDLE or state == s.DASH_LOAD or state == s.SMALL_BACK :
 		dash_velocity = clamp(dash_velocity - delta * dash_deceleration,0,INF)
 	else :
@@ -100,6 +117,15 @@ func _physics_process(delta):
 	position.x = clamp(position.x,808+32*3,1616-32*3)
 
 func _transitions() -> s :
+	if attacks_progression >= progression_goal :
+		change_pause_goal()
+		attacks_progression = 0
+		wait_time = randi_range(wait_time_range[0],wait_time_range[1])
+		return s.WAIT
+	
+	if state == s.WAIT and state_time >= wait_time :
+		return s.IDLE
+	
 	if not player_in_small_range and not _facing_player() and state == s.IDLE :
 		direction = -1 * direction
 		return s.FLIP
@@ -108,9 +134,15 @@ func _transitions() -> s :
 		return s.IDLE
 	
 	if state == s.IDLE and player_in_small_range :
-		if _facing_player() :
+		if chained_brutals >= brutal_max_combo :
+			return s.DASH_WARN_LOAD
+		elif _facing_player() :
+			attacks_progression += 1
+			chained_brutals += 1
 			return s.BRUTAL
 		else :
+			attacks_progression += 1
+			chained_brutals += 1
 			return s.BRUTAL_BACK
 	
 	if state == s.BRUTAL or state == s.BRUTAL_BACK :
@@ -122,6 +154,12 @@ func _transitions() -> s :
 	
 	if state == s.DASH_LOAD and state_time >= dash_load_length :
 		dash_velocity = dash_speed
+		attacks_progression += 1
+		return s.DASH
+	
+	if state == s.DASH_WARN_LOAD and state_time >= dash_warn_load_length :
+		dash_velocity = dash_speed
+		attacks_progression += 1
 		return s.DASH
 	
 	if state == s.DASH and (state_time >= dash_length or is_on_wall()) :

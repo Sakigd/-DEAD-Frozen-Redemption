@@ -1,0 +1,167 @@
+[gd_scene load_steps=17 format=3 uid="uid://hb2cu7nquytr"]
+
+[ext_resource type="Texture2D" uid="uid://d1ramg4ww0hau" path="res://asset/Map/Map_boss.png" id="1_urno3"]
+[ext_resource type="PackedScene" uid="uid://bcwyfattjly6" path="res://Scene/Player.tscn" id="3_lj6d0"]
+[ext_resource type="Script" path="res://Igris/igris_boss_behavior.gd" id="4_ft4xk"]
+[ext_resource type="Texture2D" uid="uid://bwt78i27uctf8" path="res://Igris/Sprites/igris_idle.png" id="4_y5wiy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1862f"]
+size = Vector2(768, 56)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vfjwq"]
+size = Vector2(808, 88)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x4syr"]
+size = Vector2(16, 480)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_48yvg"]
+size = Vector2(16, 479.875)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qfgbo"]
+size = Vector2(40, 72)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j782r"]
+size = Vector2(56, 88)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cvecx"]
+size = Vector2(288, 80)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dnhwb"]
+size = Vector2(480, 88)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6mkq5"]
+size = Vector2(96, 80)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f8u18"]
+size = Vector2(116, 104)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wdgyp"]
+size = Vector2(92, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sfrtb"]
+size = Vector2(92, 48)
+
+[node name="LevelBoss" type="Node2D"]
+metadata/_edit_horizontal_guides_ = [480.0, 0.0]
+metadata/_edit_vertical_guides_ = [0.0, 1664.0, 1168.0]
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(832, 240)
+texture = ExtResource("1_urno3")
+
+[node name="Ground" type="StaticBody2D" parent="."]
+collision_layer = 2
+
+[node name="Ground1" type="CollisionShape2D" parent="Ground"]
+position = Vector2(384, 452)
+shape = SubResource("RectangleShape2D_1862f")
+
+[node name="Ground2" type="CollisionShape2D" parent="Ground"]
+position = Vector2(1212, 436)
+shape = SubResource("RectangleShape2D_vfjwq")
+
+[node name="Stairs" type="CollisionPolygon2D" parent="Ground"]
+polygon = PackedVector2Array(768, 424, 808, 392, 808, 480, 768, 480)
+
+[node name="LeftWall" type="CollisionShape2D" parent="Ground"]
+position = Vector2(-8, 240)
+shape = SubResource("RectangleShape2D_x4syr")
+
+[node name="LeftWall2" type="CollisionShape2D" parent="Ground"]
+position = Vector2(800, 240)
+shape = SubResource("RectangleShape2D_x4syr")
+
+[node name="RightWall" type="CollisionShape2D" parent="Ground"]
+position = Vector2(1624, 240)
+shape = SubResource("RectangleShape2D_48yvg")
+
+[node name="Player" parent="." instance=ExtResource("3_lj6d0")]
+position = Vector2(880, 360)
+
+[node name="Camera" type="Camera2D" parent="Player"]
+limit_left = 0
+limit_top = 0
+limit_right = 1664
+limit_bottom = 480
+position_smoothing_enabled = true
+position_smoothing_speed = 3.0
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
+
+[node name="Igris" type="CharacterBody2D" parent="." node_paths=PackedStringArray("player")]
+position = Vector2(1544, 344)
+collision_layer = 16
+collision_mask = 2
+script = ExtResource("4_ft4xk")
+player = NodePath("../Player")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape" type="CollisionShape2D" parent="Igris"]
+position = Vector2(0, 12)
+shape = SubResource("RectangleShape2D_qfgbo")
+debug_color = Color(0.997391, 0, 0.166974, 0.42)
+
+[node name="Hitbox" type="Area2D" parent="Igris" groups=["mob"]]
+collision_layer = 4
+
+[node name="HitboxShape" type="CollisionShape2D" parent="Igris/Hitbox"]
+position = Vector2(0, 12)
+shape = SubResource("RectangleShape2D_j782r")
+debug_color = Color(0.578218, 0.00357015, 0.920396, 0.42)
+
+[node name="SmallRange" type="Area2D" parent="Igris"]
+collision_layer = 0
+
+[node name="SmallShape" type="CollisionShape2D" parent="Igris/SmallRange"]
+position = Vector2(0, 8)
+shape = SubResource("RectangleShape2D_cvecx")
+debug_color = Color(0.478431, 0.435294, 0, 0.0980392)
+
+[node name="BigRange" type="Area2D" parent="Igris"]
+collision_layer = 0
+
+[node name="BigShape" type="CollisionShape2D" parent="Igris/BigRange"]
+position = Vector2(0, -76)
+shape = SubResource("RectangleShape2D_dnhwb")
+debug_color = Color(0, 0.517647, 0.231373, 0.12549)
+
+[node name="BigShape2" type="CollisionShape2D" parent="Igris/BigRange"]
+position = Vector2(-192, 8)
+shape = SubResource("RectangleShape2D_6mkq5")
+debug_color = Color(0, 0.517647, 0.231373, 0.12549)
+
+[node name="BigShape3" type="CollisionShape2D" parent="Igris/BigRange"]
+position = Vector2(192, 8)
+shape = SubResource("RectangleShape2D_6mkq5")
+debug_color = Color(0, 0.517647, 0.231373, 0.12549)
+
+[node name="Attacks" type="Area2D" parent="Igris" groups=["mob"]]
+collision_layer = 4
+collision_mask = 0
+
+[node name="Brutal" type="CollisionShape2D" parent="Igris/Attacks" groups=["mob"]]
+position = Vector2(-86, -4)
+shape = SubResource("RectangleShape2D_f8u18")
+debug_color = Color(0.924935, 4.34139e-05, 0.678148, 0.42)
+
+[node name="BrutalBack" type="CollisionShape2D" parent="Igris/Attacks" groups=["mob"]]
+position = Vector2(86, -4)
+shape = SubResource("RectangleShape2D_f8u18")
+debug_color = Color(0.924935, 4.34139e-05, 0.678148, 0.42)
+
+[node name="Dash" type="CollisionShape2D" parent="Igris/Attacks" groups=["mob"]]
+position = Vector2(-74, -20)
+shape = SubResource("RectangleShape2D_wdgyp")
+debug_color = Color(0.924935, 4.34139e-05, 0.678148, 0.42)
+
+[node name="SmallBack" type="CollisionShape2D" parent="Igris/Attacks" groups=["mob"]]
+position = Vector2(74, 24)
+shape = SubResource("RectangleShape2D_sfrtb")
+debug_color = Color(0.924935, 4.34139e-05, 0.678148, 0.42)
+
+[node name="Sprite" type="Sprite2D" parent="Igris"]
+texture = ExtResource("4_y5wiy")
+hframes = 3
+vframes = 4
+
+[connection signal="area_entered" from="Igris/Hitbox" to="Igris" method="_on_hitbox_area_entered"]
