@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://c3r8eglr8lx1w"]
 
 [ext_resource type="Script" path="res://Viewport Layout/ViewportParent.gd" id="2_4qdtt"]
-[ext_resource type="PackedScene" uid="uid://cek0f3q58j730" path="res://Scene/Levels/levelTestMap.tscn" id="3_04f7b"]
+[ext_resource type="PackedScene" uid="uid://hb2cu7nquytr" path="res://Scene/igrisMap.tscn" id="3_c6qjn"]
 [ext_resource type="Script" path="res://Viewport Layout/PixelArtViewport.gd" id="3_nt2yl"]
 
 [node name="Game" type="ColorRect"]
@@ -56,7 +56,7 @@ audio_listener_enable_2d = true
 size = Vector2i(1280, 760)
 render_target_update_mode = 4
 
-[node name="LevelTest" parent="PixelArt/PixelArtViewport" instance=ExtResource("3_04f7b")]
+[node name="LevelBoss" parent="PixelArt/PixelArtViewport" instance=ExtResource("3_c6qjn")]
 
 [node name="PixelFrame" type="Node2D" parent="PixelArt"]
 
@@ -86,13 +86,5 @@ layout_mode = 2
 border_color = Color(0.950882, 0.000221979, 0.82057, 1)
 border_width = 16.0
 
-[node name="PlayerCamera" type="Camera2D" parent="."]
-position = Vector2(115, 361)
-limit_left = 0
-limit_top = 0
-limit_right = 832
-limit_bottom = 480
-
 [node name="FeedGrabber" type="Camera2D" parent="."]
-visible = false
 position = Vector2(640, 380)

@@ -72,14 +72,17 @@ script/source = "extends Camera2D
 @export var igris : Node 
 var end_zoom : Vector2 = Vector2.ONE
 var initial_position : Vector2 = Vector2.ZERO
+var real_zoom : Vector2 = Vector2.ONE
 
 func _ready():
 	initial_position = global_position
 
 func _process(delta):
+	var screen = get_tree().get_nodes_in_group(\"screen\")[0]
+	
 	if not is_instance_valid(igris) :
 		global_position = player.global_position
-		zoom = Vector2.ONE
+		real_zoom = Vector2.ONE
 		return
 	#var to_player : Vector2 = player.global_position - global_position
 	#global_position = initial_position + to_player * 0.6
@@ -87,7 +90,9 @@ func _process(delta):
 	var zoom_scalar = clamp(1/((player.global_position.distance_to(igris.global_position)+100)/400),1,1.5)
 	end_zoom = Vector2.ONE * zoom_scalar
 	
-	zoom += (end_zoom-zoom) * (0.4*delta)
+	real_zoom += (end_zoom-real_zoom) * (0.6*delta)
+	
+	screen.ingame_zoom = real_zoom.x
 "
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qfgbo"]
