@@ -4,18 +4,23 @@ extends CharacterBody2D
 	#Blood and death animation
 	#Animations
 	#Discovery cutscene
-	#Pause
+	#Frost wave dispawn
+	#Pause après attaques dans range grande ou petite
+	#Stomping anim
+	#Knpckback against wall bug
 
 @export var player : CharacterBody2D = null
 var health : float = 100
 var hit_tween : Tween = null
 var direction : int = -1
-enum s {IDLE,FLIP,BRUTAL,BRUTAL_BACK,DASH_LOAD,DASH,SMALL_BACK}
+enum s {IDLE,FLIP,BRUTAL,BRUTAL_BACK,DASH_LOAD,DASH,SMALL_BACK,FROST,JUMP}
 var state : int = s.IDLE
 var state_time = 0
 var player_in_small_range : bool
 var player_in_big_range : bool
 var dash_velocity : float = 0.0
+var frost_wave : PackedScene = preload("res://Igris/frost_wave.tscn")
+var chained_frost_waves : int = 0
 const flip_length : float = 0.4
 const brutal_length : float = 1.0
 const brutal_hit_start : float = 0.75
@@ -23,8 +28,17 @@ const brutal_hit_duration : float = 0.15
 const dash_load_length : float = 0.3
 const dash_speed : float = 600
 const dash_length : float = 1.2
-const dash_deceleration : float = 700
+const dash_deceleration : float = 800
 const small_back_length : float = 0.3
+const frost_length : float = 1.5
+const frost_speed : float = 400
+const frost_max_combo : int = 4
+const jump_length : float = 2.0
+const jump_cooldown : float = 1.0
+const jump_height : float = 240
+var jump_x : Tween = null
+var jump_y : Tween = null
+var jump_pos : Vector2 = Vector2.ZERO
 
 func _ready():
 	if not player :
@@ -55,6 +69,19 @@ func _physics_process(delta):
 	$Attacks/Dash.disabled = not (state == s.DASH)
 	$Attacks/SmallBack.disabled = not (state == s.SMALL_BACK) 
 	
+	if get_collision_layer_value(5) == false :
+		if not $Hitbox.get_overlapping_bodies().has(player) :
+			set_collision_layer_value(5,true)
+	if not state == s.JUMP :
+		set_collision_mask_value(2,true)
+	else :
+		set_collision_mask_value(2,false)
+		set_collision_layer_value(5,false)
+		move_and_collide(jump_pos - global_position)
+	
+	if state != s.FROST and state != s.IDLE :
+		chained_frost_waves = 0
+	
 	if state == s.DASH or state == s.IDLE or state == s.DASH_LOAD or state == s.SMALL_BACK :
 		dash_velocity = clamp(dash_velocity - delta * dash_deceleration,0,INF)
 	else :
@@ -67,8 +94,10 @@ func _physics_process(delta):
 		if attack_box.name.contains("Back") :
 			attack_box.position.x *= -1
 	
-	move_and_slide()
-
+	if not state == s.JUMP :
+		move_and_slide()
+	
+	position.x = clamp(position.x,808+32*3,1616-32*3)
 
 func _transitions() -> s :
 	if not player_in_small_range and not _facing_player() and state == s.IDLE :
@@ -102,6 +131,37 @@ func _transitions() -> s :
 			return s.IDLE
 	
 	if state == s.SMALL_BACK and state_time >= small_back_length :
+		return s.IDLE
+	
+	if state == s.IDLE and not player_in_big_range and not player_in_small_range :
+		var random = randi_range(-1,1)
+		if chained_frost_waves >= frost_max_combo :
+			random = 2
+		if random <= 0 :
+			var new_wave = frost_wave.instantiate()
+			new_wave.direction = direction
+			new_wave.max_speed = frost_speed
+			new_wave.boss = self
+			new_wave.global_position = global_position
+			get_parent().add_child(new_wave)
+			chained_frost_waves += 1
+			return s.FROST
+		else :
+			jump_pos = global_position
+			jump_x = create_tween()
+			jump_x.tween_property(self,"jump_pos:x",player.global_position.x,jump_length-jump_cooldown)\
+				.set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE)
+			jump_y = create_tween()
+			jump_y.tween_property(self,"jump_pos:y",global_position.y - jump_height,(jump_length-jump_cooldown)/2)\
+				.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
+			jump_y.chain().tween_property(self,"jump_pos:y",get_parent().to_global(Vector2(0,344)).y,(jump_length-jump_cooldown)/2)\
+				.set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
+			return s.JUMP
+	
+	if state == s.FROST and state_time >= frost_length :
+		return s.IDLE
+	
+	if state == s.JUMP and state_time >= jump_length :
 		return s.IDLE
 	
 	return state
