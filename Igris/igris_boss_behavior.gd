@@ -9,42 +9,52 @@ extends CharacterBody2D
 	#Stomping anim
 	#Knpckback against wall bug
 
-@export var player : CharacterBody2D = null
-var health : float = 100
-var hit_tween : Tween = null
-var direction : int = -1
 enum s {IDLE,FLIP,BRUTAL,BRUTAL_BACK,DASH_LOAD,DASH,SMALL_BACK,FROST,JUMP,WAIT,DASH_WARN_LOAD}
 var state : int = s.IDLE
 var state_time = 0
+
+@export var player : CharacterBody2D = null
 var player_in_small_range : bool
 var player_in_big_range : bool
-var dash_velocity : float = 0.0
-var frost_wave : PackedScene = preload("res://Igris/frost_wave.tscn")
-var chained_frost_waves : int = 0
+
+var direction : int = -1
+var hit_tween : Tween = null
+
+var health : float = 100
+var attacks_progression : int = 0
+const progression_goal_range : Array = [7,9]
+var progression_goal : int = progression_goal_range[0]
+
 const flip_length : float = 0.4
+
 const brutal_length : float = 1.0
 const brutal_hit_start : float = 0.75
 const brutal_hit_duration : float = 0.15
 const brutal_max_combo : int = 4
 var chained_brutals : int = 0
+
+var dash_velocity : float = 0.0
 const dash_load_length : float = 0.3
 const dash_warn_load_length : float = 0.6
 const dash_speed : float = 600
 const dash_length : float = 1.2
 const dash_deceleration : float = 800
+
 const small_back_length : float = 0.3
+
 const frost_length : float = 1.5
 const frost_speed : float = 400
 const frost_max_combo : int = 4
+var frost_wave : PackedScene = preload("res://Igris/frost_wave.tscn")
+var chained_frost_waves : int = 0
+
 const jump_length : float = 2.0
 const jump_cooldown : float = 1.0
 const jump_height : float = 240
 var jump_x : Tween = null
 var jump_y : Tween = null
 var jump_pos : Vector2 = Vector2.ZERO
-var attacks_progression : int = 0
-const progression_goal_range : Array = [7,9]
-var progression_goal : int = progression_goal_range[0]
+
 const wait_time_range : Array = [2.5,3.5]
 var wait_time : float = 0
 
