@@ -11,6 +11,7 @@ extends CharacterBody2D
 	#Flip animation
 	#Igris sometimes doesn't react to attacks
 	#Light rays perspective problem
+	#Camer shake
 
 enum s {IDLE,FLIP,BRUTAL,BRUTAL_BACK,DASH_LOAD,DASH,SMALL_BACK,FROST,FROST_RECOVERY,JUMP,WAIT,DASH_WARN_LOAD}
 var state : s = s.IDLE
@@ -135,9 +136,10 @@ func _physics_process(delta):
 	position.x = clamp(position.x,808+32*3,1616-32*3)
 	
 	if state == s.WAIT : 
-		$Sprite.modulate.v = 1-(cos(cycle*5)+1)/2*0.4
+		if (not hit_tween) or (hit_tween and not hit_tween.is_running()) :
+			$Sprite.self_modulate.v = 1-(cos(cycle*5)+1)/2*0.7
 	else :
-		$Sprite.modulate.v = 1
+		$Sprite.self_modulate.v = 1
 
 func _transitions() -> s :
 	if attacks_progression >= progression_goal :
@@ -251,11 +253,12 @@ func _transitions() -> s :
 
 func _hit(value:float=10) :
 	health -= value
-	$Sprite.self_modulate.g = 0.6
-	$Sprite.self_modulate.b = 0.7
+	$Sprite.self_modulate.v = 1
+	$Sprite.self_modulate.g = 0.2
+	$Sprite.self_modulate.b = 0.3
 	hit_tween = create_tween()
-	hit_tween.parallel().tween_property($Sprite,"self_modulate:g",1.0,0.3)
-	hit_tween.parallel().tween_property($Sprite,"self_modulate:b",1.0,0.3)
+	hit_tween.parallel().tween_property($Sprite,"self_modulate:g",1.0,0.4)
+	hit_tween.parallel().tween_property($Sprite,"self_modulate:b",1.0,0.4)
 	if health <= 0 :
 		queue_free()
 
