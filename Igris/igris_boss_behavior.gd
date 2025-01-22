@@ -7,10 +7,13 @@ extends CharacterBody2D
 	#Frost wave dispawn
 	#Pause après attaques dans range grande ou petite
 	#Stomping anim
-	#Knpckback against wall bug
+	#Knockback against wall bug
+	#Flip animation
+	#Igris sometimes doesn't react to attacks
+	#Light rays perspective problem
 
-enum s {IDLE,FLIP,BRUTAL,BRUTAL_BACK,DASH_LOAD,DASH,SMALL_BACK,FROST,JUMP,WAIT,DASH_WARN_LOAD}
-var state : int = s.IDLE
+enum s {IDLE,FLIP,BRUTAL,BRUTAL_BACK,DASH_LOAD,DASH,SMALL_BACK,FROST,FROST_RECOVERY,JUMP,WAIT,DASH_WARN_LOAD}
+var state : s = s.IDLE
 var state_time = 0
 
 @export var player : CharacterBody2D = null
@@ -19,10 +22,11 @@ var player_in_big_range : bool
 
 var direction : int = -1
 var hit_tween : Tween = null
+var cycle : float = 0
 
 var health : float = 100
 var attacks_progression : int = 0
-const progression_goal_range : Array = [7,9]
+const progression_goal_range : Array = [6,8]
 var progression_goal : int = progression_goal_range[0]
 
 const flip_length : float = 0.4
@@ -42,24 +46,26 @@ const dash_deceleration : float = 800
 
 const small_back_length : float = 0.3
 
-const frost_length : float = 1.5
+const frost_length : float = 0.3
+const frost_recovery_length : float = 0.8
 const frost_speed : float = 400
 const frost_max_combo : int = 4
 var frost_wave : PackedScene = preload("res://Igris/frost_wave.tscn")
 var chained_frost_waves : int = 0
 
-const jump_length : float = 2.0
-const jump_cooldown : float = 1.0
+const jump_length : float = 1.1
+const jump_cooldown : float = 0.3
 const jump_height : float = 240
 var jump_x : Tween = null
 var jump_y : Tween = null
 var jump_pos : Vector2 = Vector2.ZERO
 
-const wait_time_range : Array = [2.5,3.5]
+const wait_time_range : Array = [3.5,4.5]
 var wait_time : float = 0
 
 
 func _ready():
+	$Animations.play("Idle")
 	if not player :
 		queue_free()
 	change_pause_goal()
@@ -72,7 +78,9 @@ func change_pause_goal() :
 func _physics_process(delta):
 	velocity = Vector2.ZERO
 	
-	$Sprite.flip_h = (direction == 1)
+	cycle = wrap(cycle+delta,0,PI)
+	
+	$Sprite.scale.x = -1 * direction
 	
 	player_in_small_range = $SmallRange.get_overlapping_bodies().has(player)
 	player_in_big_range = $BigRange.get_overlapping_bodies().has(player)
@@ -125,46 +133,61 @@ func _physics_process(delta):
 		move_and_slide()
 	
 	position.x = clamp(position.x,808+32*3,1616-32*3)
+	
+	if state == s.WAIT : 
+		$Sprite.modulate.v = 1-(cos(cycle*5)+1)/2*0.4
+	else :
+		$Sprite.modulate.v = 1
 
 func _transitions() -> s :
 	if attacks_progression >= progression_goal :
 		change_pause_goal()
 		attacks_progression = 0
-		wait_time = randi_range(wait_time_range[0],wait_time_range[1])
+		wait_time = randf_range(wait_time_range[0],wait_time_range[1])
+		$Animations.play("Idle")
 		return s.WAIT
 	
 	if state == s.WAIT and state_time >= wait_time :
+		$Animations.play("Idle")
 		return s.IDLE
 	
 	if not player_in_small_range and not _facing_player() and state == s.IDLE :
 		direction = -1 * direction
+		$Animations.play("Idle")
 		return s.FLIP
 	
 	if state == s.FLIP and state_time >= flip_length :
+		$Animations.play("Idle")
 		return s.IDLE
 	
 	if state == s.IDLE and player_in_small_range :
 		if chained_brutals >= brutal_max_combo :
+			$Animations.play("DashWarnLoad")
 			return s.DASH_WARN_LOAD
 		elif _facing_player() :
 			attacks_progression += 1
 			chained_brutals += 1
+			$Animations.play("Brutal")
 			return s.BRUTAL
 		else :
 			attacks_progression += 1
 			chained_brutals += 1
+			$Animations.play("BrutalBack")
 			return s.BRUTAL_BACK
 	
 	if state == s.BRUTAL or state == s.BRUTAL_BACK :
 		if state_time >= brutal_length :
+			$Animations.play("Idle")
 			return s.IDLE
 	
 	if player_in_big_range and state == s.IDLE :
+		$Animations.play("DashLoad")
 		return s.DASH_LOAD
 	
 	if state == s.DASH_LOAD and state_time >= dash_load_length :
 		dash_velocity = dash_speed
 		attacks_progression += 1
+		$Animations.play("Dash")
 		return s.DASH
 	
 	if state == s.DASH_WARN_LOAD and state_time >= dash_warn_load_length :
@@ -174,11 +197,14 @@ func _transitions() -> s :
 	
 	if state == s.DASH and (state_time >= dash_length or is_on_wall()) :
 		if player_in_small_range and not _facing_player() :
+			$Animations.play("SmallBack")
 			return s.SMALL_BACK
 		else :
+			$Animations.play("Idle")
 			return s.IDLE
 	
 	if state == s.SMALL_BACK and state_time >= small_back_length :
+		$Animations.play("Idle")
 		return s.IDLE
 	
 	if state == s.IDLE and not player_in_big_range and not player_in_small_range :
@@ -186,13 +212,7 @@ func _transitions() -> s :
 		if chained_frost_waves >= frost_max_combo :
 			random = 2
 		if random <= 0 :
-			var new_wave = frost_wave.instantiate()
-			new_wave.direction = direction
-			new_wave.max_speed = frost_speed
-			new_wave.boss = self
-			new_wave.global_position = global_position
-			get_parent().add_child(new_wave)
-			chained_frost_waves += 1
+			$Animations.play("Frost")
 			return s.FROST
 		else :
 			jump_pos = global_position
@@ -201,15 +221,29 @@ func _transitions() -> s :
 				.set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE)
 			jump_y = create_tween()
 			jump_y.tween_property(self,"jump_pos:y",global_position.y - jump_height,(jump_length-jump_cooldown)/2)\
-				.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
+				.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
 			jump_y.chain().tween_property(self,"jump_pos:y",get_parent().to_global(Vector2(0,344)).y,(jump_length-jump_cooldown)/2)\
-				.set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
+				.set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CIRC)
+			$Animations.play("Jump")
 			return s.JUMP
 	
 	if state == s.FROST and state_time >= frost_length :
+		var new_wave = frost_wave.instantiate()
+		new_wave.direction = direction
+		new_wave.max_speed = frost_speed
+		new_wave.boss = self
+		new_wave.global_position = global_position
+		get_parent().add_child(new_wave)
+		chained_frost_waves += 1
+		$Animations.play("FrostRecovery")
+		return s.FROST_RECOVERY
+	
+	if state == s.FROST_RECOVERY and state_time >= frost_recovery_length :
+		$Animations.play("Idle")
 		return s.IDLE
 	
 	if state == s.JUMP and state_time >= jump_length :
+		$Animations.play("Idle")
 		return s.IDLE
 	
 	return state

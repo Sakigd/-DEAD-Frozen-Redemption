@@ -106,8 +106,8 @@ func set_velocity_x(vel_x):
 func set_vel(vel: Vector2):
 	set_velocity(vel)
 
-func knockback(direction: int):
-	knockback_force.x = 250 * direction
+func knockback(_direction: int):
+	knockback_force.x = 250 * _direction
 	knockback_force.y = -200
 
 func is_bind_key_pressed():
