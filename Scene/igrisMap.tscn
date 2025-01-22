@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://hb2cu7nquytr"]
+[gd_scene load_steps=17 format=3 uid="uid://hb2cu7nquytr"]
 
 [ext_resource type="Texture2D" uid="uid://d1ramg4ww0hau" path="res://asset/Map/Map_boss.png" id="1_urno3"]
 [ext_resource type="PackedScene" uid="uid://bcwyfattjly6" path="res://Scene/Player.tscn" id="3_lj6d0"]
@@ -34,6 +34,12 @@ size = Vector2(96, 80)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f8u18"]
 size = Vector2(116, 104)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wdgyp"]
+size = Vector2(92, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sfrtb"]
+size = Vector2(92, 48)
 
 [node name="LevelBoss" type="Node2D"]
 metadata/_edit_horizontal_guides_ = [480.0, 0.0]
@@ -137,6 +143,16 @@ debug_color = Color(0.924935, 4.34139e-05, 0.678148, 0.42)
 [node name="BrutalBack" type="CollisionShape2D" parent="Igris/Attacks" groups=["mob"]]
 position = Vector2(86, -4)
 shape = SubResource("RectangleShape2D_f8u18")
+debug_color = Color(0.924935, 4.34139e-05, 0.678148, 0.42)
+
+[node name="Dash" type="CollisionShape2D" parent="Igris/Attacks" groups=["mob"]]
+position = Vector2(-74, -20)
+shape = SubResource("RectangleShape2D_wdgyp")
+debug_color = Color(0.924935, 4.34139e-05, 0.678148, 0.42)
+
+[node name="SmallBack" type="CollisionShape2D" parent="Igris/Attacks" groups=["mob"]]
+position = Vector2(74, 24)
+shape = SubResource("RectangleShape2D_sfrtb")
 debug_color = Color(0.924935, 4.34139e-05, 0.678148, 0.42)
 
 [node name="Sprite" type="Sprite2D" parent="Igris"]

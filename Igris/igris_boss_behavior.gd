@@ -3,13 +3,14 @@ extends CharacterBody2D
 ##TO DO LIST :
 	#Blood and death animation
 	#Animations
-	#Discovery cutscene*
+	#Discovery cutscene
+	#Pause
 
 @export var player : CharacterBody2D = null
 var health : float = 100
 var hit_tween : Tween = null
 var direction : int = -1
-enum s {IDLE,FLIP,BRUTAL,BRUTAL_BACK,DASH_LOAD,DASH}
+enum s {IDLE,FLIP,BRUTAL,BRUTAL_BACK,DASH_LOAD,DASH,SMALL_BACK}
 var state : int = s.IDLE
 var state_time = 0
 var player_in_small_range : bool
@@ -21,8 +22,9 @@ const brutal_hit_start : float = 0.75
 const brutal_hit_duration : float = 0.15
 const dash_load_length : float = 0.3
 const dash_speed : float = 600
-const dash_length : float = 1.0
+const dash_length : float = 1.2
 const dash_deceleration : float = 700
+const small_back_length : float = 0.3
 
 func _ready():
 	if not player :
@@ -50,8 +52,10 @@ func _physics_process(delta):
 		and state_time <= brutal_hit_start+brutal_hit_duration)
 	$Attacks/BrutalBack.disabled = not (state == s.BRUTAL_BACK and state_time >= brutal_hit_start \
 		and state_time <= brutal_hit_start+brutal_hit_duration)
+	$Attacks/Dash.disabled = not (state == s.DASH)
+	$Attacks/SmallBack.disabled = not (state == s.SMALL_BACK) 
 	
-	if state == s.DASH or state == s.IDLE or state == s.DASH_LOAD :
+	if state == s.DASH or state == s.IDLE or state == s.DASH_LOAD or state == s.SMALL_BACK :
 		dash_velocity = clamp(dash_velocity - delta * dash_deceleration,0,INF)
 	else :
 		dash_velocity = 0
@@ -91,7 +95,13 @@ func _transitions() -> s :
 		dash_velocity = dash_speed
 		return s.DASH
 	
-	if state == s.DASH and state_time >= dash_length :
+	if state == s.DASH and (state_time >= dash_length or is_on_wall()) :
+		if player_in_small_range and not _facing_player() :
+			return s.SMALL_BACK
+		else :
+			return s.IDLE
+	
+	if state == s.SMALL_BACK and state_time >= small_back_length :
 		return s.IDLE
 	
 	return state
