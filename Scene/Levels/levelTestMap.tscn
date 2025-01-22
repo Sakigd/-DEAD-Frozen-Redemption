@@ -1,17 +1,12 @@
-[gd_scene load_steps=18 format=3 uid="uid://cek0f3q58j730"]
+[gd_scene load_steps=20 format=3 uid="uid://cek0f3q58j730"]
 
 [ext_resource type="Texture2D" uid="uid://2fgqx5i8emlx" path="res://asset/Map/Test_map.png" id="1_hi56p"]
+[ext_resource type="Texture2D" uid="uid://dxj26oq3w21dc" path="res://asset/zone0_ladder.png" id="2_oxfgx"]
 [ext_resource type="PackedScene" uid="uid://b41oickcktc0y" path="res://Scene/desesperatedSlave.tscn" id="5_8ig20"]
 [ext_resource type="PackedScene" uid="uid://brrt1khpgb4ur" path="res://Scene/campfire.tscn" id="6_073y2"]
 [ext_resource type="Texture2D" uid="uid://c46438mmwhkh7" path="res://asset/door.png" id="6_bqgi1"]
 [ext_resource type="PackedScene" uid="uid://bcwyfattjly6" path="res://Scene/Player.tscn" id="6_e2x6o"]
 [ext_resource type="PackedScene" uid="uid://dv50d3foas1su" path="res://Scene/doorNextMap.tscn" id="6_mje2t"]
-
-[sub_resource type="NavigationPolygon" id="NavigationPolygon_1h7ml"]
-vertices = PackedVector2Array(522, 363, 762, 410, 311, 410, 438, 363, 762, 8, 522, 218, 10, 8, 438, 218, 362, 186, 362, 230, 245, 186, 10, 378, 245, 230, 266, 378, 266, 467, 311, 467)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(4, 1, 0, 5), PackedInt32Array(6, 4, 5, 7, 8), PackedInt32Array(9, 8, 7, 3), PackedInt32Array(6, 8, 10), PackedInt32Array(11, 6, 10, 12), PackedInt32Array(13, 11, 12), PackedInt32Array(12, 9, 3, 2, 13), PackedInt32Array(14, 13, 2, 15)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(-3, -2, 772, -2, 772, 477, -3, 478)])
-source_geometry_group_name = &"navigation_polygon_source_group"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_aqmtq"]
 size = Vector2(256, 92)
@@ -43,6 +38,12 @@ size = Vector2(96, 10)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_apcu4"]
 size = Vector2(47, 80)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tyqpu"]
+size = Vector2(23, 125)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t8e6e"]
+size = Vector2(31, 6)
+
 [node name="LevelTest" type="Node2D"]
 
 [node name="Background" type="Sprite2D" parent="."]
@@ -51,44 +52,40 @@ texture = ExtResource("1_hi56p")
 centered = false
 metadata/_edit_lock_ = true
 
-[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
-navigation_polygon = SubResource("NavigationPolygon_1h7ml")
-enabled = false
-
-[node name="ground" type="StaticBody2D" parent="NavigationRegion2D" groups=["ground"]]
+[node name="ground" type="StaticBody2D" parent="." groups=["ground"]]
 collision_layer = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="NavigationRegion2D/ground"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ground"]
 position = Vector2(128, 434)
 shape = SubResource("RectangleShape2D_aqmtq")
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="NavigationRegion2D/ground"]
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="ground"]
 position = Vector2(575.75, 449.75)
 shape = SubResource("RectangleShape2D_skbwe")
 
-[node name="leftWall" type="CollisionShape2D" parent="NavigationRegion2D/ground"]
+[node name="leftWall" type="CollisionShape2D" parent="ground"]
 position = Vector2(-14, 240)
 shape = SubResource("RectangleShape2D_sf8c6")
 
-[node name="rightWall" type="CollisionShape2D" parent="NavigationRegion2D/ground"]
+[node name="rightWall" type="CollisionShape2D" parent="ground"]
 position = Vector2(842, 240)
 shape = SubResource("RectangleShape2D_qghaj")
 
-[node name="plateforme" type="StaticBody2D" parent="NavigationRegion2D" groups=["plateforme"]]
+[node name="plateforme" type="StaticBody2D" parent="." groups=["plateforme"]]
 position = Vector2(481, 261)
 collision_layer = 2
 metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="NavigationRegion2D/plateforme"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="plateforme"]
 position = Vector2(-1, 29.25)
 shape = SubResource("RectangleShape2D_fgemk")
 
-[node name="StaticBody2D" type="StaticBody2D" parent="NavigationRegion2D" groups=["plateforme"]]
+[node name="plateforme2" type="StaticBody2D" parent="." groups=["plateforme"]]
 position = Vector2(305, 203)
 collision_layer = 2
 metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="NavigationRegion2D/StaticBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="plateforme2"]
 position = Vector2(-1.5, 5)
 shape = SubResource("RectangleShape2D_i7h33")
 
@@ -134,7 +131,30 @@ color = Color(0.211765, 0.2, 0.25098, 1)
 position = Vector2(13.5, 10)
 shape = SubResource("RectangleShape2D_apcu4")
 
-[node name="desesperatedSlave" parent="." instance=ExtResource("5_8ig20")]
+[node name="echelle" type="Area2D" parent="." groups=["echelle"]]
+position = Vector2(202, 327)
+gravity_space_override = 3
+gravity_point_center = Vector2(0, 0)
+gravity_direction = Vector2(0, 0)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="echelle"]
+texture = ExtResource("2_oxfgx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="echelle"]
+position = Vector2(-0.5, -1.5)
+shape = SubResource("RectangleShape2D_tyqpu")
+
+[node name="top" type="StaticBody2D" parent="echelle"]
+position = Vector2(-0.5, -61)
+collision_layer = 2
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="echelle/top"]
+shape = SubResource("RectangleShape2D_t8e6e")
+one_way_collision = true
+
+[node name="desperatedSlave" parent="." instance=ExtResource("5_8ig20")]
 position = Vector2(518, 394)
 
 [node name="Campfire" parent="." instance=ExtResource("6_073y2")]
