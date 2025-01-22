@@ -188,13 +188,11 @@ func _transitions() -> s :
 	
 	if state == s.DASH_LOAD and state_time >= dash_load_length :
 		dash_velocity = dash_speed
-		attacks_progression += 1
 		$Animations.play("Dash")
 		return s.DASH
 	
 	if state == s.DASH_WARN_LOAD and state_time >= dash_warn_load_length :
 		dash_velocity = dash_speed
-		attacks_progression += 1
 		return s.DASH
 	
 	if state == s.DASH and (state_time >= dash_length or is_on_wall()) :
@@ -203,10 +201,12 @@ func _transitions() -> s :
 			return s.SMALL_BACK
 		else :
 			$Animations.play("Idle")
+			attacks_progression += 1
 			return s.IDLE
 	
 	if state == s.SMALL_BACK and state_time >= small_back_length :
 		$Animations.play("Idle")
+		attacks_progression += 1
 		return s.IDLE
 	
 	if state == s.IDLE and not player_in_big_range and not player_in_small_range :
