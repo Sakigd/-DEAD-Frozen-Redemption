@@ -1,0 +1,48 @@
+[gd_scene load_steps=6 format=3 uid="uid://bbyfcgyong2sp"]
+
+[ext_resource type="Shader" path="res://ColorQuantizer.gdshader" id="1_fc7if"]
+[ext_resource type="Texture2D" uid="uid://cvetkbwfhy8jq" path="res://Igris.png" id="1_t1m4f"]
+[ext_resource type="Texture2D" uid="uid://mb07lvlabq0u" path="res://QuantizerDefaultNoise.tres" id="2_kt3v7"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pc60t"]
+shader = ExtResource("1_fc7if")
+shader_parameter/opacity = 0.6
+shader_parameter/tint_brightness = 1.3
+shader_parameter/base_brightness = 0.9
+shader_parameter/specular_color = Vector4(0.4, 0.7, 0.9, 1.2)
+shader_parameter/specular_contrast = 5.0
+shader_parameter/specular_spread = 1.0
+shader_parameter/specular_map = ExtResource("2_kt3v7")
+
+[sub_resource type="GDScript" id="GDScript_b57h3"]
+script/source = "extends Camera2D
+const speed = 300
+
+func _process(delta):
+	var move = Vector2.ZERO 
+	if Input.is_key_label_pressed(KEY_LEFT) :
+		move.x -= speed*delta
+	if Input.is_key_label_pressed(KEY_RIGHT) :
+		move.x += speed*delta
+	if Input.is_key_label_pressed(KEY_UP) :
+		move.y -= speed*delta
+	if Input.is_key_label_pressed(KEY_DOWN) :
+		move.y += speed*delta
+	position += move
+	if not Input.is_key_label_pressed(KEY_SPACE) :
+		get_node(\"../Marker2D\").global_position = get_global_mouse_position()
+	
+	if Input.is_key_label_pressed(KEY_ESCAPE) :
+		get_tree().root.queue_free()
+"
+
+[node name="Scene" type="Node2D"]
+
+[node name="Igris" type="Sprite2D" parent="."]
+texture_filter = 1
+material = SubResource("ShaderMaterial_pc60t")
+position = Vector2(-536, -295)
+texture = ExtResource("1_t1m4f")
+
+[node name="Camera" type="Camera2D" parent="."]
+script = SubResource("GDScript_b57h3")

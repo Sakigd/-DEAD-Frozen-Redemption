@@ -1,0 +1,190 @@
+[gd_scene load_steps=29 format=3 uid="uid://brrt1khpgb4ur"]
+
+[ext_resource type="Texture2D" uid="uid://pjs5qlmgv457" path="res://Campfire/branch.png" id="1_a1nxs"]
+[ext_resource type="Texture2D" uid="uid://0bkoyba4658m" path="res://Campfire/sparkle.png" id="2_idr5f"]
+[ext_resource type="Shader" uid="uid://dwsl4qpmnblul" path="res://Campfire/glow.tres" id="3_u230e"]
+[ext_resource type="Texture2D" uid="uid://ci5xm3svxmx42" path="res://Campfire/blueFire.png" id="4_wfhvy"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_g0y32"]
+blend_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_f4tk5"]
+offsets = PackedFloat32Array(0.00766284, 0.716475, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0.823529, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_mx3ef"]
+gradient = SubResource("Gradient_f4tk5")
+
+[sub_resource type="Curve" id="Curve_npn02"]
+_data = [Vector2(0, 0.553296), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_c6dnn"]
+curve_x = SubResource("Curve_npn02")
+
+[sub_resource type="Curve" id="Curve_u5q1w"]
+max_value = 25.0
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.0899654, 7.90674), 12.8519, 12.8519, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_0r5e3"]
+texture_mode = 1
+curve = SubResource("Curve_u5q1w")
+
+[sub_resource type="Curve" id="Curve_bsanr"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.498597), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_3nmma"]
+curve = SubResource("Curve_bsanr")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_if5dq"]
+particle_flag_disable_z = true
+emission_shape_offset = Vector3(0, 2, 0)
+emission_shape = 3
+emission_box_extents = Vector3(7, 5, 1)
+direction = Vector3(0, 0, 0)
+spread = 0.0
+directional_velocity_min = -20.0
+directional_velocity_max = 20.0
+directional_velocity_curve = SubResource("CurveXYZTexture_c6dnn")
+gravity = Vector3(0, -40, 0)
+linear_accel_min = 1.0
+linear_accel_max = 5.0
+linear_accel_curve = SubResource("CurveTexture_0r5e3")
+scale_min = 0.5
+scale_max = 1.5
+scale_curve = SubResource("CurveTexture_3nmma")
+color_ramp = SubResource("GradientTexture1D_mx3ef")
+turbulence_enabled = true
+turbulence_noise_speed = Vector3(1, 0, 0)
+collision_use_scale = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xbof1"]
+shader = ExtResource("3_u230e")
+shader_parameter/inside_blur = 5.0
+shader_parameter/glow = 1.5
+shader_parameter/outside_blur = 1.5
+shader_parameter/blur_force = 10
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p1hcm"]
+atlas = ExtResource("4_wfhvy")
+region = Rect2(0, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_achl5"]
+atlas = ExtResource("4_wfhvy")
+region = Rect2(48, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y4vy8"]
+atlas = ExtResource("4_wfhvy")
+region = Rect2(96, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nfvja"]
+atlas = ExtResource("4_wfhvy")
+region = Rect2(144, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1neac"]
+atlas = ExtResource("4_wfhvy")
+region = Rect2(192, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vyj0q"]
+atlas = ExtResource("4_wfhvy")
+region = Rect2(240, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g1bew"]
+atlas = ExtResource("4_wfhvy")
+region = Rect2(336, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qjdkg"]
+atlas = ExtResource("4_wfhvy")
+region = Rect2(384, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fyot6"]
+atlas = ExtResource("4_wfhvy")
+region = Rect2(432, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_px36a"]
+atlas = ExtResource("4_wfhvy")
+region = Rect2(480, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ib03p"]
+atlas = ExtResource("4_wfhvy")
+region = Rect2(528, 0, 48, 96)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_selm2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p1hcm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_achl5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y4vy8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nfvja")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1neac")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vyj0q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g1bew")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qjdkg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fyot6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_px36a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ib03p")
+}],
+"loop": true,
+"name": &"Flame",
+"speed": 12.0
+}]
+
+[sub_resource type="GDScript" id="GDScript_x2673"]
+script/source = "@tool
+extends AnimatedSprite2D
+
+func _ready():
+	play(\"Flame\")
+"
+
+[node name="Campfire" type="Node2D"]
+position = Vector2(184, 389)
+
+[node name="Base" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(0, -17)
+texture = ExtResource("1_a1nxs")
+
+[node name="Sparkles" type="GPUParticles2D" parent="."]
+texture_filter = 1
+material = SubResource("CanvasItemMaterial_g0y32")
+position = Vector2(0, -6)
+amount = 10
+process_material = SubResource("ParticleProcessMaterial_if5dq")
+texture = ExtResource("2_idr5f")
+lifetime = 2.0
+preprocess = 5.0
+draw_order = 2
+trail_lifetime = 3.15
+
+[node name="Flame" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+material = SubResource("ShaderMaterial_xbof1")
+position = Vector2(0, -17)
+sprite_frames = SubResource("SpriteFrames_selm2")
+animation = &"Flame"
+frame_progress = 0.738412
+script = SubResource("GDScript_x2673")
