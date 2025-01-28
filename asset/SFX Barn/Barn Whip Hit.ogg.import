@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://daahdwh5ya2io"
+path="res://.godot/imported/Barn Whip Hit.ogg-f8d71cd94e739a90240c5caf04bb39a1.oggvorbisstr"
+
+[deps]
+
+source_file="res://asset/SFX Barn/Barn Whip Hit.ogg"
+dest_files=["res://.godot/imported/Barn Whip Hit.ogg-f8d71cd94e739a90240c5caf04bb39a1.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -1,10 +1,10 @@
 [gd_scene load_steps=20 format=3 uid="uid://cek0f3q58j730"]
 
-[ext_resource type="Texture2D" uid="uid://2fgqx5i8emlx" path="res://asset/Map/Test_map.png" id="1_hi56p"]
-[ext_resource type="Texture2D" uid="uid://dxj26oq3w21dc" path="res://asset/zone0_ladder.png" id="2_oxfgx"]
+[ext_resource type="Texture2D" uid="uid://g06ccx2hc4c1" path="res://asset/Map/zone0_test_map.png" id="1_hi56p"]
+[ext_resource type="Texture2D" uid="uid://drrj0peg2kp6y" path="res://asset/Sprite Tile/zone0_ladder.png" id="2_oxfgx"]
 [ext_resource type="PackedScene" uid="uid://b41oickcktc0y" path="res://Scene/desesperatedSlave.tscn" id="5_8ig20"]
 [ext_resource type="PackedScene" uid="uid://brrt1khpgb4ur" path="res://Scene/campfire.tscn" id="6_073y2"]
-[ext_resource type="Texture2D" uid="uid://c46438mmwhkh7" path="res://asset/door.png" id="6_bqgi1"]
+[ext_resource type="Texture2D" uid="uid://bkxx6hjjsldch" path="res://asset/Sprite Tile/zone0_door.png" id="6_bqgi1"]
 [ext_resource type="PackedScene" uid="uid://bcwyfattjly6" path="res://Scene/Player.tscn" id="6_e2x6o"]
 [ext_resource type="PackedScene" uid="uid://dv50d3foas1su" path="res://Scene/doorNextMap.tscn" id="6_mje2t"]
 

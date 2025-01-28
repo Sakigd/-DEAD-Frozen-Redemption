@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://bvasv3lk3dws6"]
 
-[ext_resource type="Texture2D" uid="uid://0yags6eib56v" path="res://asset/Animation/FlyingMob/projectile.png" id="1_g3vve"]
+[ext_resource type="Texture2D" uid="uid://ct17wuk5non58" path="res://asset/Animation/Flying Enemy/hand_projectile.png" id="1_g3vve"]
 [ext_resource type="Script" path="res://Script/projectile.gd" id="1_w5pux"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pnsgy"]

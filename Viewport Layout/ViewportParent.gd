@@ -23,8 +23,8 @@ func _ready():
 	map = $PixelArt/PixelArtViewport.get_child(0)
 	#print(map.get_path())
 	player = map.find_child("Player")
-	#print(player.get_path())
-	ActiveCamera = $PixelArt/PixelArtViewport.get_camera_2d()
+	print(player.get_path())
+	ActiveCamera = $PlayerCamera
 	init_room()
 
 func _process(delta):
@@ -35,6 +35,7 @@ func _process(delta):
 	scale = Vector2.ONE
 	global_position = Vector2.ZERO
 	rotation = 0
+	print(ActiveCamera.name)
 	if ActiveCamera != null && player != null && ActiveCamera.name=="PlayerCamera":
 		ActiveCamera.position = player.position
 	#print(get_tree_string())
@@ -68,11 +69,12 @@ func load_room(path: String, parent_node = $PixelArt/PixelArtViewport):
 	room_loaded.emit()
 	
 func init_room():
-	var background_size = map.get_node("Background").get_rect().size
-	ActiveCamera.limit_bottom = background_size.y * 1000
-	ActiveCamera.limit_top = 0
-	ActiveCamera.limit_left = 0
-	ActiveCamera.limit_right = background_size.x * 1000
+	pass
+	#var background_size = map.get_node("Background").get_rect().size
+	#ActiveCamera.limit_bottom = background_size.y * 1000
+	#ActiveCamera.limit_top = 0
+	#ActiveCamera.limit_left = 0
+	#ActiveCamera.limit_right = background_size.x * 1000
 
 func reset_state():
 	pass

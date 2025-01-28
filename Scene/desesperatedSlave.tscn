@@ -1,12 +1,11 @@
-[gd_scene load_steps=17 format=3 uid="uid://b41oickcktc0y"]
+[gd_scene load_steps=16 format=3 uid="uid://b41oickcktc0y"]
 
 [ext_resource type="Script" path="res://Script/mob.gd" id="1_f0hol"]
-[ext_resource type="Texture2D" uid="uid://dx3aldyggteay" path="res://asset/Animation/desesperatedSlave/walk_mob01.png" id="1_jvdya"]
+[ext_resource type="Texture2D" uid="uid://cgefnj2nblamh" path="res://asset/Animation/Enemy/enemy_walk.png" id="1_jvdya"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="3_ejdfd"]
-[ext_resource type="Texture2D" uid="uid://blujr1a8vxdfi" path="res://asset/Animation/desesperatedSlave/enemy_hit.png" id="3_v55wi"]
-[ext_resource type="Texture2D" uid="uid://cevf1ujalxsas" path="res://asset/Animation/desesperatedSlave/enemy_walk.png" id="4_40kdf"]
+[ext_resource type="Texture2D" uid="uid://d0gnyrtdolhte" path="res://asset/Animation/Enemy/enemy_hit.png" id="3_v55wi"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="4_227yq"]
-[ext_resource type="Texture2D" uid="uid://kue74vw03ur" path="res://asset/Animation/desesperatedSlave/enemy_death.png" id="4_pgxq2"]
+[ext_resource type="Texture2D" uid="uid://bycqm8co0iu44" path="res://asset/Animation/Enemy/enemy_death.png" id="4_pgxq2"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/animation_player_state.gd" id="5_bywng"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="6_osicm"]
 
@@ -37,7 +36,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [15]
+"values": [12]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -49,7 +48,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [1]
+"values": [2]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -242,7 +241,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("4_40kdf")]
+"values": [ExtResource("1_jvdya")]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -275,7 +274,8 @@ script = ExtResource("1_f0hol")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_jvdya")
-hframes = 15
+hframes = 12
+vframes = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 7)

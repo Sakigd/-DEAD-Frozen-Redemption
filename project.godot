@@ -15,7 +15,7 @@ metroidvania_system/settings_file="res://MetSysSettings.tres"
 [application]
 
 config/name="Frozen Redemption"
-run/main_scene="res://Scene/igrisMap.tscn"
+run/main_scene="res://Scene/game.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 

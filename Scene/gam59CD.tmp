@@ -1,0 +1,90 @@
+[gd_scene load_steps=4 format=3 uid="uid://c3r8eglr8lx1w"]
+
+[ext_resource type="Script" path="res://Viewport Layout/ViewportParent.gd" id="2_4qdtt"]
+[ext_resource type="PackedScene" uid="uid://cek0f3q58j730" path="res://Scene/Levels/levelTestMap.tscn" id="3_lk8gr"]
+[ext_resource type="Script" path="res://Viewport Layout/PixelArtViewport.gd" id="3_nt2yl"]
+
+[node name="Game" type="ColorRect"]
+custom_minimum_size = Vector2(640, 380)
+offset_right = 1280.0
+offset_bottom = 760.0
+color = Color(0, 0, 0, 0)
+script = ExtResource("2_4qdtt")
+
+[node name="HiRes" type="SubViewportContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.003
+offset_right = 640.0
+offset_bottom = 378.86
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HiResViewport" type="SubViewport" parent="HiRes"]
+disable_3d = true
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1280, 720)
+render_target_update_mode = 4
+
+[node name="PixelArt" type="SubViewportContainer" parent="."]
+process_priority = 100
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.5
+anchor_top = -0.5
+anchor_right = -0.5
+anchor_bottom = -0.5
+offset_left = 640.0
+offset_top = 380.0
+offset_right = 1920.0
+offset_bottom = 1140.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+stretch = true
+script = ExtResource("3_nt2yl")
+
+[node name="PixelArtViewport" type="SubViewport" parent="PixelArt"]
+disable_3d = true
+transparent_bg = true
+handle_input_locally = false
+snap_2d_transforms_to_pixel = true
+snap_2d_vertices_to_pixel = true
+canvas_item_default_texture_filter = 0
+audio_listener_enable_2d = true
+size = Vector2i(1280, 760)
+render_target_update_mode = 4
+
+[node name="LevelTest" parent="PixelArt/PixelArtViewport" instance=ExtResource("3_lk8gr")]
+
+[node name="PixelFrame" type="Node2D" parent="PixelArt"]
+
+[node name="PixelFrameOutline" type="ReferenceRect" parent="PixelArt/PixelFrame"]
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 1288.0
+offset_bottom = 768.0
+border_color = Color(0.848096, 0.717694, 1.54018e-06, 1)
+border_width = 16.0
+
+[node name="Frame" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(320, 190)
+theme_override_constants/margin_left = -8
+theme_override_constants/margin_top = -8
+theme_override_constants/margin_right = -8
+theme_override_constants/margin_bottom = -8
+
+[node name="FrameOutline" type="ReferenceRect" parent="Frame"]
+layout_mode = 2
+border_color = Color(0.950882, 0.000221979, 0.82057, 1)
+border_width = 16.0
+
+[node name="FeedGrabber" type="Camera2D" parent="."]
+position = Vector2(640, 380)
