@@ -86,8 +86,13 @@ layout_mode = 2
 border_color = Color(0.950882, 0.000221979, 0.82057, 1)
 border_width = 16.0
 
-[node name="FeedGrabber" type="Camera2D" parent="."]
-position = Vector2(640, 380)
-
 [node name="PlayerCamera" type="Camera2D" parent="."]
 position = Vector2(115, 361)
+limit_left = 0
+limit_top = 0
+limit_right = 832
+limit_bottom = 480
+
+[node name="FeedGrabber" type="Camera2D" parent="."]
+visible = false
+position = Vector2(640, 380)
